@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#171913">
     <meta name="description" content="Фэнтези-арена Tower Survivors. Покупайте оружие и держите оборону.">
     <title>Tower Survivors · Башня Последних</title>
-    <script type="module" crossorigin src="./assets/index-BA4EiO7-.js"></script>
+    <script type="module" crossorigin src="./assets/index-D31TYt2Y.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-gKsZNKkE.css">
   </head>
   <body>
@@ -18,7 +18,8 @@
           <span><small>ВОЛНА</small><strong id="wave">01</strong></span>
         </div>
         <div class="header-actions">
-          <button id="sound" class="small-button" title="Переключить звук" aria-pressed="false">Звук выкл.</button>
+          <button id="sound" class="small-button" aria-pressed="false">Подключить звук</button>
+          <input id="sound-files" type="file" accept=".wav,.flac,.ogg,.mp3" multiple hidden>
           <button id="menu" class="small-button" title="Открыть меню (Esc)">Меню</button>
         </div>
       </header>
@@ -100,7 +101,7 @@
             <button id="start-bots"><span>Матч на восемь башен</span><small>Тренировка с семью соперниками</small></button>
             <button id="start-online"><span>Сетевая комната</span><small>Создать матч или войти по коду</small></button>
           </div>
-          <div class="lobby-footer"><button id="profile" class="quiet-button">Профиль</button><button id="challenges" class="quiet-button">Достижения и облики</button><button id="resume" class="quiet-button" hidden>Вернуться в бой</button></div>
+          <div class="lobby-footer"><button id="profile" class="quiet-button">Профиль</button><button id="challenges" class="quiet-button">Достижения и облики</button><button id="sound-import" class="quiet-button">Файлы звука</button><button id="resume" class="quiet-button" hidden>Вернуться в бой</button></div>
           <p class="credit">Фанатская адаптация Tower Survivors v1.92 · карта Nethalythic</p>
         </div>
       </section>
