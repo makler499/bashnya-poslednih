@@ -175,11 +175,11 @@ function critical(tower, random) {
   return random() < tower.critChance ? 1 + tower.critPower + guaranteed : 1;
 }
 
-function strike(arena, state, enemy, portion = 1, damageOverride) {
+function strike(arena, state, enemy, portion = 1, damageOverride, critOverride) {
   if (!enemy || enemy.dead) return;
   const tower = arena.tower;
   const { item, spec } = state;
-  const crit = critical(tower, arena.random);
+  const crit = critOverride ?? critical(tower, arena.random);
   let damage = (damageOverride ?? item.baseDamage) * weaponMultiplier(tower, item, enemy) * portion * crit;
   if (spec.primary === 'Chaos' && enemy.armor !== 'divine') damage *= 0.5 + 1.5 * arena.random();
   if (item.slot === 113) damage *= 1 + tower.maxHealth / 50000;
@@ -281,9 +281,12 @@ function wave(arena, state, target) {
   const length = profile?.distance ?? item.range + spec.waveExtra;
   const width = profile?.width ?? 125;
   const duration = timeOnStep(length / (profile?.speed ?? 1200));
+  const impaler = item.slot === 201;
+  const damage = impaler && arena.tower.critChance > 0 ? 4500 : undefined;
+  const crit = impaler ? (damage !== undefined && arena.random() < arena.tower.critChance ? 1 + arena.tower.critPower : 1) : undefined;
   arena.emit({ kind: 'wave', color: spec.color, x: 0, y: 0, dx, dy, radius: length, width, duration, slot: item.slot });
   arena.waves.push({ state, dx, dy, length, width, finalWidth: profile?.finalWidth ?? width,
-    start: arena.now, duration, previous: 0, seen: new Set() });
+    start: arena.now, duration, previous: 0, damage, crit, seen: new Set() });
 }
 
 function attack(arena, state, spec, target, assigned) {
@@ -418,14 +421,20 @@ function tickWaves(arena) {
     const front = wave.length * progress;
     for (const enemy of arena.enemies) {
       if (enemy.dead || wave.seen.has(enemy)) continue;
-      const forward = enemy.x * wave.dx + enemy.y * wave.dy;
-      const width = wave.width + (wave.finalWidth - wave.width) * forward / wave.length;
-      const previous = (enemy.previousX ?? enemy.x) * wave.dx + (enemy.previousY ?? enemy.y) * wave.dy;
-      if (Math.max(forward, previous) >= wave.previous && Math.min(forward, previous) <= front
-          && Math.abs(enemy.x * wave.dy - enemy.y * wave.dx) <= width) {
-        wave.seen.add(enemy);
-        strike(arena, wave.state, enemy);
-      }
+      const alreadyMoving = wave.start < arena.now;
+      const previousX = alreadyMoving ? (enemy.previousX ?? enemy.x) : enemy.x;
+      const previousY = alreadyMoving ? (enemy.previousY ?? enemy.y) : enemy.y;
+      const before = previousX * wave.dx + previousY * wave.dy - wave.previous;
+      const after = enemy.x * wave.dx + enemy.y * wave.dy - front;
+      if (before * after > 0) continue;
+      const fraction = before === after ? 1 : before / (before - after);
+      const crossingX = previousX + (enemy.x - previousX) * fraction;
+      const crossingY = previousY + (enemy.y - previousY) * fraction;
+      const crossingFront = wave.previous + (front - wave.previous) * fraction;
+      const width = wave.width + (wave.finalWidth - wave.width) * crossingFront / wave.length;
+      if (Math.abs(crossingX * wave.dy - crossingY * wave.dx) > width) continue;
+      wave.seen.add(enemy);
+      strike(arena, wave.state, enemy, 1, wave.damage, wave.crit);
     }
     wave.previous = front;
     return progress < 1 - 1e-9;

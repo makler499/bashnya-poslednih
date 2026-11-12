@@ -201,6 +201,8 @@ function resetMatchUI(mode) {
   shownShop = null;
   shownArsenal = null;
   shownSeats = '';
+  clearTimeout(announcementTimeout);
+  ui.announcer.hidden = true;
   ui.tooltip.hidden = true;
   ui.lobby.hidden = true;
   ui.resume.hidden = false;

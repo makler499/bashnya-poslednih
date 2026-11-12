@@ -419,12 +419,12 @@ export function createMatch(map, players, options = {}) {
       }
     }
     for (const arena of aliveArenas()) {
+      tickWeapons(arena, attacks, dt);
+      tickImpacts(arena);
       for (const enemy of arena.enemies) {
         enemy.previousX = enemy.x;
         enemy.previousY = enemy.y;
       }
-      tickWeapons(arena, attacks, dt);
-      tickImpacts(arena);
       tickEnemies(arena, dt);
       arena.enemies = arena.enemies.filter(enemy => !enemy.dead);
     }

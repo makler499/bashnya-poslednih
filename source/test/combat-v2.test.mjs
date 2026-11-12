@@ -122,6 +122,33 @@ test('moving wave only hits targets reached by its front and only once', () => {
   assert.equal(side.hp, side.maxHp);
 });
 
+test('wave checks sideways position at the point where a moving enemy crosses its front', () => {
+  const aim = mob(1, 200), crossing = mob(2, 200), entersLate = mob(3, 200, 200);
+  const state = arena([24], [aim, crossing, entersLate]);
+  tickWeapons(state, attacks, combatStep);
+  impactAt(state, 0.175);
+  Object.assign(crossing, { previousX: 200, previousY: 0, x: 175, y: 160 });
+  Object.assign(entersLate, { previousX: 180, previousY: 200, x: 180, y: 100 });
+  impactAt(state, 0.2);
+  assert.ok(crossing.hp < crossing.maxHp);
+  assert.equal(entersLate.hp, entersLate.maxHp);
+});
+
+test('Impaler uses the object damage without crit and shares one script crit roll across the wave', () => {
+  for (const [chance, roll, expected] of [[0, 0, 7500], [0.5, 0.99, 4500], [0.5, 0, 11250]]) {
+    const first = mob(1, 150), second = mob(2, 270);
+    const state = arena([201], [first, second]);
+    state.tower.critChance = chance;
+    let calls = 0;
+    state.random = () => [0, roll][calls++];
+    tickWeapons(state, attacks, combatStep);
+    impactAt(state, 0.1);
+    assert.equal(first.maxHp - first.hp, expected);
+    assert.equal(second.maxHp - second.hp, expected);
+    assert.equal(calls, chance > 0 ? 2 : 1);
+  }
+});
+
 test('normal damage uses the archive armor matrix and DefenseArmor coefficient', () => {
   const enemy = { ...mob(1, 120), armor: 'medium', armorValue: 20 };
   const state = arena([0], [enemy]);
