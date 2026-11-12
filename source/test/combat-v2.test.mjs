@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { buildAttacks, combatStep, startRoundWeapons, tickEnemies, tickImpacts, tickWeapons } from '../combat.mjs';
 import { createMatch } from '../match.mjs';
 import { createSpawnPlanner } from '../enemy-spawn.mjs';
-import { createTower, purchase, roundUpgrades } from '../shop.mjs';
+import { createTower, purchase, roundUpgrades, tickEconomy } from '../shop.mjs';
 
 const map = JSON.parse(readFileSync(new URL('../map.json', import.meta.url), 'utf8'));
 const attacks = buildAttacks(map.weapons);
@@ -14,7 +14,7 @@ const mob = (key, x, y = 0) => ({ key, x, y, hp: 100_000, maxHp: 100_000, armor:
   poison: [], vulnerability: new Map() });
 function arena(slots, enemies) {
   const state = { now: 0, tower: createTower(1_000_000), random: () => 0, enemies, events: [],
-    hits: [], waves: [], enemyHits: [], fields: [], corpses: [], layout: { x: 0, y: 0 }, combatRules: map.combatRules };
+    hits: [], waves: [], enemyHits: [], fields: [], layout: { x: 0, y: 0 }, combatRules: map.combatRules };
   state.emit = event => state.events.push({ ...event, at: state.now });
   for (const slot of slots) assert.ok(purchase(state.tower, weapon(slot), 0));
   return state;
@@ -106,6 +106,25 @@ test('barrage chooses distinct live targets within range', () => {
   assert.deepEqual(shots(state).map(event => event.targetId), [1, 2, 3, 4]);
 });
 
+test('Cluster Rockets retains an aim point for two seconds and damages only at impact', () => {
+  const target = mob(1, 600), moved = mob(2, 700);
+  const state = arena([104], [target, moved]);
+  tickWeapons(state, attacks, combatStep);
+  assert.equal(shots(state)[0].duration, 1);
+  target.x = 1050;
+  state.now = 0.35;
+  tickWeapons(state, attacks, combatStep);
+  assert.deepEqual(shots(state)[1].to, { x: 600, y: 0 });
+  impactAt(state, 0.975);
+  assert.equal(moved.hp, moved.maxHp);
+  impactAt(state, 1);
+  assert.equal(moved.maxHp - moved.hp, 325);
+  assert.equal(target.hp, target.maxHp);
+  state.now = 2;
+  tickWeapons(state, attacks, combatStep);
+  assert.deepEqual(shots(state).at(-1).to, { x: 700, y: 0 });
+});
+
 test('moving wave only hits targets reached by its front and only once', () => {
   const near = mob(1, 200), far = mob(2, 450), side = mob(3, 310, 150);
   const state = arena([24], [near, far, side]);
@@ -187,6 +206,62 @@ test('Parasite stacks without instant damage, then deals damage and heals', () =
   assert.equal(state.tower.health, 1100);
 });
 
+test('Necromancer starts charged, raises a mage at a qualifying kill and credits its projectile', () => {
+  const victim = { ...mob(1, 300), hp: 40 }, next = mob(2, 500);
+  const state = arena([129, 0], [victim, next]);
+  const tome = state.tower.necromancy;
+  assert.equal(tome.charges, 10);
+  tickWeapons(state, attacks, combatStep);
+  assert.equal(state.fields.length, 0);
+  impactAt(state, 0.25);
+  assert.equal(tome.charges, 0);
+  assert.ok(victim.dead);
+  assert.equal(state.fields[0].until, 5.25);
+  assert.equal(state.fields[0].radius, 600);
+  assert.deepEqual(shots(state).at(-1).from, { x: 300, y: 0 });
+  assert.equal(tome.damage, undefined);
+  impactAt(state, 0.425);
+  assert.equal(tome.damage, 3000);
+  assert.equal(state.tower.weaponDamage, 3040);
+  for (let time = 0; time < 10; time++) tickEconomy(state.tower, 0);
+  assert.equal(tome.charges, 10);
+});
+
+test('fire continues to tick at full stack strength and credits the weapon', () => {
+  const enemy = mob(1, 240);
+  const state = arena([26], [enemy]);
+  tickWeapons(state, attacks, combatStep);
+  impactAt(state, 0.2);
+  const direct = state.tower.weaponDamage;
+  assert.ok(direct > 0);
+  state.now = 0.475;
+  tickEnemies(state, combatStep);
+  assert.equal(state.tower.damage, direct);
+  for (const time of [0.5, 1, 1.5]) {
+    state.now = time;
+    tickEnemies(state, combatStep);
+  }
+  assert.ok(Math.abs(state.tower.damage - direct * 1.15) < 1e-6);
+  assert.equal(state.tower.damage, state.tower.weaponDamage);
+  assert.equal(state.tower.towerDamage, 0);
+});
+
+test('frost caps at 50 stacks and freezes the same enemy only once', () => {
+  const enemy = { ...mob(1, 200), cc: 0.5 };
+  const state = arena([43], [enemy]);
+  state.tower.stats.set('Frost', 0.5);
+  for (let attack = 0; attack < 9; attack++) {
+    state.now = attack * 0.35;
+    tickWeapons(state, attacks, combatStep);
+  }
+  assert.equal(enemy.frost, 50);
+  assert.equal(enemy.stun, 2.25);
+  enemy.stun = 0;
+  state.now += 0.35;
+  tickWeapons(state, attacks, combatStep);
+  assert.equal(enemy.stun, 0);
+});
+
 test('Storm Generator activates at the round boundary and pulses after 1.5 seconds', () => {
   const enemy = mob(1, 500);
   const state = arena([212, 212], [enemy]);
@@ -204,16 +279,23 @@ test('v2 catalog, round income, rerolls, growing spikes and special wagon varian
   assert.equal(map.title, 'Tower Survivors v2.0');
   assert.equal(map.weapons.length, 90);
   assert.equal(map.challenges.length, 50);
-  const match = createMatch(map, [{ seat: 1 }], { seed: 36, preparation: 0 });
+  const economyMap = { ...map, weapons: map.weapons.map(weapon => weapon.slot <= 4
+    ? { ...weapon, baseDamage: 100000, cooldownSeconds: 0.1 } : weapon) };
+  const match = createMatch(economyMap, [{ seat: 1 }], { seed: 36, preparation: 0 });
   assert.equal(match.snapshot(1).player.gold, 5000);
-  for (let roll = 0; roll < 5; roll++) assert.ok(match.action(1, { type: 'reroll' }));
-  assert.equal(match.snapshot(1).player.price, 250);
-  assert.ok(match.action(1, { type: 'reroll' }));
-  assert.equal(match.snapshot(1).player.price, 300);
+  for (let roll = 0; roll < 6; roll++) assert.ok(match.action(1, { type: 'reroll' }));
+  assert.equal(match.snapshot(1).player.price, null);
+  assert.equal(match.action(1, { type: 'reroll' }), false);
+  assert.ok(match.action(1, { type: 'buy', slot: 0, version: match.snapshot(1).player.version }));
   match.tick(30);
   assert.equal(match.snapshot(1).wave, 2);
   assert.equal(match.snapshot(1).player.income, 55);
   assert.equal(match.snapshot(1).player.waveBonusGold, 5);
+  assert.equal(match.snapshot(1).player.price, 250);
+  assert.ok(match.action(1, { type: 'reroll' }));
+  assert.equal(match.snapshot(1).player.price, null);
+  match.tick(30);
+  assert.equal(match.snapshot(1).player.price, 300);
   const tower = createTower(5000);
   assert.ok(purchase(tower, { ...map.shop.upgrades.A0DU, id: 'A0DU', kind: 'upgrade' }, 0));
   assert.equal(tower.spikes, 40);
@@ -222,7 +304,56 @@ test('v2 catalog, round income, rerolls, growing spikes and special wagon varian
   assert.equal(createSpawnPlanner(map, () => 0)([{ arena: map.arenas[0], variant: 14 }])[0].unitId, 'h00G');
 });
 
-test('eight towers reproduce combat and event order under 1x, 1.5x and 2x timing', () => {
+test('opening purchase reaches a real enemy and records weapon damage before a tower hit', () => {
+  const tested = new Set();
+  for (let seed = 0; tested.size < 5 && seed < 60; seed++) {
+    const match = createMatch(map, [{ seat: 1 }], { seed });
+    const starting = match.snapshot(1);
+    const item = starting.player.shop[0];
+    if (tested.has(item.slot)) continue;
+    tested.add(item.slot);
+    assert.equal(starting.preparation, 30);
+    assert.equal(starting.player.health, 1500);
+    assert.equal(starting.player.gold, 5000);
+    assert.equal(starting.player.directDefense, false);
+    assert.ok(match.action(1, { type: 'buy', slot: 0, version: starting.player.version }));
+    assert.equal(match.snapshot(1).player.gold, 4500);
+    match.tick(31.975);
+    assert.equal(match.snapshot(1).arena.enemies.length, 0);
+    match.tick(0.025);
+    assert.ok(match.snapshot(1).arena.enemies.length > 0);
+    match.tick(7);
+    const { player } = match.snapshot(1);
+    assert.equal(player.health, 1500);
+    assert.ok(player.weaponDamage > 0, item.name);
+    assert.equal(player.towerDamage, 0);
+    assert.equal(player.damage, player.weaponDamage);
+    assert.equal(player.weaponDamage, player.weapons[0].damage);
+  }
+  assert.equal(tested.size, 5);
+});
+
+test('the last surviving tower faces the boss at wave 31 and finishes in first place', () => {
+  const finaleMap = { ...map, weapons: map.weapons.map(weapon => weapon.slot <= 4
+    ? { ...weapon, baseDamage: 100_000_000, cooldownSeconds: 0.1 } : weapon) };
+  const match = createMatch(finaleMap, [{ seat: 1 }, { seat: 2 }], { seed: 0, preparation: 0 });
+  assert.ok(match.action(1, { type: 'buy', slot: 0, version: 1 }));
+  match.leave(2);
+  assert.equal(match.snapshot(1).player.lastStand, true);
+  match.tick(899.975);
+  assert.equal(match.snapshot(1).bossPhase, false);
+  match.tick(0.025);
+  const finale = match.snapshot(1);
+  assert.equal(finale.bossPhase, true);
+  assert.equal(finale.wave, 31);
+  assert.deepEqual(finale.arena.enemies.map(enemy => enemy.id), ['samwise']);
+  assert.equal(finale.player.shop.every(item => item === null), true);
+  match.tick(3);
+  assert.equal(match.snapshot(1).finished, true);
+  assert.equal(match.snapshot(1).player.place, 1);
+});
+
+test('eight towers reproduce combat and event order under all four speeds', () => {
   const players = Array.from({ length: 8 }, (_, index) => ({ seat: index + 1, name: `Башня ${index + 1}`, bot: index > 0 }));
   function simulate(speed) {
     const match = createMatch(map, players, { seed: 235, preparation: 0, speed });
@@ -240,4 +371,5 @@ test('eight towers reproduce combat and event order under 1x, 1.5x and 2x timing
   const expected = simulate(1);
   assert.deepEqual(simulate(1.5), expected);
   assert.deepEqual(simulate(2), expected);
+  assert.deepEqual(simulate(3), expected);
 });

@@ -1,5 +1,5 @@
 import map from './map.json';
-import { createMatch } from './match.mjs';
+import { createMatch, speedOptions } from './match.mjs';
 import { createArenaRenderer } from './renderer.mjs';
 import { createOnlineClient } from './online.mjs';
 import { loadOriginalArt } from './original-art.mjs';
@@ -13,8 +13,8 @@ const ui = Object.fromEntries([
   'app', 'arena', 'announcer', 'clock', 'clock-label', 'wave', 'arena-eyebrow', 'arena-name', 'arena-detail', 'standings',
   'prep', 'prep-text', 'go', 'minimap', 'health-bar', 'health', 'shield-bar', 'shield', 'armor', 'regen', 'gold', 'income',
   'kills', 'shop', 'reroll', 'treasure', 'market', 'arsenal', 'clear', 'clears', 'pause', 'speed', 'lobby', 'resume',
-  'tooltip', 'dialog', 'dialog-title', 'dialog-content', 'name', 'sound', 'healed', 'tower-damage', 'repair',
-  'arena-schedule', 'next-wave', 'next-skills',
+  'tooltip', 'dialog', 'dialog-title', 'dialog-content', 'name', 'sound', 'weapon-damage', 'tower-damage', 'total-damage', 'repair',
+  'arena-schedule', 'next-wave', 'next-skills', 'shop-hint',
   'sound-files',
 ].map(id => [id, byId(id)]));
 ui.repair.title = 'Восстанавливает до ' + (repairFraction * 100) + '% здоровья. Перезарядка ' + repairInterval + ' с';
@@ -147,7 +147,7 @@ function announce(text, seconds = 2.4, variant = '') {
 }
 
 function saveResult() {
-  if (savedResult || !local || frame.player.alive) return;
+  if (savedResult || !local || (frame.player.alive && !frame.finished)) return;
   savedResult = true;
   profile.records.unshift({
     mode: matchMode, at: Date.now(), seconds: Math.floor(frame.elapsed), wave: frame.wave, kills: frame.player.kills,
@@ -365,9 +365,9 @@ function renderUI() {
   if (schedule) {
     const suffix = paused ? ' · пауза' : '';
     ui['next-wave'].textContent = 'Волна ' + schedule.wave + ' через ' + timerText(Math.ceil(schedule.waveIn)) + suffix;
-    ui['next-skills'].textContent = player.alive
-      ? 'Новый набор через ' + timerText(Math.ceil(schedule.skillsIn)) + ' · волна ' + schedule.skillsWave
-      : 'Новый набор · лавка закрыта';
+    ui['next-skills'].textContent = !player.alive || frame.wave >= 31 && schedule.shopCloses ? 'Лавка закрыта'
+      : schedule.shopCloses ? 'Лавка закроется через ' + timerText(Math.ceil(schedule.skillsIn))
+        : 'Новый набор через ' + timerText(Math.ceil(schedule.skillsIn)) + ' · волна ' + schedule.skillsWave;
   } else {
     ui['next-wave'].textContent = 'Волны завершены';
     ui['next-skills'].textContent = 'Новый набор · лавка закрыта';
@@ -376,8 +376,9 @@ function renderUI() {
   fillBar(ui['shield-bar'], ui.shield, player.shield, player.maxShield);
   ui.armor.textContent = '♜ ' + statNumber(player.armor);
   ui.regen.textContent = '✚ ' + statNumber(player.regen) + '/с';
-  ui.healed.textContent = roundNumber(player.healed);
+  ui['weapon-damage'].textContent = roundNumber(player.weaponDamage);
   ui['tower-damage'].textContent = roundNumber(player.towerDamage);
+  ui['total-damage'].textContent = roundNumber(player.damage);
   const repairSeconds = Math.ceil(player.repairCooldown ?? 0);
   ui.repair.textContent = repairSeconds > 0 ? 'Ремонт · ' + repairSeconds + ' с' : 'Ремонт';
   ui.repair.disabled = prep || finished || !player.alive || player.health >= player.maxHealth || repairSeconds > 0;
@@ -394,8 +395,12 @@ function renderUI() {
   ui.treasure.hidden = player.treasure === null;
   ui.treasure.textContent = '◇ Казна ' + roundNumber(player.treasure);
   ui.market.hidden = !player.market;
-  ui.reroll.textContent = player.price ? '⟳ Обновить · ' + roundNumber(player.price) : '⟳ Бесплатно · ' + player.freeRerolls;
-  ui.reroll.disabled = player.gold < player.price || !player.alive;
+  ui.reroll.textContent = player.price === 0 ? '⟳ Бесплатно · ' + player.freeRerolls
+    : player.price == null ? '⟳ Обновления исчерпаны' : '⟳ ' + roundNumber(player.price) + ' · осталось ' + player.roundRerolls;
+  ui.reroll.disabled = player.price == null || player.gold < player.price || !player.alive;
+  ui['shop-hint'].textContent = player.alive && player.directDefense === false
+    ? (player.weapons.some(weapon => weapon.charges !== undefined) ? 'Тому нужно первое убийство' : 'Купите оружие или шипы')
+    : '1–8 · покупка';
 
   const offerKey = player.version + ':' + player.shop.map(item => item?.id ?? '').join(':');
   if (shownShop !== offerKey) {
@@ -415,7 +420,7 @@ function renderUI() {
       ui.arsenal.replaceChildren(...player.weapons.map(weapon => {
         const entry = node('button', 'arsenal-item ' + weapon.rarity);
         const name = skillName(weapon);
-        entry.append(node('span', null, name), node('b', null, '×' + weapon.copies));
+        entry.append(node('span', null, name + ' ×' + weapon.copies), node('b', 'arsenal-damage'));
         entry.title = player.duplicate && weapon.rarity === 'rare' ? 'Использовать дубликатор' : name;
         entry.disabled = !player.duplicate || weapon.rarity !== 'rare';
         entry.addEventListener('click', () => localAction({ type: 'duplicate', id: weapon.id }));
@@ -424,6 +429,11 @@ function renderUI() {
     } else {
       ui.arsenal.replaceChildren(node('p', null, 'Купите оружие, чтобы начать оборону.'));
     }
+  }
+  for (const [index, label] of [...ui.arsenal.querySelectorAll('.arsenal-damage')].entries()) {
+    const weapon = player.weapons[index];
+    const text = roundNumber(weapon.damage) + ' ур.';
+    if (label.textContent !== text) label.textContent = text;
   }
   const seatKey = frame.seats.map(seat => [seat.seat, seat.name, seat.alive, seat.place, Math.ceil(seat.health / seat.maxHealth * 20)].join('/')).join('|') + ':' + frame.selected;
   if (shownSeats !== seatKey) {
@@ -462,9 +472,11 @@ function showStats() {
   const grid = node('div', 'dialog-grid');
   grid.append(statCard('Волна', String(frame.wave)), statCard('Время', timerText(frame.elapsed)),
     statCard('Убийства', roundNumber(player.kills)), statCard('Весь урон', roundNumber(player.damage)),
-    statCard('Урон шипов башни', roundNumber(player.towerDamage)), statCard('Восстановлено здоровья', roundNumber(player.healed)),
+    statCard('Урон оружия', roundNumber(player.weaponDamage)), statCard('Урон шипов', roundNumber(player.towerDamage)),
+    statCard('Восстановлено здоровья', roundNumber(player.healed)),
     statCard('Дополнительный доход за волны', roundNumber(player.waveBonusGold) + ' золота'));
   content.append(grid);
+  if (player.otherDamage > 0) grid.append(statCard('Очистка и прочий урон', roundNumber(player.otherDamage)));
   for (const weapon of [...player.weapons].sort((a, b) => b.damage - a.damage)) {
     content.append(node('p', 'dialog-copy', skillName(weapon) + ' ×' + weapon.copies + ' · ' + roundNumber(weapon.damage) + ' урона'));
   }
@@ -545,8 +557,7 @@ function togglePause() {
 }
 
 function cycleSpeed() {
-  const speeds = [1, 1.5, 2];
-  localAction({ type: 'speed', value: speeds[(speeds.indexOf(frame.speed) + 1) % speeds.length] });
+  localAction({ type: 'speed', value: speedOptions[(speedOptions.indexOf(frame.speed) + 1) % speedOptions.length] });
 }
 
 function showOnline() {

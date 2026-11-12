@@ -148,6 +148,7 @@ h2 { font: 15px Georgia, serif; margin: 0; color: #f1d694; }
 .arsenal-list { max-height: 79px; min-height: 52px; overflow: auto; scrollbar-width: thin; display: grid; align-content: start; gap: 3px; }
 .arsenal-list p { font-size: 10px; color: #b4a889; margin: 2px 0; }
 .arsenal-item { border: 1px solid #51482f; background: #2b2b21; color: var(--rarity); text-align: left; font-size: 10px; min-height: 20px; padding: 2px 4px; display: flex; justify-content: space-between; gap: 5px; }
+.arsenal-damage { white-space: nowrap; color: var(--muted); }
 .arsenal-panel > .small-button { align-self: start; margin-top: 5px; min-height: 24px; padding: 3px 7px; }
 .overlay { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; overflow: auto; padding: 16px; background: radial-gradient(ellipse at 48% 42%, #25251bc0, #10120df5 82%); }
 .lobby-card {
@@ -218,8 +219,11 @@ dialog::backdrop { background: #10110aaf; }
   .tower-panel { flex-direction: row; gap: 3px; align-items: center; }
   .tower-top { display: block; width: 45%; }
   .tower-info { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
-  .tower-info h2, #minimap, .tower-stats, .arsenal-panel { display: none; }
+  .tower-info h2, #minimap, .tower-stats { display: none; }
   .tower-feedback { grid-column: 1 / -1; margin: 0; font-size: 9px; }
+  .arsenal-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 6px; align-items: center; }
+  .arsenal-panel .arsenal-list { grid-row: 2; grid-column: 1 / -1; min-height: 0; max-height: 42px; }
+  .arsenal-panel > .small-button { grid-column: 2; grid-row: 1; margin: 0; }
   .tower-actions { margin: 0; }
   .tower-actions .small-button { min-height: 23px; }
   .arena-identity { left: 6px; top: 7px; padding: 5px; }

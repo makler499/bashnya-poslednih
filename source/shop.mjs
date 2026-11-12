@@ -1,7 +1,10 @@
 const damageSchools = ['Normal', 'Piercing', 'Magic', 'Siege', 'Chaos'];
-const rollGroups = ['Income', 'Income', 'Utility', 'Damage'];
+const openingGroups = ['Income', 'Income', 'Utility', 'Damage'];
+const roundGroups = ['Income', 'Utility', 'Damage'];
+const paidGroups = ['Income', 'Utility', 'Utility', 'Damage', 'Damage'];
 const blackMarket = { id: 'A0GR', name: 'Black Market', gold: 500, kind: 'upgrade', rarity: 'common' };
 const tiers = ['common', 'uncommon', 'rare', 'epic'];
+export const necromancerSlot = 129;
 
 function rarityFor(gold) {
   if (gold >= 10000) return 'epic';
@@ -25,50 +28,68 @@ export function createShop(map, random) {
     key, Object.values(pool).map(id => upgradeById.get(id)),
   ]));
 
-  function rollTier(wave, upgrade = false) {
+  const epicChance = wave => Math.max(0, Math.min(15, wave - 5));
+
+  function rollTier(wave) {
     const growth = Math.min(20, Math.max(0, wave - 1));
-    const epic = Math.max(0, Math.min(15, wave - 5)) * (upgrade ? 2 : 1);
-    if (random() * 100 < epic) return 'epic';
+    if (random() * 100 < epicChance(wave)) return 'epic';
     if (random() * 100 < 30 + growth) return 'rare';
     if (random() * 100 < 70 + growth) return 'uncommon';
     return 'common';
   }
 
-  function rollUpgrade(commonOnly, wave) {
+  function upgradeGroup(history, paid) {
+    if (!history) return pick(openingGroups);
+    for (const group of roundGroups) {
+      const limit = group === 'Income' ? 10 : 5;
+      const gap = Math.max(0, limit - history[group]);
+      if (random() * (gap + 1) >= gap) {
+        history[group] = 0;
+        return group;
+      }
+      history[group] += 1;
+    }
+    const group = pick(paid ? paidGroups : roundGroups);
+    history[group] = 0;
+    return group;
+  }
+
+  function rollUpgrade(commonOnly, wave, history, paid) {
     if (random() < 1 / 6) {
-      const tier = commonOnly ? 'common' : rollTier(wave, true);
+      const tier = commonOnly ? 'common' : rollTier(wave);
       const spikes = pools.Spikes2.filter(entry => entry.rarity === tier);
       if (spikes.length) return pick(spikes);
     }
-    const group = pick(rollGroups);
-    if (!commonOnly && group === 'Damage' && rollTier(wave, true) === 'epic') return pick(pools.Damage2Epic);
-    if (!commonOnly && group === 'Income' && wave < 6) return pick(pools.Income2.slice(0, 30));
+    const group = upgradeGroup(history, paid);
+    if (!commonOnly && group === 'Damage' && random() * 100 < epicChance(wave) * 2) return pick(pools.Damage2Epic);
+    if (!commonOnly && group === 'Income' && wave < 6) return pick(pools.Income2.slice(0, 25));
     return pick(pools[group + (commonOnly ? '1' : '2')]);
   }
 
   return {
-    offer(wave) {
+    offer(wave, history, paid = false) {
       return [
         pick(byRarity.get('common')),
         ...Array.from({ length: 3 }, () => pick(byRarity.get(rollTier(wave)))),
-        rollUpgrade(true, wave),
-        ...Array.from({ length: 3 }, () => rollUpgrade(false, wave)),
+        rollUpgrade(true, wave, history, paid),
+        ...Array.from({ length: 3 }, () => rollUpgrade(false, wave, history, paid)),
       ];
     },
     market: [...byRarity.get('uncommon'), ...pools.Spikes2.filter(entry => entry.rarity === 'uncommon')],
   };
 }
 
-export function createTower(startingGold) {
+export function createTower(startingGold, { startingHealth = 1500, startingArmor = 0, startingRegen = 0,
+  startingClears = 1, freeRerolls = 6 } = {}) {
   return {
     gold: startingGold,
-    health: 1500,
-    maxHealth: 1500,
+    health: startingHealth,
+    maxHealth: startingHealth,
     shield: 0,
     maxShield: 0,
-    armor: 0,
+    armor: startingArmor,
     bonusArmor: 0,
-    regen: 0,
+    regen: startingRegen,
     shieldRegen: 1,
     income: 0,
     incomeMultiplier: 1,
@@ -83,8 +104,9 @@ export function createTower(startingGold) {
     dodge: 0,
     spikes: 0,
     reconstruction: 0,
-    clears: 1,
-    freeRerolls: 5,
+    clears: startingClears,
+    freeRerolls,
+    roundRerolls: 0,
     rollsPaid: 0,
     duplicated: 0,
     commonCopies: 0,
@@ -96,6 +118,8 @@ export function createTower(startingGold) {
     upgrades: new Map(),
     kills: 0,
     damage: 0,
+    weaponDamage: 0,
+    otherDamage: 0,
     towerDamage: 0,
     healed: 0,
     repairAt: 0,
@@ -188,8 +212,9 @@ export function purchase(tower, item, time) {
     const existing = tower.weapons.get(item.id);
     const extra = item.rarity === 'rare' ? tower.duplicated : 0;
     if (extra) tower.duplicated = 0;
-    if (existing) existing.copies += 1 + extra;
-    else tower.weapons.set(item.id, { item, copies: 1 + extra, next: time, phase: 0, target: null });
+    const state = existing ?? { item, copies: 0, next: time, phase: 0, target: null };
+    addWeaponCopies(tower, state, 1 + extra);
+    if (!existing) tower.weapons.set(item.id, state);
     return true;
   }
 
@@ -215,6 +240,13 @@ export function purchase(tower, item, time) {
   }
   if (name === 'Urn of Avarice') tower.effects.set('urn', (tower.effects.get('urn') ?? 0) + 20);
   return true;
+}
+
+export function addWeaponCopies(tower, state, copies) {
+  state.copies += copies;
+  if (state.item.slot !== necromancerSlot) return;
+  state.charges = (state.charges ?? 0) + 10 * copies;
+  tower.necromancy = state;
 }
 
 export function count(tower, name) {
@@ -248,6 +280,8 @@ export function tickEconomy(tower, baseIncome) {
     tower.effects.set('urn', urn - 1);
   }
   tower.bonusArmor = Math.min(10, tower.bonusArmor + count(tower, 'Armor-Plated Spikes'));
+  const tome = tower.necromancy;
+  if (tome) tome.charges = Math.min(tome.copies * 10, tome.charges + tome.copies);
 }
 
 export function weaponMultiplier(tower, weapon, enemy) {

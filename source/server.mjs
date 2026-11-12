@@ -329,7 +329,7 @@ setInterval(() => {
         if (last) player.since = last.seq;
         send(player.socket, { type: 'frame', frame });
       }
-      if (!player.recorded && !frame.player.alive) {
+      if (!player.recorded && (!frame.player.alive || frame.finished)) {
         queries.record.run(room.id, player.id, frame.player.place, frame.wave, frame.player.kills,
           Math.floor(frame.elapsed), Number(frame.player.won), Number(frame.player.lastStand), Date.now());
         player.recorded = true;

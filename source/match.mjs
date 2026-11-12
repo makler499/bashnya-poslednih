@@ -1,12 +1,13 @@
 import { createSpawnPlanner } from './enemy-spawn.mjs';
-import { createShop, createTower, purchase, roundUpgrades, tickEconomy } from './shop.mjs';
+import { addWeaponCopies, createShop, createTower, necromancerSlot, purchase, roundUpgrades, tickEconomy } from './shop.mjs';
 import { buildAttacks, clearArena, combatStep, orbitRate, repairTower, startRoundWeapons, tickEnemies, tickImpacts, tickWeapons } from './combat.mjs';
 import { checkChallenges, rememberPurchase, survivorChallenge } from './challenges.mjs';
 
 const playerColors = [0xb84836, 0x426bc4, 0x4a9c82, 0x8764ab, 0xcbaf55, 0xd78138, 0x68a149, 0xb96a90];
-const speedOptions = new Set([1, 1.5, 2]);
+export const speedOptions = [1, 1.5, 2, 3];
 const defaultEnemyHealth = { Bandit: 300, Brigand: 600, BanditRider: 600, Catapult: 600 };
 const defaultEnemyArmor = { Bandit: 'medium', Brigand: 'small', BanditRider: 'large', Catapult: 'hero' };
+const hasDirectDefense = tower => tower.spikes > 0 || [...tower.weapons.values()].some(({ item }) => item.slot !== necromancerSlot);
 
 export function seededRandom(seed) {
   let state = seed >>> 0;
@@ -43,17 +44,17 @@ function makeArena(map, player, offers, random, walkable) {
     color: playerColors[player.seat - 1],
     skin: player.skin ?? '',
     layout: map.arenas[player.seat - 1],
-    tower: createTower(map.initialRules.startingGold),
+    tower: createTower(map.initialRules.startingGold, map.initialRules),
     walkable,
     combatRules: map.combatRules,
     shop: offers,
     shopVersion: 1,
+    shopHistory: { Income: 0, Utility: 0, Damage: 0 },
     enemies: [],
     hits: [],
     enemyHits: [],
     waves: [],
     fields: [],
-    corpses: [],
     events: [],
     purchaseLog: [],
     challengeUnlocks: new Set(),
@@ -132,18 +133,17 @@ function createEnemy(arena, spawn, archetype, key) {
   const maxHp = spawn.health ?? defaultEnemyHealth[archetype.family] ?? 900;
   const finalForm = spawn.unitId === 'h00G';
   const waveBounty = archetype.bounty ?? (finalForm ? 100 : archetype.family === 'Bandit' ? 10 : 20);
-  const bounty = Math.floor(waveBounty * arena.tower.bountyMultiplier);
   return {
     key, id: spawn.unitId, family: archetype.family,
     x: spawn.x - arena.layout.x, y: spawn.y - arena.layout.y,
-    maxHp, hp: maxHp, speed: spawn.speed ?? 50, bounty,
+    maxHp, hp: maxHp, speed: spawn.speed ?? 50, bounty: Math.floor(waveBounty * arena.tower.bountyMultiplier),
     armor: archetype.armorType ?? defaultEnemyArmor[archetype.family], armorValue: archetype.armorValue ?? 0,
     healthRegen: (archetype.healthRegen ?? 0) * (arena.multipliers.health > 1 ? 1 + arena.multipliers.health : 1),
     damageBase: spawn.damageBase ?? 9,
     damage: Math.max(0, (spawn.damageBase ?? 9) + 1),
     attackRange: archetype.attackRange ?? 128, attackCooldown: spawn.attackCooldown ?? 1,
     damagePoint: archetype.damagePoint, projectileSpeed: archetype.projectileSpeed,
-    damageTaken: arena.damageTaken, damageScale: 1,
+    damageTaken: arena.damageTaken, collision: archetype.collision ?? 1,
     lifetime: spawn.lifetime, expires: arena.now + (spawn.lifetime ?? 0),
     walking: true, nextAttack: 0, attackAt: -10, cc: arena.cc,
     stun: 0, frost: 0, frostTime: 0, fire: 0, bleed: 0, spikesVulnerability: 0,
@@ -177,32 +177,33 @@ export function createMatch(map, players, options = {}) {
   let nextIncome = Infinity;
   let variant = 0;
   let finished = false;
-  let lastStandSpawned = false;
   let bossPhase = false;
   let time = 0;
   let battleAt = options.preparation ?? rules.preparationSeconds ?? 30;
   let pendingTime = 0;
   let baseIncome = rules.baseIncomePerTick;
   let wave = 1;
-  let speed = speedOptions.has(options.speed) ? options.speed : 1;
+  let speed = speedOptions.includes(options.speed) ? options.speed : 1;
 
   const arenaFor = seat => arenas.find(arena => arena.seat === seat);
   const aliveArenas = () => arenas.filter(arena => arena.alive);
 
-  function newOffer(arena) {
-    arena.shop = shop.offer(wave);
+  function newOffer(arena, paid = false) {
+    arena.shop = shop.offer(wave, wave > 1 ? arena.shopHistory : undefined, paid);
     arena.shopVersion += 1;
   }
 
-  function paidPrice(tower) {
-    return tower.freeRerolls > 0 ? 0 : rules.basePaidRerollGold + tower.rollsPaid * rules.paidRerollGoldStep + Math.max(0, wave - 20) * 100;
+  function rerollPrice(tower) {
+    if (wave === 1) return tower.freeRerolls > 0 ? 0 : null;
+    if (!tower.roundRerolls) return null;
+    return rules.basePaidRerollGold + tower.rollsPaid * rules.paidRerollGoldStep + Math.max(0, wave - 20) * 100;
   }
 
   function action(seat, input) {
     const arena = arenaFor(seat);
     if (!arena?.alive || finished) return false;
     const tower = arena.tower;
-    if (bossPhase && ['buy', 'reroll', 'market', 'duplicate'].includes(input.type)) return false;
+    if (arenas.length > 1 && wave >= 31 && ['buy', 'reroll', 'market', 'duplicate'].includes(input.type)) return false;
     switch (input.type) {
       case 'buy': {
         if (input.version !== arena.shopVersion || !Number.isInteger(input.slot)) return false;
@@ -214,12 +215,15 @@ export function createMatch(map, players, options = {}) {
         return true;
       }
       case 'reroll': {
-        const price = paidPrice(tower);
-        if (tower.gold < price) return false;
+        const price = rerollPrice(tower);
+        if (price === null || tower.gold < price) return false;
         tower.gold -= price;
-        if (tower.freeRerolls) tower.freeRerolls -= 1;
-        else tower.rollsPaid += 1;
-        newOffer(arena);
+        if (wave === 1) tower.freeRerolls -= 1;
+        else {
+          tower.roundRerolls -= 1;
+          tower.rollsPaid += 1;
+        }
+        newOffer(arena, price > 0);
         return true;
       }
       case 'market': {
@@ -239,7 +243,7 @@ export function createMatch(map, players, options = {}) {
       case 'duplicate': {
         const target = tower.weapons.get(input.id);
         if (!tower.duplicated || target?.item.rarity !== 'rare') return false;
-        target.copies += tower.duplicated;
+        addWeaponCopies(tower, target, tower.duplicated);
         tower.duplicated = 0;
         return true;
       }
@@ -252,7 +256,7 @@ export function createMatch(map, players, options = {}) {
         battleAt = time;
         return true;
       case 'speed':
-        if (seat !== 1 || !speedOptions.has(input.value)) return false;
+        if (seat !== 1 || !speedOptions.includes(input.value)) return false;
         speed = input.value;
         return true;
       default:
@@ -277,34 +281,63 @@ export function createMatch(map, players, options = {}) {
       action(arena.seat, { type: 'clear' });
       return;
     }
-    const wantDamage = tower.weapons.size < 2 || arena.enemies.length > 15;
+    const wantDamage = !hasDirectDefense(tower) || tower.weapons.size < 2 || arena.enemies.length > 15;
     const slots = arena.shop.map((item, index) => ({ item, index }))
-      .filter(({ item }) => item && item.gold <= tower.gold && item.name !== 'Black Market');
+      .filter(({ item }) => item && item.gold <= tower.gold && item.name !== 'Black Market'
+        && (item.slot !== necromancerSlot || hasDirectDefense(tower)));
     slots.sort((a, b) => botScore(b.item, tower, wantDamage) - botScore(a.item, tower, wantDamage));
     const choice = slots[0];
     if (choice && botScore(choice.item, tower, wantDamage) >= 0) {
       action(arena.seat, { type: 'buy', slot: choice.index, version: arena.shopVersion });
-    } else if (tower.freeRerolls || (tower.gold >= 3000 && arena.random() < 0.35)) {
+    } else if (rerollPrice(tower) === 0 || (tower.roundRerolls && tower.gold >= 3000 && arena.random() < 0.35)) {
       action(arena.seat, { type: 'reroll' });
     }
   }
 
   function beginRound() {
     wave += 1;
-    variant = wave === 13 || wave === 25 ? 14 : Math.floor(random() * 8);
+    variant = Math.floor(random() * 8);
+    if (wave === 13 || wave === 25) variant = 14;
     const capped = spawnInterval < 0.48 - 1e-9;
     if (!capped) spawnInterval -= 0.08;
     nextSpawn = time + spawnInterval;
     const incomeBonus = rules.baseIncomePerRound ?? 0;
     baseIncome += incomeBonus;
-    for (const arena of aliveArenas()) {
+    const active = aliveArenas();
+    for (const arena of active) {
       growEnemies(arena, wave, arenas.length === 1);
       if (capped) arena.damagePerSecond = wave > 30 && arenas.length > 1 ? 1.05 : 1.03;
       roundUpgrades(arena.tower);
       startRoundWeapons(arena, attacks);
-      newOffer(arena);
+      if (arenas.length === 1 || wave < 31) {
+        arena.tower.roundRerolls = 1 + Math.min(5, Math.floor((wave - 1) / 5));
+        newOffer(arena);
+      } else if (wave === 31) {
+        arena.shop = arena.shop.map(() => null);
+        arena.shopVersion += 1;
+        arena.tower.roundRerolls = 0;
+        arena.tower.marketOpen = false;
+      }
       arena.emit({ kind: 'round', wave, incomeBonus });
     }
+    if (arenas.length > 1 && wave >= 31 && active.length === 1) startBoss(active[0]);
+  }
+
+  function startBoss(arena) {
+    bossPhase = true;
+    nextSpawn = Infinity;
+    nextRound = Infinity;
+    arena.enemies.length = 0;
+    arena.hits.length = 0;
+    arena.enemyHits.length = 0;
+    const archetype = { family: 'Samwise', armorType: 'divine', attackRange: 128, bounty: 0, damagePoint: 0 };
+    const angle = random() * 2 * Math.PI;
+    const spawn = { unitId: 'samwise', x: arena.layout.x + 1200 * Math.cos(angle), y: arena.layout.y + 1200 * Math.sin(angle),
+      health: 20_000_000, speed: 200, damageBase: 24_999, attackCooldown: 0.5 };
+    const enemy = createEnemy(arena, spawn, archetype, ++nextEnemyId);
+    enemy.cc = 0.01;
+    arena.enemies.push(enemy);
+    arena.emit({ kind: 'boss' });
   }
 
   function spawnWave() {
@@ -336,10 +369,10 @@ export function createMatch(map, players, options = {}) {
       left -= 1;
     }
     if (arenas.length > 1 && left <= Math.floor(arenas.length / 2)) {
-      for (const arena of arenas) {
-        if (!arena.alive || arena.won) continue;
+      for (const arena of aliveArenas()) {
+        if (arena.won) continue;
         arena.won = true;
-        arena.emit({ kind: 'victory', bossDefeated: arena.bossDefeated });
+        arena.emit({ kind: 'victory' });
       }
     }
     if (arenas.length > 1 && left === 1) {
@@ -348,25 +381,14 @@ export function createMatch(map, players, options = {}) {
         last.lastStand = true;
         last.emit({ kind: 'lastStand' });
       }
-      if (wave >= 31 && !lastStandSpawned) {
-        lastStandSpawned = true;
-        bossPhase = true;
-        nextSpawn = Infinity;
-        nextRound = Infinity;
-        last.shop = last.shop.map(() => null);
-        last.shopVersion += 1;
-        for (const enemy of last.enemies) enemy.dead = true;
-        const archetype = { family: 'Samwise', armorType: 'divine', attackRange: 128, bounty: 0, damagePoint: 0 };
-        const angle = random() * 2 * Math.PI;
-        const spawn = { unitId: 'samwise', x: last.layout.x + 1200 * Math.cos(angle), y: last.layout.y + 1200 * Math.sin(angle),
-          health: 20_000_000, speed: 200, damageBase: 24_999, attackCooldown: 0.5 };
-        const enemy = createEnemy(last, spawn, archetype, ++nextEnemyId);
-        enemy.cc = 0.01;
-        last.enemies.push(enemy);
-        last.emit({ kind: 'boss' });
-      }
     }
-    finished = left === 0 || (bossPhase && aliveArenas().some(arena => arena.bossDefeated));
+    const winner = bossPhase ? aliveArenas().find(arena => arena.bossDefeated) : null;
+    if (winner) {
+      winner.place = 1;
+      winner.finishedAt = time;
+      winner.emit({ kind: 'victory', bossDefeated: true });
+    }
+    finished = left === 0 || Boolean(winner);
   }
 
   function awardChallenges() {
@@ -391,7 +413,7 @@ export function createMatch(map, players, options = {}) {
       arena.now = time;
       if (arena.bot && arena.alive) actBot(arena);
     }
-    if (time < battleAt) return;
+    if (time + 1e-9 < battleAt) return;
     if (nextSpawn === Infinity && !bossPhase) {
       nextSpawn = battleAt + spawnInterval;
       nextRound = battleAt + rules.roundSeconds;
@@ -412,7 +434,7 @@ export function createMatch(map, players, options = {}) {
         tickEconomy(arena.tower, baseIncome);
         arena.waveBonusGold += baseIncome - rules.baseIncomePerTick;
         for (const enemy of arena.enemies) {
-          if (enemy.dead || enemy.id === 'samwise') continue;
+          if (enemy.dead || Math.hypot(enemy.x, enemy.y) > 1200 + 1e-6) continue;
           enemy.damageBase = Math.trunc(enemy.damageBase * arena.damagePerSecond);
           enemy.damage = Math.max(0, enemy.damageBase + 1);
         }
@@ -457,16 +479,18 @@ export function createMatch(map, players, options = {}) {
         waveIn: preparation > 0 ? preparation : Math.max(0, roundAt - time),
         skillsWave: wave + 1,
         skillsIn: Math.max(0, roundAt - time),
+        shopCloses: arenas.length > 1 && wave >= 30,
       },
       player: tower ? {
         gold: tower.gold, income: baseIncome + tower.income * tower.incomeMultiplier,
         health: tower.health, maxHealth: tower.maxHealth, shield: tower.shield, maxShield: tower.maxShield,
         armor: tower.armor + tower.bonusArmor, regen: tower.regen, kills: tower.kills, damage: tower.damage,
-        towerDamage: tower.towerDamage, healed: tower.healed, repairCooldown: Math.max(0, tower.repairAt - time),
+        towerDamage: tower.towerDamage, weaponDamage: tower.weaponDamage, otherDamage: tower.otherDamage,
+        directDefense: hasDirectDefense(tower), healed: tower.healed, repairCooldown: Math.max(0, tower.repairAt - time),
         waveBonusGold: arena.waveBonusGold,
-        weapons: [...tower.weapons.values()].map(({ item, copies, damage }) => ({ id: item.id, name: item.name, rarity: item.rarity, school: item.damageTypes[0], copies, damage: damage ?? 0 })),
+        weapons: [...tower.weapons.values()].map(({ item, copies, damage, charges }) => ({ id: item.id, name: item.name, rarity: item.rarity, school: item.damageTypes[0], copies, damage: damage ?? 0, charges })),
         upgrades: [...tower.upgrades.entries()],
-        clears: tower.clears, price: paidPrice(tower), freeRerolls: tower.freeRerolls,
+        clears: tower.clears, price: rerollPrice(tower), freeRerolls: wave === 1 ? tower.freeRerolls : 0, roundRerolls: tower.roundRerolls,
         treasure: tower.treasure ? Math.floor(tower.treasure.value) : null,
         shop: arena.shop, version: arena.shopVersion, market: tower.marketOpen ? shop.market : null,
         duplicate: tower.duplicated, place: arena.place, won: arena.won, lastStand: arena.lastStand, alive: arena.alive,
