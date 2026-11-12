@@ -142,10 +142,12 @@ function createEnemy(arena, spawn, archetype, key) {
     damageBase: spawn.damageBase ?? 9,
     damage: Math.max(0, (spawn.damageBase ?? 9) + 1),
     attackRange: archetype.attackRange ?? 128, attackCooldown: spawn.attackCooldown ?? 1,
-    damagePoint: archetype.damagePoint, projectileSpeed: archetype.projectileSpeed,
+    damagePoint: archetype.damagePoint, backswing: archetype.backswing,
+    projectile: archetype.projectile,
     damageTaken: arena.damageTaken, collision: archetype.collision ?? 1,
     lifetime: spawn.lifetime, expires: arena.now + (spawn.lifetime ?? 0),
-    walking: true, nextAttack: 0, attackAt: -10, cc: arena.cc,
+    facing: spawn.facing === undefined ? Math.atan2(arena.layout.y - spawn.y, arena.layout.x - spawn.x) : spawn.facing * Math.PI / 180,
+    walking: true, nextAttack: 0, attackAt: -10, attackEnd: -10, hitAt: -10, cc: arena.cc,
     stun: 0, frost: 0, frostTime: 0, fire: 0, bleed: 0, spikesVulnerability: 0,
     poison: [], vulnerability: new Map(), dead: false,
   };
@@ -161,6 +163,7 @@ export function createMatch(map, players, options = {}) {
   const shop = createShop(map, random);
   const attacks = buildAttacks(map.weapons);
   const flamecasterId = map.weapons.find(weapon => weapon.slot === 17)?.abilityId;
+  const glaiveId = map.weapons.find(weapon => weapon.slot === 211)?.abilityId;
   const planSpawns = createSpawnPlanner(map, random);
   const statsByEnemy = new Map(map.enemies.map(enemy => [enemy.id, enemy]));
   const { initialRules: rules } = map;
@@ -330,7 +333,7 @@ export function createMatch(map, players, options = {}) {
     arena.enemies.length = 0;
     arena.hits.length = 0;
     arena.enemyHits.length = 0;
-    const archetype = { family: 'Samwise', armorType: 'divine', attackRange: 128, bounty: 0, damagePoint: 0 };
+    const archetype = { family: 'Samwise', armorType: 'divine', attackRange: 128, bounty: 0, ...map.bossProfile };
     const angle = random() * 2 * Math.PI;
     const spawn = { unitId: 'samwise', x: arena.layout.x + 1200 * Math.cos(angle), y: arena.layout.y + 1200 * Math.sin(angle),
       health: 20_000_000, speed: 200, damageBase: 24_999, attackCooldown: 0.5 };
@@ -469,6 +472,7 @@ export function createMatch(map, players, options = {}) {
     const selected = arenaFor(viewed) ?? arena ?? arenas[0];
     const observed = selected.tower;
     const flamecaster = selected.alive && observed.weapons.get(flamecasterId);
+    const glaive = selected.alive && observed.weapons.get(glaiveId);
     const preparation = Math.max(0, battleAt - time);
     const roundAt = Number.isFinite(nextRound) ? nextRound : battleAt + rules.roundSeconds;
     return {
@@ -507,11 +511,13 @@ export function createMatch(map, players, options = {}) {
         enemies: selected.enemies.map(enemy => ({
           key: enemy.key, id: enemy.id, family: enemy.family, x: enemy.x, y: enemy.y,
           previousX: enemy.previousX, previousY: enemy.previousY,
-          hp: enemy.hp, maxHp: enemy.maxHp, walking: enemy.walking, attackAt: enemy.attackAt,
+          hp: enemy.hp, maxHp: enemy.maxHp, walking: enemy.walking, facing: enemy.facing, speed: enemy.movementRate,
+          attackAt: enemy.attackAt, attackEnd: enemy.attackEnd, hitAt: enemy.hitAt,
           frost: enemy.frost, stun: enemy.stun, fire: enemy.fire, poison: Boolean(enemy.poison.length),
         })),
         effects: selected.fields.map(field => ({ x: field.x, y: field.y, mine: field.mine, summon: field.summon, slot: field.state.item.slot })),
         projectiles: selected.hits.map(hit => ({ id: hit.id, ...hit.position })),
+        glaive: glaive?.spec ? { copies: glaive.copies, phase: glaive.phase, rate: orbitRate(glaive, observed.attackSpeed) } : null,
         flamecaster: flamecaster?.spec ? {
           phase: flamecaster.phase, rate: orbitRate(flamecaster, observed.attackSpeed), copies: flamecaster.copies,
         } : null,

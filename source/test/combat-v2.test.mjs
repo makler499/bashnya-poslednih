@@ -22,14 +22,14 @@ function arena(slots, enemies) {
 const shots = state => state.events.filter(event => event.kind === 'shot' || event.kind === 'beam');
 const impactAt = (state, time) => { state.now = time; tickImpacts(state); };
 
-test('same-tick weapons reserve distinct in-range targets, then share if necessary', () => {
+test('each same-tick weapon independently chooses from its own in-range group', () => {
   const state = arena([0, 1, 2], [mob(1, 200), mob(2, 500), mob(3, 901)]);
   tickWeapons(state, attacks, combatStep);
-  assert.deepEqual(shots(state).map(event => event.targetId), [1, 2, 1]);
-  const spread = arena([0], [mob(1, 200), mob(2, 500)]);
+  assert.deepEqual(shots(state).map(event => event.targetId), [1, 1, 1]);
+  const spread = arena([0, 133], [mob(1, 200), mob(2, 500)]);
   spread.random = () => 0.99;
   tickWeapons(spread, attacks, combatStep);
-  assert.equal(shots(spread)[0].targetId, 2);
+  assert.deepEqual(shots(spread).map(event => event.targetId), [2, 1]);
 });
 
 test('drain retains a living target, then retargets after range exit and death', () => {
@@ -65,6 +65,23 @@ test('Tesla uses 1800 units/s and chains at impact within 600 units without revi
   assert.equal(second.hp, second.maxHp - 325);
   assert.equal(third.hp, third.maxHp);
   assert.equal(shots(state).length, 2);
+});
+
+test('brigand launches on the object damage point and tower damage waits for its projectile', () => {
+  const archetype = map.enemies.find(enemy => enemy.id === 'n001');
+  const enemy = { ...mob(1, 225), ...archetype, nextAttack: 0, damage: 10, speed: 0, hp: 600, maxHp: 600 };
+  const state = arena([], [enemy]);
+  state.damagePerHit = 1.03;
+  tickEnemies(state, combatStep);
+  assert.equal(shots(state).length, 0);
+  state.now = archetype.damagePoint;
+  tickEnemies(state, combatStep);
+  assert.equal(shots(state)[0].duration, 0.25);
+  assert.equal(shots(state)[0].model, 'abilities/weapons/banditmissile/banditmissile.mdx');
+  assert.equal(state.tower.health, 1500);
+  state.now += 0.25;
+  tickEnemies(state, combatStep);
+  assert.equal(state.tower.health, 1490);
 });
 
 test('mortar impact uses flight timestamp and the object splash profile', () => {
@@ -220,7 +237,9 @@ test('Necromancer starts charged, raises a mage at a qualifying kill and credits
   assert.equal(state.fields[0].radius, 600);
   assert.deepEqual(shots(state).at(-1).from, { x: 300, y: 0 });
   assert.equal(tome.damage, undefined);
-  impactAt(state, 0.425);
+  impactAt(state, 0.45);
+  assert.equal(tome.damage, undefined);
+  impactAt(state, 0.475);
   assert.equal(tome.damage, 3000);
   assert.equal(state.tower.weaponDamage, 3040);
   for (let time = 0; time < 10; time++) tickEconomy(state.tower, 0);

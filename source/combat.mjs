@@ -32,10 +32,10 @@ const specialWeapons = {
   127: { alternate: true },
   [necromancerSlot]: { raisesOnKill: true },
   132: { phoenix: true },
-  200: { summon: 5, pulse: 1, summonDamage: 2000, radius: 250 },
+  200: { summon: 5, pulse: 1, summonDamage: 2500, radius: 250 },
   204: { mine: 15, radius: 300 },
   207: { towerArea: true },
-  211: { orbit: 2.6, radius: 150, cooldown: 0.3 },
+  211: { orbit: Math.PI / 36 / 0.03, radius: 150, glaive: true },
   212: { field: 15, pulse: 1.5, towerArea: true, radius: 600, roundCast: true },
   214: { parasite: true },
 };
@@ -88,10 +88,8 @@ const living = enemy => !enemy.dead;
 const inRange = (enemy, x, y, range) => living(enemy) && distance2(x, y, enemy) <= range ** 2 + 1e-6;
 const neighbors = (arena, x, y, range) => arena.enemies.filter(enemy => inRange(enemy, x, y, range));
 
-function pickTarget(arena, candidates, assigned) {
-  const free = candidates.filter(enemy => !assigned.has(enemy));
-  const pool = free.length ? free : candidates;
-  return pool.length ? pool[Math.floor(arena.random() * pool.length)] : null;
+function pickTarget(arena, candidates) {
+  return candidates.length ? candidates[Math.floor(arena.random() * candidates.length)] : null;
 }
 
 function timeOnStep(seconds) {
@@ -131,8 +129,9 @@ function raiseSkeletalMage(arena, enemy) {
   state.charges -= 10;
   const { x, y } = enemy;
   const crit = tower.critChance > 0 && arena.random() < tower.critChance ? 1 + tower.critPower : 1;
+  const facing = (enemy.facing ?? Math.atan2(-y, -x)) + Math.PI;
   arena.fields.push({ state, x, y, radius, mage: true, crit, next: arena.now, until: arena.now + 5 });
-  arena.emit({ kind: 'summon', x, y, color: effectTint.Chaos, duration: 5, slot: state.item.slot });
+  arena.emit({ kind: 'summon', x, y, facing, unitId: 'u005', color: effectTint.Chaos, duration: 5, slot: state.item.slot });
 }
 
 function grantKill(arena, enemy, bounty, source) {
@@ -157,14 +156,14 @@ function grantKill(arena, enemy, bounty, source) {
   }
   const ignite = count(tower, 'Ignite');
   if (bounty && ignite && enemy.fireSources) {
-    const target = pickTarget(arena, neighbors(arena, enemy.x, enemy.y, 600), new Set());
+    const target = pickTarget(arena, neighbors(arena, enemy.x, enemy.y, 600));
     if (target) {
       for (const [origin, amount] of enemy.fireSources) {
         if (origin !== 'ignite') addFire(arena, target, amount * 0.25 * ignite, 'ignite');
       }
     }
   }
-  arena.emit({ kind: 'death', x: enemy.x, y: enemy.y, unitId: enemy.id, enemyId: enemy.key, bounty: bounty ? enemy.bounty : 0 });
+  arena.emit({ kind: 'death', x: enemy.x, y: enemy.y, facing: enemy.facing, unitId: enemy.id, enemyId: enemy.key, bounty: bounty ? enemy.bounty : 0 });
 }
 
 function addFire(arena, enemy, amount, source) {
@@ -201,7 +200,8 @@ function wound(arena, enemy, amount, school, source, useArmor = true) {
     for (const [origin, portion] of source) creditDamage(arena.tower, origin, dealt * portion * fireMultiplier / amount);
   } else creditDamage(arena.tower, source, dealt);
   if (dealt > 0 && (useArmor || arena.now >= (enemy.nextPeriodicImpact ?? 0))) {
-    arena.emit({ kind: 'impact', x: enemy.x, y: enemy.y, color: effectTint[school] });
+    enemy.hitAt = arena.now;
+    arena.emit({ kind: 'impact', x: enemy.x, y: enemy.y, enemyId: enemy.key, unitId: enemy.id, color: effectTint[school] });
     if (!useArmor) enemy.nextPeriodicImpact = arena.now + 0.24;
   }
   if (enemy.hp <= 0) grantKill(arena, enemy, true, source);
@@ -213,7 +213,7 @@ function critical(tower, random) {
   return random() < tower.critChance ? 1 + tower.critPower + guaranteed : 1;
 }
 
-function strike(arena, state, enemy, portion = 1, damageOverride, critOverride) {
+function strike(arena, state, enemy, portion = 1, damageOverride, critOverride, applyStun = true) {
   if (!enemy || enemy.dead) return;
   const tower = arena.tower;
   const { item, spec } = state;
@@ -229,7 +229,7 @@ function strike(arena, state, enemy, portion = 1, damageOverride, critOverride) 
   if (item.slot === 134) damage *= 1 + tower.regen / 2000;
   if ([104, 207].includes(item.slot)) damage *= 1 + 1.25 * stat(tower, 'area');
   const dealt = wound(arena, enemy, damage, spec.primary, state);
-  if (spec.stun) enemy.stun = Math.max(enemy.stun, spec.stun * (1 + stat(tower, 'stunDuration')) * enemy.cc);
+  if (spec.stun && applyStun) enemy.stun = Math.max(enemy.stun, spec.stun * (1 + stat(tower, 'stunDuration')) * enemy.cc);
   if (spec.frost) applyFrost(enemy, spec.frost, frostStrength);
   if (spec.poisonDamage && !enemy.dead) {
     enemy.poison.push({ left: 2, amount: spec.poisonDamage * (1 + stat(tower, 'Poison')) * portion * crit / 2, source: state });
@@ -273,7 +273,9 @@ function sendHit(arena, state, from, target, { chain, crit, radius = state.spec.
     kind: instantaneous ? 'beam' : 'shot', color: spec.color, from, to: { x: target.x, y: target.y },
     sourceId: from.key, targetId: follows ? target.key : null, duration: instantaneous ? 0.2 : flight,
     type: spec.primary, slot: state.item.slot, splash: radius, arc: projectile.arc,
-    launchHeight: projectile.launchHeight,
+    launchHeight: projectile.launchHeight ?? projectile.launch?.[2],
+    launch: from.key ? undefined : projectile.launch, sourceUnitId: state.item.slot === necromancerSlot ? 'u005' : undefined,
+    targetUnitId: target.id,
     projectileId: packet.id,
   });
   if (flight) arena.hits.push(packet);
@@ -329,7 +331,7 @@ function wave(arena, state, target) {
     start: arena.now, duration, previous: 0, damage, crit, seen: new Set() });
 }
 
-function attack(arena, state, spec, target, assigned) {
+function attack(arena, state, spec, target) {
   const item = state.item;
   const tower = arena.tower;
   const radius = spec.radius ?? spec.area ?? 0;
@@ -361,7 +363,8 @@ function attack(arena, state, spec, target, assigned) {
     if (stack) stack.count += 1;
     else target.parasites.set(state, { count: 1, next: arena.now + 1 });
     arena.emit({ kind: 'beam', from: { x: 0, y: 0 }, to: { x: target.x, y: target.y }, targetId: target.key,
-      duration: 0.2, slot: item.slot, type: spec.primary, color: spec.color });
+      duration: 0.2, slot: item.slot, type: spec.primary, color: spec.color, targetUnitId: target.id });
+    arena.emit({ kind: 'parasite', x: target.x, y: target.y, targetId: target.key, unitId: target.id, duration: 60 });
     return;
   }
   if (spec.rocketRadius) {
@@ -378,12 +381,13 @@ function attack(arena, state, spec, target, assigned) {
     const center = spec.towerArea ? { x: 0, y: 0 } : target;
     const duration = spec.poisonCloud ? spec.field * tower.attackSpeed : spec.summon;
     const area = radius * (1 + stat(tower, 'area'));
-    if (spec.summon) pulse(arena, state, center.x, center.y, area);
     arena.fields.push({
       state, x: center.x, y: center.y, radius: area, summon: Boolean(spec.summon),
       interval: spec.pulse, next: arena.now + spec.pulse, until: arena.now + duration,
+      summonImpact: spec.summon ? arena.now + 1.1 : undefined,
     });
-    arena.emit({ kind: spec.summon ? 'summon' : 'field', x: center.x, y: center.y, color: spec.color, radius: area, duration, slot: item.slot });
+    arena.emit({ kind: spec.summon ? 'summon' : 'field', x: center.x, y: center.y,
+      unitId: spec.summon ? 'n004' : undefined, color: spec.color, radius: area, duration, slot: item.slot });
     return;
   }
   if (spec.wave) return wave(arena, state, target);
@@ -407,40 +411,43 @@ function attack(arena, state, spec, target, assigned) {
     const candidates = neighbors(arena, 0, 0, item.range).filter(enemy => enemy !== target);
     sendHit(arena, state, origin, target);
     for (let index = 1; index < hits && candidates.length; index += 1) {
-      const enemy = pickTarget(arena, candidates.filter(living), assigned);
+      const enemy = pickTarget(arena, candidates.filter(living));
       if (!enemy) break;
       candidates.splice(candidates.indexOf(enemy), 1);
-      assigned.add(enemy);
       sendHit(arena, state, origin, enemy);
     }
   }
 }
 
 export function tickWeapons(arena, attacks, dt) {
-  const assigned = new Set();
-  const weapons = arena.tower.weapons.values();
-  for (const state of weapons) {
-    state.spec ??= attacks.get(state.item.id);
-    if (state.spec.drain && state.next <= arena.now + 1e-9 && state.target && inRange(state.target, 0, 0, state.item.range)) {
-      assigned.add(state.target);
-    }
-  }
   for (const state of arena.tower.weapons.values()) {
     const { item, copies } = state;
-    const { spec } = state;
+    const spec = state.spec ??= attacks.get(item.id);
     const speed = arena.tower.attackSpeed;
     if (spec.orbit) state.phase += dt * orbitRate(state, speed);
+    if (spec.glaive) {
+      for (let index = 0; index < Math.min(copies, 8); index += 1) {
+        const angle = state.phase - index * Math.PI / 4;
+        const x = Math.cos(angle) * item.range;
+        const y = Math.sin(angle) * item.range;
+        for (const enemy of neighbors(arena, x, y, spec.radius)) {
+          if (enemy.glaiveUntil > arena.now) continue;
+          enemy.glaiveUntil = arena.now + 0.15;
+          strike(arena, state, enemy, 1 + 0.125 * Math.max(0, copies - 8));
+        }
+      }
+      continue;
+    }
     if (spec.roundCast || spec.raisesOnKill || state.next > arena.now + 1e-9 || state.eggUntil > arena.now) continue;
     const autonomous = spec.orbit || spec.mine;
     const valid = state.target && inRange(state.target, 0, 0, item.range);
     const lockedArea = spec.lock && state.lockPoint && state.lockUntil > arena.now;
     const target = autonomous ? null : lockedArea ? state.lockPoint : valid && spec.drain ? state.target
-      : pickTarget(arena, neighbors(arena, 0, 0, item.range), assigned);
+      : pickTarget(arena, neighbors(arena, 0, 0, item.range));
     state.target = target;
     if (!target && !autonomous) continue;
-    if (target && !lockedArea && !spec.towerArea && !spec.radialArea) assigned.add(target);
     state.lockUntil ??= -1;
-    attack(arena, state, spec, target, assigned);
+    attack(arena, state, spec, target);
     const seconds = spec.cooldown ?? item.cooldownSeconds;
     const rate = speed * (item.slot === 207 ? 1 : copies);
     const scheduled = arena.now - state.next <= combatStep + 1e-9 ? state.next : arena.now;
@@ -525,6 +532,10 @@ export function tickImpacts(arena) {
       pulse(arena, state, x, y, radius);
       return false;
     }
+    if (field.summonImpact !== undefined && field.summonImpact <= arena.now + 1e-9) {
+      pulse(arena, state, x, y, radius);
+      field.summonImpact = undefined;
+    }
     if (field.next > arena.now + 1e-9) return true;
     if (field.mage) {
       const target = field.target && inRange(field.target, x, y, radius) ? field.target : nearest(neighbors(arena, x, y, radius), x, y);
@@ -534,8 +545,10 @@ export function tickImpacts(arena) {
       field.next = arena.now + timeOnStep(1.5 / arena.tower.attackSpeed);
     } else {
       const portion = state.spec.poisonCloud ? 0.5 : 1;
-      for (const enemy of neighbors(arena, x, y, radius)) strike(arena, state, enemy, portion,
-        field.damage ?? (field.summon ? state.spec.summonDamage : undefined));
+      const pulseRadius = field.summon ? radius * 1.2 : radius;
+      for (const enemy of neighbors(arena, x, y, pulseRadius)) {
+        strike(arena, state, enemy, portion, field.summon ? state.spec.summonDamage : field.damage, undefined, !field.summon);
+      }
       arena.emit({ kind: 'burst', color: state.spec.color, x, y, radius, slot: state.item.slot });
       field.next += field.interval;
     }
@@ -646,20 +659,8 @@ function damageTower(arena, enemy) {
 
 export function tickEnemies(arena, dt) {
   const tower = arena.tower;
-  const due = arena.enemyHits.filter(hit => hit.at <= arena.now + 1e-9);
-  arena.enemyHits = arena.enemyHits.filter(hit => hit.at > arena.now + 1e-9);
-  for (const hit of due) {
-    if (hit.launched || (!hit.enemy.dead && hit.enemy.stun <= 0 && !hit.enemy.knockback)) {
-      if (hit.flight) {
-        arena.emit({ kind: 'shot', from: { x: hit.enemy.x, y: hit.enemy.y }, to: { x: 0, y: 0 },
-          duration: hit.flight, targetTower: true, arc: hit.enemy.family === 'Catapult' ? 0.35 : 0, color: 0xff6559 });
-        arena.enemyHits.push({ enemy: hit.enemy, at: arena.now + hit.flight, launched: true });
-      } else if (hit.launched || Math.hypot(hit.enemy.x, hit.enemy.y) <= hit.enemy.attackRange + 1) {
-        damageTower(arena, hit.enemy);
-      }
-    }
-    if (tower.health <= 0) return;
-  }
+  resolveEnemyHits(arena);
+  if (tower.health <= 0) return;
   let poisonArmorRegen = 0;
   for (const enemy of arena.enemies) {
     if (enemy.dead) continue;
@@ -717,10 +718,11 @@ export function tickEnemies(arena, dt) {
           enemy.pathing = true;
         }
       }
+      enemy.attackEnd = arena.now;
       enemy.walking = false;
       continue;
     }
-    if (enemy.stun > 0) { enemy.walking = false; continue; }
+    if (enemy.stun > 0) { enemy.attackEnd = arena.now; enemy.walking = false; continue; }
     const distance = Math.hypot(enemy.x, enemy.y);
     const reach = enemy.attackRange;
     const frostSlow = Math.min(0.99, enemy.frost / 100 * enemy.cc * (1 + stat(tower, 'Frost')));
@@ -728,20 +730,60 @@ export function tickEnemies(arena, dt) {
       const step = Math.min(distance - reach, Math.min(enemy.speed, arena.combatRules?.maxUnitSpeed ?? 522) * dt * (1 - frostSlow));
       const x = enemy.x - step * enemy.x / distance;
       const y = enemy.y - step * enemy.y / distance;
+      const previousX = enemy.x;
+      const previousY = enemy.y;
       enemy.walking = moveEnemy(arena, enemy, x, y);
+      if (enemy.walking) {
+        enemy.facing = Math.atan2(enemy.y - previousY, enemy.x - previousX);
+        enemy.movementRate = Math.hypot(enemy.x - previousX, enemy.y - previousY) / dt;
+      }
       continue;
     }
     enemy.walking = false;
     if (enemy.nextAttack > arena.now) continue;
-    enemy.nextAttack = arena.now + enemy.attackCooldown / Math.max(0.2, 1 - frostSlow - (enemy.attackSlow?.amount ?? 0));
+    const rate = Math.max(0.2, 1 - frostSlow - (enemy.attackSlow?.amount ?? 0));
+    const damagePoint = (enemy.damagePoint ?? 0.3) / rate;
+    enemy.nextAttack = arena.now + enemy.attackCooldown / rate;
     enemy.attackAt = arena.now;
+    enemy.attackEnd = arena.now + Math.max(combatStep, damagePoint + (enemy.backswing ?? 0.15) / rate);
+    enemy.facing = Math.atan2(-enemy.y, -enemy.x);
     arena.emit({ kind: 'enemyAttack', x: enemy.x, y: enemy.y, family: enemy.family, enemyId: enemy.key });
-    arena.enemyHits.push({ enemy, at: arena.now + timeOnStep(enemy.damagePoint ?? 0.3),
-      flight: enemy.projectileSpeed ? timeOnStep(distance / enemy.projectileSpeed) : 0 });
+    const release = { enemy, at: arena.now + timeOnStep(damagePoint) };
+    if (damagePoint > 0) arena.enemyHits.push(release);
+    else if (tower.health > 0) resolveEnemyHit(arena, release);
   }
   const livingWood = (tower.effects.get('livingWoodUntil') ?? 0) > arena.now ? 150 * count(tower, 'Living Wood') : 0;
   const regen = tower.regen * (1 + stat(tower, 'regenMultiplier')) + poisonArmorRegen + livingWood;
   heal(tower, regen * dt, 1);
+}
+
+const missileAttacks = new Set(['missile', 'msplash', 'artillery', 'aline', 'mbounce']);
+
+function resolveEnemyHits(arena) {
+  const due = arena.enemyHits.filter(hit => hit.at <= arena.now + 1e-9);
+  arena.enemyHits = arena.enemyHits.filter(hit => hit.at > arena.now + 1e-9);
+  for (const hit of due) {
+    resolveEnemyHit(arena, hit);
+    if (arena.tower.health <= 0) break;
+  }
+}
+
+function resolveEnemyHit(arena, { enemy, launched }) {
+  if (launched) return damageTower(arena, enemy);
+  if (enemy.dead || enemy.stun > 0 || enemy.knockback) return;
+  const distance = Math.hypot(enemy.x, enemy.y);
+  if (distance > enemy.attackRange + 1) return;
+  const projectile = enemy.projectile;
+  const flight = projectile?.speed > 0 && missileAttacks.has(projectile.weaponType)
+    ? timeOnStep(distance / projectile.speed) : 0;
+  if (flight) {
+    arena.emit({ kind: 'shot', from: { x: enemy.x, y: enemy.y }, to: { x: 0, y: 0 }, duration: flight,
+      targetTower: true, sourceId: enemy.key, sourceUnitId: enemy.id, launch: projectile.launch,
+      arc: projectile.arc, model: projectile.model, color: 0xff6559 });
+    arena.enemyHits.push({ enemy, at: arena.now + flight, launched: true });
+  } else {
+    damageTower(arena, enemy);
+  }
 }
 
 function moveEnemy(arena, enemy, x, y) {

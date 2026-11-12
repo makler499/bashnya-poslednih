@@ -12,6 +12,7 @@ const normalized = path => path.replaceAll('\\', '/').toLowerCase().replace(/\.m
 const normalTint = [1, 1, 1, 1];
 const frostTint = [0.52, 0.78, 1, 1];
 const poisonTint = [0.72, 1, 0.58, 1];
+const hitTint = [1, 0.74, 0.62, 1];
 const rotation = degrees => {
   const angle = degrees * Math.PI / 360;
   return [0, 0, Math.sin(angle), Math.cos(angle)];
@@ -34,19 +35,18 @@ const spellModels = {
   207: 'blizzardtargetperformance.mdx',
   211: 'glaivemissileupg3.mdx',
   212: 'monsoonrain.mdx',
-  214: 'diskofscythes.mdx',
 };
 
 function sequence(model, name) {
   const exact = model.sequences.findIndex(animation => animation.name.toLowerCase() === name);
   if (exact >= 0) return exact;
   const prefix = model.sequences.findIndex(animation => animation.name.toLowerCase().startsWith(name + ' '));
-  return prefix >= 0 ? prefix : 0;
+  return prefix >= 0 ? prefix : -1;
 }
 
 function sequenceSeconds(model, name) {
-  const [start, end] = model.sequences[sequence(model, name)].interval;
-  return (end - start) / 1000;
+  const interval = model.sequences[sequence(model, name)]?.interval;
+  return interval ? (interval[1] - interval[0]) / 1000 : 0;
 }
 
 export async function loadOriginalArt() {
@@ -98,12 +98,29 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
   const enemies = new Map();
   const dying = [];
   const effects = [];
+  const parasites = new Map();
   const soundingActors = new Set();
   const missilePoint = new Vector3();
   let tower;
   let towerPath;
   const flames = [];
+  const glaives = [];
   const flamePath = original.pathFor('war3mapimported/flamethrower_ts.mdx');
+
+  function extendTeamTextures(textures, folder, replaceableId) {
+    const Texture = textures[0]?.constructor;
+    if (!Texture) return;
+    for (let color = textures.length; color < 20; color += 1) {
+      const file = original.pathFor(`replaceabletextures/${folder}/${folder}${color}.blp`);
+      if (!file) {
+        textures[color] = textures[color - 4];
+        continue;
+      }
+      const entry = new Texture(replaceableId, 3);
+      textures[color] = entry;
+      void viewer.load(file, pathSolver).then(texture => { entry.texture = texture; }).catch(() => {});
+    }
+  }
 
   function getModel(path, color) {
     if (!path) return undefined;
@@ -133,6 +150,10 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     }
     if (!entry.model || entry.textures.some(texture => !texture.texture?.webglResource)) return undefined;
     const { teamColors, teamGlows } = viewer.sharedCache.get('mdx');
+    if (color >= 16) {
+      extendTeamTextures(teamColors, 'teamcolor', 1);
+      extendTeamTextures(teamGlows, 'teamglow', 2);
+    }
     if (entry.needsTeamColor && !teamColors[color]?.texture?.webglResource) return undefined;
     if (entry.needsTeamGlow && !teamGlows[color]?.texture?.webglResource) return undefined;
     return entry.model;
@@ -142,9 +163,11 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     const instance = model.addInstance();
     instance.setTeamColor(color);
     instance.setUniformScale(scale);
-    instance.setSequence(sequence(model, animation));
+    const selected = sequence(model, animation);
+    instance.setSequence(selected >= 0 ? selected : 0);
     instance.setScene(scene);
     const actor = { model, instance, animation };
+    actor.attachment = model.attachments.findIndex(attachment => /^chest(?:\s|$)/i.test(attachment.name));
     const tracks = model.eventObjects.filter(event => event.type === 'SND' && audioTracks[event.id.toUpperCase()]);
     if (tracks.length) {
       actor.soundTracks = tracks;
@@ -160,9 +183,26 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
 
   function animation(actor, name) {
     if (actor.animation === name) return;
-    actor.instance.setSequence(sequence(actor.model, name));
+    const selected = sequence(actor.model, name);
+    if (selected < 0) return;
+    actor.instance.setSequence(selected);
     actor.animation = name;
     actor.lastSoundFrame = undefined;
+  }
+
+  function syncActorAnimation(actor, name, rate, gameTime, attackAt) {
+    const attacking = name === 'attack';
+    if (attacking && actor.attackAt !== attackAt) {
+      actor.animation = '';
+      actor.attackAt = attackAt;
+    }
+    const changed = actor.animation !== name;
+    animation(actor, name);
+    actor.instance.setSequenceLoopMode(name === 'stand' || name === 'walk' ? 2 : 0);
+    actor.instance.timeScale = rate;
+    if (changed && attacking) {
+      actor.instance.frame += Math.min(sequenceSeconds(actor.model, name), Math.max(0, gameTime - attackAt) * rate) * 1000;
+    }
   }
 
   function playAnimationSounds() {
@@ -209,6 +249,8 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     for (const actor of dying.splice(0)) destroy(actor);
     for (const actor of effects.splice(0)) destroy(actor);
     for (const actor of flames.splice(0)) destroy(actor);
+    for (const actor of glaives.splice(0)) destroy(actor);
+    parasites.clear();
   }
 
   function syncFlame(arena, ground, interpolation) {
@@ -233,52 +275,94 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     }
   }
 
+  function syncGlaives(arena, ground, interpolation) {
+    const { glaive, layout } = arena;
+    const count = Math.min(8, glaive?.copies ?? 0);
+    while (glaives.length > count) destroy(glaives.pop());
+    if (!count) return;
+    if (glaives.length < count) {
+      const model = getModel(original.pathFor(spellModels[211]), layout.seat - 1);
+      if (!model) return;
+      while (glaives.length < count) {
+        const actor = create(model, 'stand', layout.seat - 1);
+        actor.instance.timeScale = 1.5;
+        actor.instance.setSequenceLoopMode(2);
+        glaives.push(actor);
+      }
+    }
+    for (const [index, actor] of glaives.entries()) {
+      const angle = glaive.phase + glaive.rate * interpolation - index * Math.PI / 4;
+      const x = layout.x + Math.cos(angle) * 300;
+      const y = layout.y + Math.sin(angle) * 300;
+      actor.instance.setLocation([x, y, ground(x, y) + 80]);
+      actor.instance.setRotation(rotation((angle + Math.PI / 2) * 180 / Math.PI));
+    }
+  }
+
   function sync(frame, ground, positionOf = enemy => enemy, interpolation = 0) {
     const { arena } = frame;
     const { layout } = arena;
     const towerColor = layout.seat - 1;
-    const enemyColor = 12 + (towerColor % 4);
+    const enemyColor = 12 + towerColor;
     const requestedTower = arena.skin && original.data.towers[arena.skin] ? original.data.towers[arena.skin] : original.data.towers.standard;
+    const towerUnit = original.data.towerUnits?.[arena.skin] ?? 'H00C';
+    const towerProfile = original.data.actors?.[towerUnit];
     const towerModel = getModel(requestedTower, towerColor);
     if (towerPath !== requestedTower || Boolean(towerModel) !== Boolean(tower)) {
       if (tower) destroy(tower);
-      tower = towerModel ? create(towerModel, 'stand', towerColor) : null;
+      tower = towerModel ? create(towerModel, 'stand', towerColor, towerProfile?.scale) : null;
       towerPath = requestedTower;
     }
     if (tower) {
       if (tower.seat !== layout.seat) {
         tower.instance.setTeamColor(towerColor);
-        tower.instance.setLocation([layout.x, layout.y, ground(layout.x, layout.y)]);
+        tower.instance.setLocation([layout.x, layout.y, ground(layout.x, layout.y) + (towerProfile?.height ?? 0)]);
         tower.instance.setRotation(rotation(layout.heading));
         tower.seat = layout.seat;
       }
       animation(tower, arena.alive ? 'stand' : 'death');
+      tower.instance.setSequenceLoopMode(arena.alive ? 2 : 0);
     }
     syncFlame(arena, ground, interpolation);
+    syncGlaives(arena, ground, interpolation);
     const visible = new Set();
     const represented = new Set();
     for (const enemy of arena.enemies) {
       visible.add(enemy.key);
+      const profile = original.data.actors?.[enemy.id === 'samwise' ? 'n00C' : enemy.id];
       const model = getModel(original.data.models[enemy.id], enemyColor);
       if (!model) continue;
       represented.add(enemy.key);
       let actor = enemies.get(enemy.key);
-      const state = frame.time - enemy.attackAt < 0.42 ? 'attack' : enemy.walking && enemy.stun <= 0 ? 'walk' : 'stand';
+      const time = frame.time + interpolation;
+      const attacking = time < (enemy.attackEnd ?? enemy.attackAt + 0.42) && enemy.stun <= 0;
+      const hitSequence = model.sequences.find(entry => /^(hit|stand hit|hurt)(?:\s|$)/i.test(entry.name));
+      const hit = hitSequence && time - (enemy.hitAt ?? -10) < (hitSequence.interval[1] - hitSequence.interval[0]) / 1000;
+      const state = attacking && sequence(model, 'attack') >= 0 ? 'attack'
+        : hit ? hitSequence.name.toLowerCase() : enemy.walking && enemy.stun <= 0 ? 'walk' : 'stand';
       if (!actor) {
-        actor = create(model, state, enemyColor);
+        actor = create(model, state, enemyColor, profile?.scale);
         enemies.set(enemy.key, actor);
       }
-      animation(actor, state);
+      const duration = sequenceSeconds(model, state);
+      const rate = state === 'attack' ? duration / Math.max(0.025, (enemy.attackEnd ?? time + 0.42) - enemy.attackAt)
+        : state === 'walk' ? Math.max(0.05, (enemy.speed ?? profile?.walkSpeed ?? 180) / (profile?.walkSpeed || 180)) : 1;
+      syncActorAnimation(actor, state, rate, time, enemy.attackAt);
       const location = positionOf(enemy);
       const x = layout.x + location.x;
       const y = layout.y + location.y;
       if (actor.x !== x || actor.y !== y) {
-        actor.instance.setLocation([x, y, ground(x, y)]);
-        actor.instance.setRotation(rotation(Math.atan2(-location.y, -location.x) * 180 / Math.PI));
+        actor.instance.setLocation([x, y, ground(x, y) + (profile?.height ?? 0)]);
         actor.x = x;
         actor.y = y;
       }
-      const tint = enemy.frost ? frostTint : enemy.poison ? poisonTint : normalTint;
+      const heading = (enemy.facing ?? Math.atan2(-location.y, -location.x)) * 180 / Math.PI;
+      if (actor.heading !== heading) {
+        actor.instance.setRotation(rotation(heading));
+        actor.heading = heading;
+      }
+      const flash = !hitSequence && time - (enemy.hitAt ?? -10) < 0.12;
+      const tint = flash ? hitTint : enemy.frost ? frostTint : enemy.poison ? poisonTint : normalTint;
       if (actor.tint !== tint) {
         actor.instance.setVertexColor(tint);
         actor.tint = tint;
@@ -295,17 +379,18 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
   function event(event, layout, ground) {
     if (event.kind === 'burst' && event.slot === 17) return flames.length > 0;
     if (event.kind === 'death') {
-      const color = 12 + ((layout.seat - 1) % 4);
+      const color = 11 + layout.seat;
       const model = getModel(original.data.models[event.unitId], color);
-      if (!model) return false;
+      if (!model || sequence(model, 'death') < 0) return false;
       const x = layout.x + event.x;
       const y = layout.y + event.y;
-      const actor = create(model, 'death', color);
+      const profile = original.data.actors?.[event.unitId === 'samwise' ? 'n00C' : event.unitId];
+      const actor = create(model, 'death', color, profile?.scale);
       actor.instance.setSequenceLoopMode(0);
-      actor.instance.setLocation([x, y, ground(x, y)]);
-      actor.instance.setRotation(rotation(Math.atan2(-event.y, -event.x) * 180 / Math.PI));
+      actor.instance.setLocation([x, y, ground(x, y) + (profile?.height ?? 0)]);
+      actor.instance.setRotation(rotation((event.facing ?? Math.atan2(-event.y, -event.x)) * 180 / Math.PI));
       actor.age = 0;
-      actor.duration = 1.3;
+      actor.duration = sequenceSeconds(model, 'death') || 0.1;
       dying.push(actor);
       return true;
     }
@@ -314,12 +399,18 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     const chain = event.kind === 'beam' && event.slot === 100;
     const stormStrike = event.kind === 'burst' && event.slot === 212;
     const infernal = event.kind === 'summon' && event.slot === 200;
+    if (event.kind === 'parasite' && parasites.has(event.targetId)) {
+      parasites.get(event.targetId).age = 0;
+      return true;
+    }
     if (event.kind === 'burst' && event.slot === 200) return effects.some(actor => actor.infernal);
-    const modelPath = event.kind === 'clear' ? original.data.clear
+    const modelPath = event.model ?? (event.kind === 'clear' ? original.data.clear
+      : event.kind === 'parasite' ? 'war3mapimported/parasitetarget.mdx'
+      : event.kind === 'summon' && event.unitId ? original.data.models[event.unitId]
       : chain ? 'war3mapimported/boltimpact.mdx'
       : stormStrike ? 'war3mapimported/monsoonbolttarget.mdx'
       : tesla || event.kind === 'shot' || event.kind === 'wave' ? missiles[event.slot] ?? spellModels[event.slot]
-      : ['beam', 'field', 'burst', 'summon', 'mine'].includes(event.kind) ? spellModels[event.slot] : null;
+      : ['beam', 'field', 'burst', 'summon', 'mine'].includes(event.kind) ? spellModels[event.slot] : null);
     const model = getModel(modelPath && original.pathFor(modelPath), layout.seat - 1);
     if (!model) return false;
     const traveling = event.kind === 'shot' || tesla;
@@ -328,7 +419,13 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     const monsoon = event.kind === 'field' && event.slot === 212;
     const pillar = event.kind === 'burst' && event.slot === 40;
     const loop = moving && !tesla && !firebreath;
-    const actor = create(model, loop || chain || stormStrike ? 'stand' : 'birth', layout.seat - 1);
+    const profile = event.kind === 'summon' ? original.data.actors?.[event.unitId] : undefined;
+    const animationName = loop || chain || stormStrike || event.kind === 'parasite' || sequence(model, 'birth') < 0 ? 'stand' : 'birth';
+    const actor = create(model, animationName, layout.seat - 1, profile?.scale);
+    if (event.kind === 'parasite') {
+      actor.attachedTo = event.targetId;
+      parasites.set(event.targetId, actor);
+    }
     if (tesla) actor.handledSounds = ['MFAR'];
     if (chain) actor.handledSounds = ['AOLB'];
     if (pillar) actor.handledSounds = ['MFRB'];
@@ -346,8 +443,9 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     const from = traveling ? event.from : chain ? event.to : event;
     const x = layout.x + (from.x ?? 0);
     const y = layout.y + (from.y ?? 0);
-    actor.origin = [x, y, ground(x, y) + (moving ? 130 : chain ? 75 : 0)];
+    actor.origin = [x, y, ground(x, y) + (moving ? 130 : chain ? 75 : profile?.height ?? 0)];
     actor.instance.setLocation(actor.origin);
+    if (event.facing !== undefined) actor.instance.setRotation(rotation(event.facing * 180 / Math.PI));
     if (moving) {
       const tx = layout.x + (event.to?.x ?? event.x + event.dx * event.radius);
       const ty = layout.y + (event.to?.y ?? event.y + event.dy * event.radius);
@@ -357,10 +455,14 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     }
     if (traveling) actor.shot = event;
     if (chain) actor.chain = event;
-    if (tesla || firebreath || monsoon || infernal) actor.deathDuration = sequenceSeconds(model, 'death');
-    if (tesla || monsoon || infernal) actor.birthDuration = sequenceSeconds(model, 'birth');
+    if (tesla || firebreath || monsoon || profile) actor.deathDuration = sequenceSeconds(model, 'death');
+    if (tesla || monsoon || profile) actor.birthDuration = sequenceSeconds(model, 'birth');
     if (tesla) actor.impactSound = 'tesla';
-    if (effects.length >= 180) destroy(effects.shift());
+    if (effects.length >= 180) {
+      const oldest = effects.shift();
+      if (oldest.attachedTo !== undefined) parasites.delete(oldest.attachedTo);
+      destroy(oldest);
+    }
     effects.push(actor);
     return true;
   }
@@ -368,11 +470,20 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
   function advance(items, dt, time, attackPoint, projectileFlight) {
     for (let index = items.length - 1; index >= 0; index -= 1) {
       const actor = items[index];
+      if (actor.attachedTo !== undefined) {
+        const parent = enemies.get(actor.attachedTo);
+        if (!parent && actor.age > 0.2) actor.age = actor.duration;
+        if (parent) {
+          const anchor = parent.instance.getAttachment(parent.attachment);
+          actor.instance.setLocation(anchor?.worldLocation ?? parent.instance.worldLocation);
+        }
+      }
       const start = actor.shot?.at ?? actor.waveAt;
       actor.age = start === undefined ? actor.age + dt : Math.max(0, time - start);
       const flight = actor.shot && projectileFlight(actor.shot);
       if (flight) actor.age = flight.progress * actor.duration + (flight.at === undefined ? 0 : Math.max(0, time - flight.at));
       if (actor.age >= actor.duration + (actor.deathDuration ?? 0)) {
+        if (actor.attachedTo !== undefined) parasites.delete(actor.attachedTo);
         if (actor.shot?.kind === 'shot' && !actor.impactSound) playSequenceSounds(actor, 'death');
         destroy(actor);
         items.splice(index, 1);
@@ -399,7 +510,8 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
   }
 
   for (const path of [flamePath, original.data.missiles[133] && original.pathFor(original.data.missiles[133]),
-    original.pathFor('war3mapimported/boltimpact.mdx'), original.pathFor(spellModels[40])]) getModel(path, 0);
+    original.pathFor('war3mapimported/boltimpact.mdx'), original.pathFor(spellModels[40]),
+    original.pathFor('war3mapimported/parasitetarget.mdx'), original.data.models.u005, original.data.models.n004]) getModel(path, 0);
 
   return {
     reset, sync, event,

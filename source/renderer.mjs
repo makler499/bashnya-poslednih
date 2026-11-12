@@ -234,11 +234,13 @@ function makeOriginalWater(original, terrain) {
   const margin = 112;
   const [west, south] = terrain.origin;
   const rawLevel = terrain.corners[Math.floor(terrain.corners.length / 2)][1] & 0x3fff;
-  // Village shallow water (VSha) from TerrainArt/Water.slk.
-  const level = (rawLevel - 0x2000) / (4 * tile) - 0.7;
-  const depths = Uint8Array.from(terrain.corners, corner =>
-    Math.round(255 * THREE.MathUtils.clamp(level - groundHeight(corner), 0, 1)));
-  const shore = new THREE.DataTexture(depths, terrain.width, terrain.height, THREE.RedFormat);
+  const level = (rawLevel - 0x2000) / (4 * tile) + (terrain.waterOffset ?? -0.7);
+  const depths = new Uint8Array(terrain.corners.length * 2);
+  terrain.corners.forEach((corner, index) => {
+    depths[index * 2] = Math.round(255 * THREE.MathUtils.clamp(level - groundHeight(corner), 0, 1));
+    depths[index * 2 + 1] = corner[3] & 1 ? 255 : 0;
+  });
+  const shore = new THREE.DataTexture(depths, terrain.width, terrain.height, THREE.RGFormat);
   shore.magFilter = shore.minFilter = THREE.LinearFilter;
   shore.needsUpdate = true;
   const sheet = new THREE.ShaderMaterial({
@@ -279,7 +281,9 @@ function makeOriginalWater(original, terrain) {
       'vec2 dy = dFdy(scaled / grid);',
       'float index = floor(frame);',
       'vec4 waves = mix(surface(index, ripple, dx, dy), surface(mod(index + 1.0, frameCount), ripple, dx, dy), fract(frame));',
-      'float depth = texture2D(shore, (tiles + 0.5) / terrainSize).r;',
+      'vec2 coastData = texture2D(shore, (tiles + 0.5) / terrainSize).rg;',
+      'if (coastData.g < 0.01) discard;',
+      'float depth = coastData.r;',
       'vec4 coast = vec4(255.0, 255.0, 255.0, 10.0);',
       'vec4 shallow = vec4(117.0, 117.0, 200.0, 219.0);',
       'vec4 deep = vec4(96.0, 96.0, 192.0, 250.0);',
@@ -355,41 +359,6 @@ function makeTower(color) {
     part.receiveShadow = true;
   });
   return { tower, crystal, flag };
-}
-
-function makeProps(terrain, layout) {
-  const group = new THREE.Group();
-  const random = seededRandom(layout.seat * 192);
-  const rock = new THREE.DodecahedronGeometry(1, 0);
-  const bark = new THREE.CylinderGeometry(0.075, 0.14, 0.95, 5);
-  const leaves = new THREE.IcosahedronGeometry(0.58, 0);
-  const stone = material(0x777263, { flatShading: true });
-  const trunk = material(0x4c3b2c);
-  const greens = [0x404f2b, 0x525d31, 0x65713b, 0x3a4c38].map(color => material(color, { flatShading: true }));
-  for (let index = 0; index < 114; index += 1) {
-    const angle = random() * Math.PI * 2;
-    const distance = 10.8 + random() * 5.8;
-    const x = layout.x / tile + Math.cos(angle) * distance;
-    const z = -layout.y / tile + Math.sin(angle) * distance;
-    const y = terrainElevation(terrain, x * tile, -z * tile);
-    if (index % 4 === 0) {
-      const scale = 0.75 + random() * 0.72;
-      group.add(mesh(bark, trunk, x, y + 0.4 * scale, z, scale, scale, scale));
-      for (let layer = 0; layer < 3; layer += 1) {
-        const tree = mesh(leaves, greens[(index + layer) % greens.length], x + (random() - 0.5) * 0.5,
-          y + (0.8 + layer * 0.36) * scale, z + (random() - 0.5) * 0.4, scale, scale * 1.27, scale);
-        tree.rotation.set(random() * 0.2, random() * 6, 0);
-        tree.castShadow = index < 24;
-        group.add(tree);
-      }
-    } else {
-      const scale = 0.08 + random() * 0.24;
-      const boulder = mesh(rock, stone, x, y + scale * 0.27, z, scale * 1.35, scale * 0.6, scale);
-      boulder.rotation.y = random() * Math.PI;
-      group.add(boulder);
-    }
-  }
-  return group;
 }
 
 function makeActors(scene, shadowMap) {
@@ -534,7 +503,8 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
   }), 0, 0, 0);
   towerShade.rotation.x = -Math.PI / 2;
   scene.add(towerShade);
-  const camera = new THREE.PerspectiveCamera(70, 1, 0.1, 110);
+  const cameraRules = map.camera ?? { fov: 70, pitch: 56, rotation: 90, distance: 1650, near: 100, far: 5000 };
+  const camera = new THREE.PerspectiveCamera(cameraRules.fov, 1, cameraRules.near / tile, cameraRules.far / tile);
   const cameraTarget = new THREE.Vector3();
   const combatArt = createCombatArt(combatCanvas);
   let originalLayer;
@@ -559,7 +529,7 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
   const effects = [];
   const deaths = [];
   let layout = map.arenas[0];
-  let props;
+  let activeSkin;
   let zoom = 1;
   let zoomTarget = 1;
   let cameraWidth = 0;
@@ -594,11 +564,6 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
     towerLight.position.set(x, height + 2.8, z);
     sun.position.set(x - 9, height + 17, z - 5);
     sun.target.position.set(x, height, z);
-    if (props) scene.remove(props);
-    if (!originalLayer) {
-      props = makeProps(map.terrain, layout);
-      scene.add(props);
-    }
     originalLayer?.reset();
     combatArt.reset();
     targets.clear();
@@ -625,12 +590,14 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
       return;
     }
     const aspect = width / height;
-    const pitch = THREE.MathUtils.degToRad(56);
-    const distance = (1800 / tile) * Math.max(1, 0.92 / aspect) / zoom;
+    const pitch = THREE.MathUtils.degToRad(cameraRules.pitch);
+    const azimuth = THREE.MathUtils.degToRad(cameraRules.rotation);
+    const distance = (cameraRules.distance / tile) * Math.max(1, 0.92 / aspect) / zoom;
     camera.aspect = aspect;
     const { x, y, z } = fort.tower.position;
-    cameraTarget.set(x, y + 0.2, z + 1);
-    camera.position.set(x, cameraTarget.y + Math.sin(pitch) * distance, cameraTarget.z + Math.cos(pitch) * distance);
+    cameraTarget.set(x, y, z);
+    camera.position.set(x - Math.cos(azimuth) * Math.cos(pitch) * distance,
+      y + Math.sin(pitch) * distance, z + Math.sin(azimuth) * Math.cos(pitch) * distance);
     camera.lookAt(cameraTarget);
     camera.updateProjectionMatrix();
   }
@@ -645,8 +612,16 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
     const source = event.kind === 'shot' ? event.from : targets.get(event.sourceId) ?? defeated.get(event.sourceId) ?? event.from;
     const flight = projectileFlight(event);
     const target = flight ?? targets.get(event.targetId) ?? defeated.get(event.targetId) ?? event.to;
-    position(source.x, source.y, source.x || source.y ? 0.67 : (event.launchHeight ?? 330) / tile, attackStart);
-    position(target.x, target.y, event.targetTower || target.family === 'Samwise' ? 1.35 : 0.59, attackEnd);
+    const profile = id => original?.data.actors?.[id === 'samwise' ? 'n00C' : id];
+    const sourceProfile = profile(event.sourceUnitId);
+    const targetProfile = profile(event.targetTower ? original?.data.towerUnits?.[activeSkin] ?? 'H00C' : event.targetUnitId ?? target.unitId);
+    const heading = Math.atan2(event.to.y - source.y, event.to.x - source.x);
+    const [side, forward, height] = event.launch ?? [0, 0, event.launchHeight ?? (source.x || source.y ? 86 : 145)];
+    const scale = sourceProfile?.scale ?? 1;
+    position(source.x + (Math.cos(heading) * forward - Math.sin(heading) * side) * scale,
+      source.y + (Math.sin(heading) * forward + Math.cos(heading) * side) * scale,
+      ((sourceProfile?.height ?? 0) + height * scale) / tile, attackStart);
+    position(target.x, target.y, ((targetProfile?.height ?? 0) + (targetProfile?.projectile.impactHeight ?? 75) * (targetProfile?.scale ?? 1)) / tile, attackEnd);
     const span = flight ? Math.min(1, progress / Math.max(1e-9, flight.progress)) : progress;
     const point = out.lerpVectors(attackStart, attackEnd, span);
     if (event.kind === 'shot') {
@@ -782,6 +757,7 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
       }
       afterMatch = frame.finished ? Math.min(1.25, afterMatch + dt) : 0;
       const gameTime = frame.time + interpolation + afterMatch;
+      activeSkin = frame.arena.skin;
       targets.clear();
       projectiles.clear();
       for (const shot of frame.arena.projectiles ?? []) {
@@ -797,6 +773,7 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
         point.x = THREE.MathUtils.lerp(enemy.previousX ?? enemy.x, enemy.x, movementAlpha);
         point.y = THREE.MathUtils.lerp(enemy.previousY ?? enemy.y, enemy.y, movementAlpha);
         point.family = enemy.family;
+        point.unitId = enemy.id;
         targets.set(enemy.key, point);
       }
       water?.step(gameTime);
