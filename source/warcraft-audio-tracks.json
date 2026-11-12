@@ -1,0 +1,540 @@
+{
+  "ABRW": [
+    "burrow"
+  ],
+  "ABSK": [
+    "berserkercaster"
+  ],
+  "ABTR": [
+    "battleroar"
+  ],
+  "ACAN": [
+    "cannibalize"
+  ],
+  "ACBC": [
+    "breathoffire1"
+  ],
+  "ACBF": [
+    "breathoffrost1"
+  ],
+  "ACCV": [
+    "crushingwavecaster1"
+  ],
+  "ACRH": [
+    "corrosivebreathmissiletarget1"
+  ],
+  "ACRI": [
+    "crippletarget1"
+  ],
+  "ACRL": [
+    "corrosivebreathmissilelaunch1"
+  ],
+  "ACWD": [
+    "crushingwavetarget1"
+  ],
+  "ADCA": [
+    "druidoftheclawmorphalternate1"
+  ],
+  "ADCM": [
+    "druidoftheclawmorph1"
+  ],
+  "ADEF": [
+    "defendcaster"
+  ],
+  "ADEV": [
+    "devour"
+  ],
+  "ADTA": [
+    "druidofthetalonmorphalternate1"
+  ],
+  "ADTM": [
+    "druidofthetalonmorph1"
+  ],
+  "ADVP": [
+    "kodobeastpuke1"
+  ],
+  "AEBA": [
+    "barkskintarget1"
+  ],
+  "AEFN": [
+    "forceofnaturebirth1"
+  ],
+  "AESM": [
+    "shadowstrikemissile1"
+  ],
+  "AFDE": [
+    "incinerate1"
+  ],
+  "AHDR": [
+    "siphonmana"
+  ],
+  "AHFT": [
+    "flamestriketargetwavenonloop1"
+  ],
+  "AHHB": [
+    "holybolt"
+  ],
+  "AHRE": [
+    "resurrecttarget"
+  ],
+  "AHTB": [
+    "thunderboltmissiledeath"
+  ],
+  "AKDL": [
+    "kododrum1"
+  ],
+  "AKDR": [
+    "kododrum2"
+  ],
+  "ALSI": [
+    "lavaspawnmissiledeath1"
+  ],
+  "ANMO": [
+    "monsoonlightninghit"
+  ],
+  "ANSM": [
+    "strongdrinkmissile1"
+  ],
+  "AOHW": [
+    "healingwave"
+  ],
+  "AOLB": [
+    "lightningbolt"
+  ],
+  "AOSH": [
+    "shockwave"
+  ],
+  "AREP": [
+    "peonrepair1",
+    "peonrepair2",
+    "peonrepair3"
+  ],
+  "ASPL": [
+    "spiritlink1"
+  ],
+  "ASWE": [
+    "summonwaterelementalcaster"
+  ],
+  "AUCS": [
+    "carrionswarmlaunch1"
+  ],
+  "AUDA": [
+    "darkritualtarget1"
+  ],
+  "DABO": [
+    "abominationdeath1"
+  ],
+  "DADR": [
+    "druidofthetalondeath1"
+  ],
+  "DBAL": [
+    "ballistadeath1"
+  ],
+  "DBNT": [
+    "banditdeath1"
+  ],
+  "DCAT": [
+    "catapultdeath1"
+  ],
+  "DDCA": [
+    "druidoftheclawdeathalternate1"
+  ],
+  "DDOC": [
+    "druidoftheclawdeath1"
+  ],
+  "DDTA": [
+    "druidofthetalondeathalternate1"
+  ],
+  "DENT": [
+    "entdeath1"
+  ],
+  "DFDR": [
+    "faeriedragondeath1"
+  ],
+  "DGHO": [
+    "ghouldeath"
+  ],
+  "DGRU": [
+    "gruntdeath"
+  ],
+  "DGSP": [
+    "sapperblowsup"
+  ],
+  "DGST": [
+    "giantseaturtledeath1"
+  ],
+  "DGYR": [
+    "gyrocopterdeath1"
+  ],
+  "DHDA": [
+    "hydradeath1"
+  ],
+  "DHDS": [
+    "hydradeathswim1"
+  ],
+  "DHLS": [
+    "buildingdeathsmallhuman",
+    "buildingdeathsmallhuman2",
+    "buildingdeathsmallhuman3"
+  ],
+  "DINF": [
+    "infernaldeath"
+  ],
+  "DKNI": [
+    "knightdeath"
+  ],
+  "DKOD": [
+    "kodobeastdeath"
+  ],
+  "DMGS": [
+    "murguldeathswim1"
+  ],
+  "DMGT": [
+    "mountaingiantdeath1"
+  ],
+  "DMOR": [
+    "mortarteamdeath"
+  ],
+  "DMTW": [
+    "meatwagondeath1"
+  ],
+  "DMUR": [
+    "murlocdeath"
+  ],
+  "DMYR": [
+    "myrmidondeath1"
+  ],
+  "DMYS": [
+    "myrmidondeathswim1"
+  ],
+  "DPEO": [
+    "peondeath"
+  ],
+  "DPES": [
+    "peasantdeath"
+  ],
+  "DPIT": [
+    "pitfienddeath1"
+  ],
+  "DRAI": [
+    "raiderdeath"
+  ],
+  "DRAN": [
+    "archerdeath1"
+  ],
+  "DRIF": [
+    "riflemandeath"
+  ],
+  "DSEN": [
+    "sentineldeath1"
+  ],
+  "DSHM": [
+    "shamandeath"
+  ],
+  "DSND": [
+    "snapdragondeath"
+  ],
+  "DSNS": [
+    "snapdragondeathswim1"
+  ],
+  "DSTT": [
+    "steamtankdeath1"
+  ],
+  "DTDS": [
+    "giantturtledeathswim1"
+  ],
+  "DWAT": [
+    "waterelementaldeath"
+  ],
+  "DWCD": [
+    "wyverncagedeath1"
+  ],
+  "DWTC": [
+    "watcherdeath1"
+  ],
+  "DZOM": [
+    "zombiedeath1"
+  ],
+  "FDFL": [
+    "step1",
+    "step2",
+    "step3",
+    "step4"
+  ],
+  "FDFR": [
+    "step1",
+    "step2",
+    "step3",
+    "step4"
+  ],
+  "FDSL": [
+    "fiendstep1",
+    "fiendstep2",
+    "fiendstep3",
+    "fiendstep4"
+  ],
+  "FDSR": [
+    "fiendstep1",
+    "fiendstep2",
+    "fiendstep3",
+    "fiendstep4"
+  ],
+  "KBLL": [
+    "ballistaattackeffort1"
+  ],
+  "KCAN": [
+    "cannontowermissilelaunch1",
+    "cannontowermissilelaunch2",
+    "cannontowermissilelaunch3"
+  ],
+  "KCAT": [
+    "catapultattack1"
+  ],
+  "KGYR": [
+    "gyrocopterimpacthit1",
+    "gyrocopterimpacthit2"
+  ],
+  "KIN1": [
+    "infernalattack1"
+  ],
+  "KIN2": [
+    "infernalattack2"
+  ],
+  "KLIC": [
+    "lichattackeffort1",
+    "lichattackeffort2",
+    "lichattackeffort3"
+  ],
+  "KMT1": [
+    "mortarteamattack1"
+  ],
+  "KMTW": [
+    "catapultattack1"
+  ],
+  "KRIF": [
+    "riflemanattack1",
+    "riflemanattack2"
+  ],
+  "KSTT": [
+    "steamtankattack1"
+  ],
+  "MANG": [
+    "ancestralguardianhit1"
+  ],
+  "MANL": [
+    "ancestralguardianmissilelaunch"
+  ],
+  "MANP": [
+    "ancientprotectormissilehit1",
+    "ancientprotectormissilehit2",
+    "ancientprotectormissilehit3"
+  ],
+  "MAPL": [
+    "ancientprotectormissilelaunch1",
+    "ancientprotectormissilelaunch2",
+    "ancientprotectormissilelaunch3"
+  ],
+  "MARL": [
+    "arrowattack1"
+  ],
+  "MARR": [
+    "arrowimpact"
+  ],
+  "MAXE": [
+    "axemissile1",
+    "axemissile2"
+  ],
+  "MBAL": [
+    "guardtowermissilehit1",
+    "guardtowermissilehit2",
+    "guardtowermissilehit3"
+  ],
+  "MBHL": [
+    "boatattack1"
+  ],
+  "MBHT": [
+    "boatmissilehit"
+  ],
+  "MCAN": [
+    "cannontowermissile1",
+    "cannontowermissile2",
+    "cannontowermissile3"
+  ],
+  "MCAT": [
+    "catapultmissile1",
+    "catapultmissile2",
+    "catapultmissile3",
+    "catapultmissile4"
+  ],
+  "MCDA": [
+    "coldarrow1",
+    "coldarrow2",
+    "coldarrow3"
+  ],
+  "MDCL": [
+    "deathcoilmissilelaunch1"
+  ],
+  "MDEM": [
+    "demonhuntermissilehit1",
+    "demonhuntermissilehit2",
+    "demonhuntermissilehit3"
+  ],
+  "MDML": [
+    "herodemonmissilelaunch1",
+    "herodemonmissilelaunch2"
+  ],
+  "MDRY": [
+    "dryadmissile1",
+    "dryadmissile2"
+  ],
+  "MFAR": [
+    "farseermissile"
+  ],
+  "MFBH": [
+    "frostbolthit1"
+  ],
+  "MFLA": [
+    "searingarrowtarget1",
+    "searingarrowtarget2",
+    "searingarrowtarget3"
+  ],
+  "MFRB": [
+    "fireballmissiledeath"
+  ],
+  "MFRL": [
+    "fireballmissilelaunch1",
+    "fireballmissilelaunch2",
+    "fireballmissilelaunch3"
+  ],
+  "MGML": [
+    "gryphonridermissilelaunch1",
+    "gryphonridermissilelaunch2",
+    "gryphonridermissilelaunch3"
+  ],
+  "MHAR": [
+    "harpymissilehit1",
+    "harpymissilehit2",
+    "harpymissilehit3"
+  ],
+  "MHNL": [
+    "headhuntermissilelaunch"
+  ],
+  "MHRL": [
+    "harpymissilelaunch1",
+    "harpymissilelaunch2",
+    "harpymissilelaunch3"
+  ],
+  "MHUN": [
+    "headhuntermissilehit1",
+    "headhuntermissilehit2"
+  ],
+  "MKGL": [
+    "keeperofthegrovemissilelaunch1",
+    "keeperofthegrovemissilelaunch2",
+    "keeperofthegrovemissilelaunch3"
+  ],
+  "MKMH": [
+    "necromancermissilehit1",
+    "necromancermissilehit2",
+    "necromancermissilehit3"
+  ],
+  "MKML": [
+    "necromancermissilelaunch1",
+    "necromancermissilelaunch2"
+  ],
+  "MLIC": [
+    "lichmissilehit1",
+    "lichmissilehit2",
+    "lichmissilehit3"
+  ],
+  "MMEA": [
+    "meatwagonmissilehit1"
+  ],
+  "MMTI": [
+    "mortarimpact"
+  ],
+  "MPAH": [
+    "poisonarrowhit1"
+  ],
+  "MPML": [
+    "priestcastattack1"
+  ],
+  "MPXL": [
+    "phoenixattack"
+  ],
+  "MSBH": [
+    "priestmissilehit1",
+    "priestmissilehit2",
+    "priestmissilehit3"
+  ],
+  "MSBL": [
+    "priestcastattack1"
+  ],
+  "MSEL": [
+    "huntressmissilelaunch"
+  ],
+  "MSHD": [
+    "heroshadowhuntermissilelaunch1"
+  ],
+  "MSHH": [
+    "heroshadowhuntermissilehit1"
+  ],
+  "MSML": [
+    "sorceressmissilelaunch1",
+    "sorceressmissilelaunch2",
+    "sorceressmissilelaunch3"
+  ],
+  "MSNL": [
+    "snapdragonmissilelaunch1"
+  ],
+  "MSVL": [
+    "gargoylemissilelaunch1",
+    "gargoylemissilelaunch2",
+    "gargoylemissilelaunch3"
+  ],
+  "MTBL": [
+    "trollbatridermissile1",
+    "trollbatridermissile2",
+    "trollbatridermissile3"
+  ],
+  "MTRI": [
+    "tinkermissiledeath1"
+  ],
+  "MTRL": [
+    "tinkermissilelaunch1"
+  ],
+  "MWAT": [
+    "waterelementalmissile1",
+    "waterelementalmissile2",
+    "waterelementalmissile3"
+  ],
+  "MWEB": [
+    "webmissilelaunch1"
+  ],
+  "MWIN": [
+    "windserpentmissile"
+  ],
+  "MWYV": [
+    "wyvernspearmissile1",
+    "wyvernspearmissile2"
+  ],
+  "MZGH": [
+    "zigguratmissilehit1",
+    "zigguratmissilehit2",
+    "zigguratmissilehit3"
+  ],
+  "MZIG": [
+    "zigguratmissilelaunch1",
+    "zigguratmissilelaunch2",
+    "zigguratmissilelaunch3"
+  ],
+  "SABI": [
+    "alchemistacidburnmissiledeath1"
+  ],
+  "SHSI": [
+    "healingspraydeath1"
+  ],
+  "SHSL": [
+    "healingspraybirth1"
+  ]
+}

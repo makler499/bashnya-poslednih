@@ -1,6 +1,6 @@
 # Tower Survivors · Башня Последних
 
-Браузерная адаптация карты Tower Survivors v1.92. На GitHub Pages доступны одиночная оборона и матч на восемь башен с ботами.
+Браузерная адаптация Tower Survivors с боевой симуляцией и игровыми данными из v2.0. На [GitHub Pages](https://makler499.github.io/bashnya-poslednih/) доступны одиночная оборона и матч на восемь башен с ботами.
 
 Управление
 
@@ -11,6 +11,20 @@
 - **F1–F8** — переключение между башнями
 - **Пробел** — пауза
 
-Сетевые комнаты и сетевые профили требуют отдельно запущенного игрового сервера.
+## Сборка
 
-Оригинальная карта — [Tower Survivors v1.92 от Nethalythic](https://www.hiveworkshop.com/threads/tower-survivors.353429/). Классическая графика Warcraft III принадлежит Blizzard Entertainment. У игры есть модели и эффекты из оригинальной карты.
+Исходники находятся в `source/`. Для локального запуска установите Node.js 24 и выполните из корня репозитория:
+
+```sh
+cd source
+npm ci
+npm test
+npm run build
+npx vite preview --host 127.0.0.1
+```
+
+Сборка в `source/dist/` содержит HTML, `assets/` и ресурсы из `map-art/`. GitHub Pages публикует `index.html`, `assets/` и `map-art/` из корня ветки `main`. Чтобы обновить сайт, скопируйте в корень файлы из `source/dist/` и отправьте изменения в `main`.
+
+Сетевые комнаты и сетевые профили требуют отдельно запущенного игрового сервера. После сборки сервер можно запустить из `source/` командой `npm start`.
+
+Автор оригинальной карты — [Nethalythic](https://www.hiveworkshop.com/threads/tower-survivors.353429/). Игровые правила сверены с [архивом v2.0 на WC3Map](https://wc3map.com/maps/tower-survivors/tower-survivors-v2-0-449501/). Классические модели и эффекты Warcraft III принадлежат Blizzard Entertainment.

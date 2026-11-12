@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#171913">
+    <meta name="description" content="Фэнтези-арена Tower Survivors. Покупайте оружие и держите оборону.">
+    <title>Tower Survivors · Башня Последних</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <main id="app">
+      <header class="masthead">
+        <div class="brand"><span class="sigil" aria-hidden="true">◆</span><span>TOWER <b>SURVIVORS</b><small>БАШНЯ ПОСЛЕДНИХ</small></span></div>
+        <div class="clock" aria-label="Время матча">
+          <span><small id="clock-label">ВРЕМЯ МАТЧА</small><strong id="clock">00:00</strong></span>
+          <span><small>ВОЛНА</small><strong id="wave">01</strong></span>
+        </div>
+        <div class="header-actions">
+          <button id="sound" class="small-button" aria-pressed="false">Подключить звук</button>
+          <input id="sound-files" type="file" accept=".zip,.wav,.flac,.ogg,.mp3" multiple hidden>
+          <button id="menu" class="small-button" title="Открыть меню (Esc)">Меню</button>
+        </div>
+      </header>
+
+      <section class="field" aria-label="Игровое поле">
+        <canvas id="arena" aria-label="Трёхмерная арена"></canvas>
+        <canvas id="original-arena" aria-hidden="true"></canvas>
+        <div class="field-vignette" aria-hidden="true"></div>
+        <canvas id="combat-arena" aria-hidden="true"></canvas>
+        <aside class="arena-identity">
+          <span id="arena-eyebrow">АРЕНА 01</span>
+          <strong id="arena-name">Башня выжившего</strong>
+          <small id="arena-detail">Селение · оборона</small>
+          <div id="arena-schedule" class="arena-schedule" aria-label="Расписание боя" hidden>
+            <span id="next-wave">Следующая волна</span>
+            <span id="next-skills">Новый набор навыков</span>
+          </div>
+        </aside>
+        <aside id="standings" class="standings" aria-label="Участники"></aside>
+        <div class="field-tools">
+          <button id="zoom-out" aria-label="Отдалить камеру">−</button>
+          <button id="zoom-in" aria-label="Приблизить камеру">+</button>
+        </div>
+        <div id="announcer" class="announcer" role="status" aria-live="polite" hidden></div>
+        <div id="prep" class="prep" hidden><span id="prep-text">Подготовка к обороне</span><button id="go">Начать сейчас</button></div>
+      </section>
+
+      <section class="command" aria-label="Панель управления">
+        <section class="tower-panel" aria-label="Башня">
+          <div class="tower-top">
+            <canvas id="minimap" width="124" height="124" aria-label="Мини-карта восьми арен"></canvas>
+            <div class="tower-info">
+              <h2>Цитадель</h2>
+              <div id="health-bar" class="meter health"><span></span><b id="health">1 500 / 1 500</b></div>
+              <div id="shield-bar" class="meter mana"><span></span><b id="shield">0 / 0</b></div>
+              <div class="tower-stats"><span id="armor" title="Броня">♜ 0</span><span id="regen" title="Регенерация">✚ 0/с</span></div>
+              <div class="tower-feedback"><span>Восстановлено <b id="healed">0</b></span><span>Урон шипов <b id="tower-damage">0</b></span></div>
+            </div>
+          </div>
+          <div class="tower-actions">
+            <button id="pause" class="small-button" title="Пауза (Пробел)">Ⅱ Пауза</button>
+            <button id="speed" class="small-button" title="Скорость (F)">×1</button>
+            <button id="clear" class="small-button" title="Очистить арену (C)">✦ Очистка <span id="clears">1</span></button>
+            <button id="repair" class="small-button" disabled>Ремонт</button>
+          </div>
+        </section>
+
+        <section class="shop-panel" aria-label="Магазин">
+          <header class="panel-heading"><h2>Лавка</h2><span id="economy"><b id="gold">5 000</b><span id="income">+50/с</span></span></header>
+          <div id="shop" class="shop-grid"></div>
+          <div class="shop-actions">
+            <button id="reroll" class="small-button" title="Обновить товары (R)">⟳ Обновить</button>
+            <button id="treasure" class="small-button" hidden>◇ Казна</button>
+            <button id="market" class="small-button" hidden>◈ Чёрный рынок</button>
+            <span id="shop-hint">1–8 · покупка</span>
+          </div>
+        </section>
+
+        <section class="arsenal-panel" aria-label="Арсенал">
+          <header class="panel-heading"><h2>Арсенал</h2><span id="kills">0 убито</span></header>
+          <div id="arsenal" class="arsenal-list"></div>
+          <button id="stats" class="small-button">Статистика матча</button>
+        </section>
+      </section>
+
+      <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+
+      <section id="lobby" class="overlay" aria-labelledby="game-title">
+        <div class="lobby-card">
+          <div class="lobby-kicker"><span></span> СТРАТЕГИЯ НА ВЫЖИВАНИЕ <span></span></div>
+          <div class="lobby-emblem" aria-hidden="true">♜</div>
+          <h1 id="game-title">Tower Survivors</h1>
+          <p class="subtitle">БАШНЯ ПОСЛЕДНИХ</p>
+          <p class="intro">Возведите арсенал вокруг одной башни. Скупайте оружие между волнами и переживите остальных защитников.</p>
+          <label class="name-label" for="name">ИМЯ ЗАЩИТНИКА</label>
+          <input id="name" maxlength="24" autocomplete="nickname" spellcheck="false" value="Защитник">
+          <div class="lobby-modes">
+            <button id="start-solo"><span>Одиночная оборона</span><small>Одна башня против волн</small></button>
+            <button id="start-bots"><span>Матч на восемь башен</span><small>Тренировка с семью соперниками</small></button>
+            <button id="start-online"><span>Сетевая комната</span><small>Создать матч или войти по коду</small></button>
+          </div>
+          <div class="lobby-footer"><button id="profile" class="quiet-button">Профиль</button><button id="challenges" class="quiet-button">Достижения и облики</button><button id="sound-import" class="quiet-button">Файлы звука</button><button id="resume" class="quiet-button" hidden>Вернуться в бой</button></div>
+          <p class="credit">Фанатская адаптация Tower Survivors · правила из архива v2.0 · карта Nethalythic</p>
+        </div>
+      </section>
+
+      <dialog id="dialog">
+        <div class="dialog-header"><h2 id="dialog-title"></h2><button id="dialog-close" aria-label="Закрыть">×</button></div>
+        <div id="dialog-content"></div>
+      </dialog>
+    </main>
+    <script type="module" src="./main.mjs"></script>
+  </body>
+</html>
