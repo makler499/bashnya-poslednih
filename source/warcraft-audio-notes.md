@@ -42,4 +42,4 @@
 | `AABM` | `units/undead/abomination/abomination.mdx` | Нет соответствия в доступной звуковой таблице |
 | `ADFL` · Walk | `buildings/demon/corruptedtreeoflife/corruptedtreeoflife.mdx`<br>`buildings/nightelf/treeoflife/treeoflife.mdx` | Нет соответствия в доступной звуковой таблице |
 | `ADFR` · Walk | `buildings/demon/corruptedtreeoflife/corruptedtreeoflife.mdx`<br>`buildings/nightelf/treeoflife/treeoflife.mdx` | Нет соответствия в доступной звуковой таблице |
-| `MSEH` · Death | `abilities/weapons/sentinelmissile/sentinelmissile.mdx` | Нет соответствия в доступной звуковой таблице |
+| `MSEH` · Death | `abilities/weapons/sentinelmissile/sentinelmissile.mdx` | Метка `SentinelMissileHit` есть в `AnimLookups.slk`; в `AnimSounds.slk` имя файла отсутствует |

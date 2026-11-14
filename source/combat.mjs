@@ -263,8 +263,7 @@ function sendHit(arena, state, from, target, { chain, crit, radius = state.spec.
     x: target.x, y: target.y, follows, chain, crit,
   };
   if (flight) {
-    arena.projectileSerial = (arena.projectileSerial ?? 0) + 1;
-    packet.id = arena.projectileSerial;
+    packet.id = nextProjectileId(arena);
     packet.position = { x: from.x, y: from.y, previousX: from.x, previousY: from.y, progress: 0, previousProgress: 0 };
     packet.speed = projectile.speed || 1200;
     packet.travelled = 0;
@@ -281,6 +280,11 @@ function sendHit(arena, state, from, target, { chain, crit, radius = state.spec.
   });
   if (flight) arena.hits.push(packet);
   else resolveHit(arena, packet);
+}
+
+function nextProjectileId(arena) {
+  arena.projectileSerial = (arena.projectileSerial ?? 0) + 1;
+  return arena.projectileSerial;
 }
 
 function resolveHit(arena, { state, target, radius, x, y, follows, chain, crit }) {
@@ -579,9 +583,8 @@ export function clearArena(arena, manual) {
     grantKill(arena, enemy, manual, manual ? 'clear' : undefined);
   }
   arena.enemies.length = 0;
-  arena.hits.length = 0;
+  cancelProjectiles(arena);
   arena.waves.length = 0;
-  arena.enemyHits.length = 0;
   if (manual) {
     heal(tower, tower.maxHealth - tower.health, 1);
     tower.shield = tower.maxShield;
@@ -589,6 +592,15 @@ export function clearArena(arena, manual) {
   }
   arena.emit({ kind: 'clear', x: 0, y: 0, radius: 1250, color: 0xffdd95 });
   return true;
+}
+
+export function cancelProjectiles(arena) {
+  for (const { id } of arena.hits) arena.emit({ kind: 'shotCancel', projectileId: id });
+  for (const { projectileId } of arena.enemyHits) {
+    if (projectileId != null) arena.emit({ kind: 'shotCancel', projectileId });
+  }
+  arena.hits.length = 0;
+  arena.enemyHits.length = 0;
 }
 
 function damageTower(arena, enemy) {
@@ -720,10 +732,16 @@ export function tickEnemies(arena, dt) {
         }
       }
       enemy.attackEnd = arena.now;
+      enemy.attackInterrupted = true;
       enemy.walking = false;
       continue;
     }
-    if (enemy.stun > 0) { enemy.attackEnd = arena.now; enemy.walking = false; continue; }
+    if (enemy.stun > 0) {
+      enemy.attackEnd = arena.now;
+      enemy.attackInterrupted = true;
+      enemy.walking = false;
+      continue;
+    }
     const distance = Math.hypot(enemy.x, enemy.y);
     const reach = enemy.attackRange;
     const frostSlow = Math.min(0.99, enemy.frost / 100 * enemy.cc * (1 + stat(tower, 'Frost')));
@@ -746,10 +764,12 @@ export function tickEnemies(arena, dt) {
     const damagePoint = (enemy.damagePoint ?? 0.3) / rate;
     enemy.nextAttack = arena.now + enemy.attackCooldown / rate;
     enemy.attackAt = arena.now;
-    enemy.attackEnd = arena.now + Math.max(combatStep, damagePoint + (enemy.backswing ?? 0.15) / rate);
+    enemy.attackRelease = arena.now + timeOnStep(damagePoint);
+    enemy.attackEnd = Math.max(arena.now + combatStep, enemy.attackRelease + (enemy.backswing ?? 0.15) / rate);
+    enemy.attackInterrupted = false;
     enemy.facing = Math.atan2(-enemy.y, -enemy.x);
     arena.emit({ kind: 'enemyAttack', x: enemy.x, y: enemy.y, family: enemy.family, enemyId: enemy.key });
-    const release = { enemy, at: arena.now + timeOnStep(damagePoint) };
+    const release = { enemy, at: enemy.attackRelease, attackAt: enemy.attackAt };
     if (damagePoint > 0) arena.enemyHits.push(release);
     else if (tower.health > 0) resolveEnemyHit(arena, release);
   }
@@ -769,8 +789,12 @@ function resolveEnemyHits(arena) {
   }
 }
 
-function resolveEnemyHit(arena, { enemy, launched }) {
-  if (launched) return damageTower(arena, enemy);
+function resolveEnemyHit(arena, { enemy, attackAt, projectileId }) {
+  if (projectileId != null) {
+    arena.emit({ kind: 'shotEnd', projectileId, x: 0, y: 0 });
+    return damageTower(arena, enemy);
+  }
+  if (enemy.attackAt !== attackAt || enemy.attackInterrupted) return;
   if (enemy.dead || enemy.stun > 0 || enemy.knockback) return;
   const distance = Math.hypot(enemy.x, enemy.y);
   if (distance > enemy.attackRange + 1) return;
@@ -778,10 +802,11 @@ function resolveEnemyHit(arena, { enemy, launched }) {
   const flight = projectile?.speed > 0 && missileAttacks.has(projectile.weaponType)
     ? timeOnStep(distance / projectile.speed) : 0;
   if (flight) {
+    const projectileId = nextProjectileId(arena);
     arena.emit({ kind: 'shot', from: { x: enemy.x, y: enemy.y }, to: { x: 0, y: 0 }, duration: flight,
       targetTower: true, sourceId: enemy.key, sourceUnitId: enemy.id, launch: projectile.launch,
-      arc: projectile.arc, model: projectile.model, color: 0xff6559 });
-    arena.enemyHits.push({ enemy, at: arena.now + flight, launched: true });
+      arc: projectile.arc, model: projectile.model, color: 0xff6559, projectileId });
+    arena.enemyHits.push({ enemy, at: arena.now + flight, projectileId });
   } else {
     damageTower(arena, enemy);
   }

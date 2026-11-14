@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { buildAttacks, combatStep, startRoundWeapons, tickEnemies, tickImpacts, tickWeapons } from '../combat.mjs';
+import { buildAttacks, clearArena, combatStep, startRoundWeapons, tickEnemies, tickImpacts, tickWeapons } from '../combat.mjs';
 import { createMatch } from '../match.mjs';
 import { createSpawnPlanner } from '../enemy-spawn.mjs';
 import { createTower, purchase, roundUpgrades, tickEconomy } from '../shop.mjs';
@@ -74,6 +74,7 @@ test('brigand launches on the object damage point and tower damage waits for its
   state.damagePerHit = 1.03;
   tickEnemies(state, combatStep);
   assert.equal(shots(state).length, 0);
+  assert.ok(Math.abs(enemy.attackRelease - archetype.damagePoint) < 1e-9);
   state.now = archetype.damagePoint;
   tickEnemies(state, combatStep);
   assert.equal(shots(state)[0].duration, 0.25);
@@ -82,6 +83,26 @@ test('brigand launches on the object damage point and tower damage waits for its
   state.now += 0.25;
   tickEnemies(state, combatStep);
   assert.equal(state.tower.health, 1490);
+  const end = state.events.find(event => event.kind === 'shotEnd');
+  assert.equal(end.projectileId, shots(state)[0].projectileId);
+  assert.equal(end.at, state.now);
+});
+
+test('clearing the arena cancels both sides’ projectiles without an impact', () => {
+  const archetype = map.enemies.find(enemy => enemy.id === 'n001');
+  const enemy = { ...mob(1, 225), ...archetype, nextAttack: 0, damage: 10, speed: 0, hp: 600, maxHp: 600 };
+  const state = arena([0], [enemy]);
+  tickEnemies(state, combatStep);
+  state.now = archetype.damagePoint;
+  tickEnemies(state, combatStep);
+  tickWeapons(state, attacks, combatStep);
+  assert.equal(shots(state).length, 2);
+  clearArena(state, true);
+  assert.deepEqual(state.events.filter(event => event.kind === 'shotCancel').map(event => event.projectileId).sort(), [1, 2]);
+  impactAt(state, 1);
+  tickEnemies(state, combatStep);
+  assert.equal(state.tower.health, 1500);
+  assert.equal(state.events.some(event => event.kind === 'shotEnd'), false);
 });
 
 test('mortar impact uses flight timestamp and the object splash profile', () => {
@@ -346,6 +367,7 @@ test('multiboard uses slot order and investments while viewed weapons and local 
   assert.equal(renewed.wave, 2);
   assert.equal(renewed.schedule.shopLife, 1);
   assert.ok(renewed.arena.events.some(event => event.kind === 'round' && event.shopRefresh));
+  assert.ok(renewed.playerEvents.some(event => event.kind === 'round' && event.shopRefresh));
 });
 
 test('opening purchase reaches a real enemy and records weapon damage before a tower hit', () => {

@@ -92,6 +92,7 @@ let shownStats = '';
 let incomePopover = '';
 let viewSeat = 1;
 let lastSequence = 0;
+let lastPlayerSequence = 0;
 let savedResult = false;
 const recordedChallenges = new Set();
 let announcementTimeout;
@@ -168,6 +169,8 @@ function saveResult() {
 function processFrame(next, reset = false) {
   const changedArena = next.arena.layout.seat !== frame.arena.layout.seat;
   frame = next;
+  const playerEvents = frame.playerEvents ?? [];
+  if (reset) lastPlayerSequence = playerEvents.at(-1)?.seq ?? 0;
   if (changedArena || reset) {
     graphics.reset(frame.arena.layout, frame.arena.color, frame.arena.skin);
     audio.reset();
@@ -180,15 +183,23 @@ function processFrame(next, reset = false) {
     const model = event.kind === 'shot' || (event.kind === 'beam' && event.slot === 133)
       ? event.model ?? original?.data.missiles[event.slot]
       : undefined;
-    const towerUnit = original?.data.towerUnits?.[frame.arena.skin];
-    audio.event(event, frame.selected === frame.seat, (model && original?.pathFor(model)) ?? model, towerUnit);
+    if (event.kind !== 'defeat' || frame.selected !== frame.seat) {
+      const towerUnit = original?.data.towerUnits?.[frame.arena.skin];
+      audio.event(event, false, (model && original?.pathFor(model)) ?? model, towerUnit);
+    }
+  }
+  for (const event of playerEvents) {
+    if (event.seq <= lastPlayerSequence) continue;
+    lastPlayerSequence = event.seq;
+    const towerUnit = original?.data.towerUnits?.[frame.player.skin];
+    audio.event(event, true, undefined, towerUnit);
     if (event.kind === 'round') {
       const bonus = event.incomeBonus && frame.player?.alive ? ' · +' + roundNumber(event.incomeBonus) + ' золота/с' : '';
       announce('Волна ' + event.wave + bonus, 2.2, 'wave');
     }
-    if (event.kind === 'defeat' && frame.selected === frame.seat) announce('БАШНЯ ПАЛА', 4);
-    if (event.kind === 'victory' && frame.selected === frame.seat) announce('ПОБЕДА');
-    if (event.kind === 'lastStand' && frame.selected === frame.seat) announce('ПОСЛЕДНИЙ ЗАЩИТНИК');
+    if (event.kind === 'defeat') announce('БАШНЯ ПАЛА', 4);
+    if (event.kind === 'victory') announce('ПОБЕДА');
+    if (event.kind === 'lastStand') announce('ПОСЛЕДНИЙ ЗАЩИТНИК');
     if (event.kind === 'boss') announce('СЭМУАЙЗ НА ПОЛЕ', 3);
   }
   audio.advance(frame.time);
@@ -257,7 +268,7 @@ function switchArena(seat) {
   if (!matchActive() || viewSeat === seat) return;
   viewSeat = seat;
   if (online?.playing) online.view(seat);
-  else processFrame(local.snapshot(1, seat), true);
+  else processFrame(local.snapshot(1, seat));
   renderUI();
 }
 
@@ -720,11 +731,11 @@ byId('challenges').addEventListener('click', showChallenges);
 byId('stats').addEventListener('click', showStats);
 ui['income-detail'].addEventListener('click', () => setIncomePopover('income'));
 ui['bounty-detail'].addEventListener('click', () => setIncomePopover('bounty'));
-byId('zoom-out').addEventListener('click', () => graphics.zoom(-0.1));
-byId('zoom-in').addEventListener('click', () => graphics.zoom(0.1));
+byId('zoom-out').addEventListener('click', () => graphics.zoom(-1));
+byId('zoom-in').addEventListener('click', () => graphics.zoom(1));
 ui.arena.addEventListener('wheel', event => {
   event.preventDefault();
-  graphics.zoom(Math.sign(-event.deltaY) * 0.07);
+  graphics.zoom(Math.sign(-event.deltaY));
 }, { passive: false });
 ui.go.addEventListener('click', () => localAction({ type: 'go' }));
 ui.pause.addEventListener('click', togglePause);

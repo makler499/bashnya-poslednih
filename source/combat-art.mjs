@@ -33,7 +33,10 @@ export function createCombatArt(canvas) {
     const tesla = route.native && event.kind === 'beam' && event.slot === 133;
     const isBeam = event.kind === 'beam' && !tesla;
     route.age += dt;
-    const progress = projectileFlight(event)?.progress ?? (time - event.at) / (tesla ? teslaFlight(event) : event.duration);
+    const flight = projectileFlight(event);
+    const estimatedProgress = (time - event.at) / (tesla ? teslaFlight(event) : event.duration);
+    if (!flight && time - event.at > event.duration + 3) return false;
+    const progress = flight?.progress ?? (event.projectileId == null ? estimatedProgress : Math.min(0.999, estimatedProgress));
     if (progress >= 1) return false;
     if (progress < 0) return true;
     const tip = isBeam ? 1 : Math.max(0.015, progress);

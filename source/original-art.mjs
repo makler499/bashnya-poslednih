@@ -190,19 +190,34 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     actor.lastSoundFrame = undefined;
   }
 
-  function syncActorAnimation(actor, name, rate, gameTime, attackAt) {
+  function syncActorAnimation(actor, name, rate, enemy) {
     const attacking = name === 'attack';
-    if (attacking && actor.attackAt !== attackAt) {
+    if (attacking && actor.attackAt !== enemy.attackAt) {
       actor.animation = '';
-      actor.attackAt = attackAt;
+      actor.attackAt = enemy.attackAt;
     }
-    const changed = actor.animation !== name;
     animation(actor, name);
     actor.instance.setSequenceLoopMode(name === 'stand' || name === 'walk' ? 2 : 0);
     actor.instance.timeScale = rate;
-    if (changed && attacking) {
-      actor.instance.frame += Math.min(sequenceSeconds(actor.model, name), Math.max(0, gameTime - attackAt) * rate) * 1000;
-    }
+    actor.attack = attacking ? enemy : null;
+  }
+
+  function syncAttackFrame(actor, gameTime, elapsedFrame) {
+    const { instance, model, attack, damagePoint, backswing } = actor;
+    if (!attack) return;
+    const [start, end] = model.sequences[instance.sequence].interval;
+    const length = end - start;
+    const release = attack.attackRelease ?? attack.attackAt + damagePoint;
+    const nativeDuration = damagePoint + backswing;
+    const releaseFrame = nativeDuration > 0 ? length * damagePoint / nativeDuration : 0;
+    const afterRelease = gameTime >= release;
+    const segmentTime = afterRelease ? attack.attackEnd - release : release - attack.attackAt;
+    const segmentLength = afterRelease ? length - releaseFrame : releaseFrame;
+    const rate = segmentTime > 0 ? segmentLength / segmentTime : 0;
+    const offset = afterRelease ? releaseFrame + (gameTime - release) * rate : (gameTime - attack.attackAt) * rate;
+    instance.timeScale = rate / 1000;
+    // The viewer advances by elapsedFrame immediately after this assignment.
+    instance.frame = start + Math.min(length, Math.max(0, offset)) - elapsedFrame * rate;
   }
 
   function playAnimationSounds() {
@@ -328,12 +343,12 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
         : hit ? hitSequence.name.toLowerCase() : enemy.walking && enemy.stun <= 0 ? 'walk' : 'stand';
       if (!actor) {
         actor = create(model, state, enemyColor, profile?.scale);
+        actor.damagePoint = profile?.damagePoint ?? 0.3;
+        actor.backswing = profile?.backswing ?? 0.15;
         enemies.set(enemy.key, actor);
       }
-      const duration = sequenceSeconds(model, state);
-      const rate = state === 'attack' ? duration / Math.max(0.025, (enemy.attackEnd ?? time + 0.42) - enemy.attackAt)
-        : state === 'walk' ? Math.max(0.05, (enemy.speed ?? profile?.walkSpeed ?? 180) / (profile?.walkSpeed || 180)) : 1;
-      syncActorAnimation(actor, state, rate, time, enemy.attackAt);
+      const rate = state === 'walk' ? Math.max(0.05, (enemy.speed ?? profile?.walkSpeed ?? 180) / (profile?.walkSpeed || 180)) : 1;
+      syncActorAnimation(actor, state, rate, enemy);
       const location = positionOf(enemy);
       const x = layout.x + location.x;
       const y = layout.y + location.y;
@@ -435,7 +450,7 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     }
     if (traveling) actor.shot = event;
     if (chain) actor.chain = event;
-    if (tesla || firebreath || monsoon || profile) actor.deathDuration = sequenceSeconds(model, 'death');
+    if (traveling || firebreath || monsoon || profile) actor.deathDuration = sequenceSeconds(model, 'death');
     if (tesla || monsoon || profile) actor.birthDuration = sequenceSeconds(model, 'birth');
     if (effects.length >= 180) {
       const oldest = effects.shift();
@@ -460,8 +475,11 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
       const start = actor.shot?.at ?? actor.waveAt;
       actor.age = start === undefined ? actor.age + dt : Math.max(0, time - start);
       const flight = actor.shot && projectileFlight(actor.shot);
+      const waitForImpact = actor.shot?.projectileId != null && !flight;
+      const lostImpact = waitForImpact && actor.age > actor.duration + 3;
+      if (waitForImpact) actor.age = Math.min(actor.age, Math.max(0, actor.duration - 0.001));
       if (flight) actor.age = flight.progress * actor.duration + (flight.at === undefined ? 0 : Math.max(0, time - flight.at));
-      if (actor.age >= actor.duration + (actor.deathDuration ?? 0)) {
+      if (lostImpact || flight?.cancelled || actor.age >= actor.duration + (actor.deathDuration ?? 0)) {
         if (actor.attachedTo !== undefined) parasites.delete(actor.attachedTo);
         destroy(actor);
         items.splice(index, 1);
@@ -479,6 +497,8 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
       if (actor.deathDuration && ratio === 1 && actor.animation !== 'death') {
         animation(actor, 'death');
         actor.instance.setSequenceLoopMode(1);
+        const interval = actor.model.sequences[actor.instance.sequence].interval;
+        actor.instance.frame = Math.min(interval[1], interval[0] + (actor.age - actor.duration) * 1000);
       } else if (actor.birthDuration && actor.age >= actor.birthDuration && actor.animation === 'birth') {
         animation(actor, 'stand');
         actor.instance.setSequenceLoopMode(2);
@@ -509,6 +529,7 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
       const animationStep = Math.min(0.12, dt * speed);
       advance(effects, animationStep, time, attackPoint, projectileFlight);
       advance(dying, animationStep);
+      for (const actor of enemies.values()) syncAttackFrame(actor, time, animationStep);
       viewer.update(animationStep * 1000);
       if (animationStep > 0) playAnimationSounds();
       gl.scissor(0, 0, canvas.width, canvas.height);

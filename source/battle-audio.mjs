@@ -219,6 +219,9 @@ export function createBattleAudio() {
         cues(flights.get(effect.projectileId));
         flights.delete(effect.projectileId);
         break;
+      case 'shotCancel':
+        flights.delete(effect.projectileId);
+        break;
       case 'round':
         if (ownArena && effect.shopRefresh) void play('goodjob');
         else if (ownArena && effect.wave === 1) void play('questnew');

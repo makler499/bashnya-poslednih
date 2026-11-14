@@ -1,6 +1,6 @@
 import { createSpawnPlanner } from './enemy-spawn.mjs';
 import { addWeaponCopies, count, createShop, createTower, goldPerSecond, necromancerSlot, purchase, roundUpgrades, stat, tickEconomy } from './shop.mjs';
-import { buildAttacks, clearArena, combatStep, orbitRate, repairTower, startRoundWeapons, tickEnemies, tickImpacts, tickWeapons } from './combat.mjs';
+import { buildAttacks, cancelProjectiles, clearArena, combatStep, orbitRate, repairTower, startRoundWeapons, tickEnemies, tickImpacts, tickWeapons } from './combat.mjs';
 import { checkChallenges, rememberPurchase, survivorChallenge } from './challenges.mjs';
 
 const playerColors = [0xb84836, 0x426bc4, 0x4a9c82, 0x8764ab, 0xcbaf55, 0xd78138, 0x68a149, 0xb96a90];
@@ -58,6 +58,7 @@ function makeArena(map, player, offers, random, walkable) {
     waves: [],
     fields: [],
     events: [],
+    playerEvents: [],
     purchaseLog: [],
     challengeUnlocks: new Set(),
     spentDamage: 0,
@@ -99,6 +100,10 @@ function makeArena(map, player, offers, random, walkable) {
     }
     arena.events.push({ ...event, at: arena.now, seq: ++eventNumber });
     if (arena.events.length > 400) arena.events.splice(0, 100);
+    if (['round', 'boss', 'defeat', 'victory', 'lastStand'].includes(event.kind)) {
+      arena.playerEvents.push(arena.events.at(-1));
+      if (arena.playerEvents.length > 12) arena.playerEvents.shift();
+    }
   };
   return arena;
 }
@@ -388,8 +393,7 @@ export function createMatch(map, players, options = {}) {
     nextSpawn = Infinity;
     nextRound = Infinity;
     arena.enemies.length = 0;
-    arena.hits.length = 0;
-    arena.enemyHits.length = 0;
+    cancelProjectiles(arena);
     const archetype = { family: 'Samwise', armorType: 'divine', attackRange: 128, bounty: 0, ...map.bossProfile };
     const angle = random() * 2 * Math.PI;
     const spawn = { unitId: 'samwise', x: arena.layout.x + 1200 * Math.cos(angle), y: arena.layout.y + 1200 * Math.sin(angle),
@@ -543,6 +547,7 @@ export function createMatch(map, players, options = {}) {
     return {
       time, elapsed: Math.max(0, time - battleAt), preparation,
       wave, speed, finished, bossPhase, seat: arena?.seat, selected: selected.seat,
+      playerEvents: arena?.playerEvents ?? [],
       schedule: finished || bossPhase ? null : {
         wave: preparation > 0 ? 1 : wave + 1,
         waveIn: preparation > 0 ? preparation : Math.max(0, roundAt - time),
@@ -561,7 +566,7 @@ export function createMatch(map, players, options = {}) {
         clears: tower.clears, price: rerollPrice(tower), freeRerolls: wave === 1 ? tower.freeRerolls : 0, roundRerolls: tower.roundRerolls,
         treasure: tower.treasure ? Math.floor(tower.treasure.value) : null,
         shop: arena.shop, version: arena.shopVersion, market: tower.marketOpen ? shop.market : null,
-        duplicate: tower.duplicated, place: arena.place, won: arena.won, lastStand: arena.lastStand, alive: arena.alive,
+        duplicate: tower.duplicated, place: arena.place, won: arena.won, lastStand: arena.lastStand, alive: arena.alive, skin: arena.skin,
         challenges: [...arena.challengeUnlocks],
       } : null,
       seats: arenas.map(a => ({
@@ -593,7 +598,7 @@ export function createMatch(map, players, options = {}) {
           key: enemy.key, id: enemy.id, family: enemy.family, x: enemy.x, y: enemy.y,
           previousX: enemy.previousX, previousY: enemy.previousY,
           hp: enemy.hp, maxHp: enemy.maxHp, walking: enemy.walking, facing: enemy.facing, speed: enemy.movementRate,
-          attackAt: enemy.attackAt, attackEnd: enemy.attackEnd, hitAt: enemy.hitAt,
+          attackAt: enemy.attackAt, attackEnd: enemy.attackEnd, attackRelease: enemy.attackRelease, hitAt: enemy.hitAt,
           frost: enemy.frost, stun: enemy.stun, fire: enemy.fire, poison: Boolean(enemy.poison.length),
         })),
         effects: selected.fields.map(field => ({ x: field.x, y: field.y, mine: field.mine, summon: field.summon, slot: field.state.item.slot })),

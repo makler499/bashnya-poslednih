@@ -503,6 +503,8 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
   }), 0, 0, 0);
   towerShade.rotation.x = -Math.PI / 2;
   scene.add(towerShade);
+  // Stock game camera positions in Warcraft III UI/MiscData.txt.
+  const cameraSteps = [[56, 1650], [49, 1600], [42, 1500], [35, 1400], [28, 1275], [21, 1100]];
   const cameraRules = map.camera ?? { fov: 70, pitch: 56, rotation: 90, distance: 1650, near: 100, far: 5000 };
   const camera = new THREE.PerspectiveCamera(cameraRules.fov, 1, cameraRules.near / tile, cameraRules.far / tile);
   const cameraTarget = new THREE.Vector3();
@@ -530,8 +532,9 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
   const deaths = [];
   let layout = map.arenas[0];
   let activeSkin;
-  let zoom = 1;
-  let zoomTarget = 1;
+  let cameraStep = 0;
+  let cameraPitch = cameraRules.pitch;
+  let cameraDistance = cameraRules.distance;
   let cameraWidth = 0;
   let cameraHeight = 0;
   let cameraPixelRatio = 1;
@@ -590,9 +593,9 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
       return;
     }
     const aspect = width / height;
-    const pitch = THREE.MathUtils.degToRad(cameraRules.pitch);
+    const pitch = THREE.MathUtils.degToRad(cameraPitch);
     const azimuth = THREE.MathUtils.degToRad(cameraRules.rotation);
-    const distance = (cameraRules.distance / tile) * Math.max(1, 0.92 / aspect) / zoom;
+    const distance = (cameraDistance / tile) * Math.max(1, 0.92 / aspect);
     camera.aspect = aspect;
     const { x, y, z } = fort.tower.position;
     cameraTarget.set(x, y, z);
@@ -633,8 +636,8 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
   }
 
   function addVisual(event) {
-    if (event.kind === 'shotEnd') {
-      projectileEnds.set(event.projectileId, { ...event, progress: 1 });
+    if (event.kind === 'shotEnd' || event.kind === 'shotCancel') {
+      projectileEnds.set(event.projectileId, { ...event, progress: 1, cancelled: event.kind === 'shotCancel' });
       return;
     }
     if (event.kind === 'impact' || event.kind === 'heal' || event.kind === 'shot' || event.kind === 'beam') {
@@ -737,18 +740,19 @@ export function createArenaRenderer(canvas, map, original, originalCanvas, comba
   return {
     event: addVisual,
     reset: setLayout,
-    zoom(amount) {
-      zoomTarget = THREE.MathUtils.clamp(zoomTarget + amount, 0.72, 1.48);
+    zoom(direction) {
+      cameraStep = THREE.MathUtils.clamp(cameraStep + direction, 0, cameraSteps.length - 1);
     },
     render(frame, stamp, paused = false, interpolation = 0, movementAlpha = 1) {
       if (frame.arena.layout.seat !== layout.seat) setLayout(frame.arena.layout, frame.arena.color);
       const wallStep = lastFrame ? Math.min((stamp - lastFrame) / 1000, 0.08) : 0;
       const dt = paused ? 0 : wallStep;
       lastFrame = stamp;
-      const zooming = zoom !== zoomTarget;
+      const [pitch, distance] = cameraSteps[cameraStep];
+      const zooming = cameraPitch !== pitch || cameraDistance !== distance;
       if (zooming) {
-        zoom = THREE.MathUtils.damp(zoom, zoomTarget, 16, wallStep);
-        if (Math.abs(zoom - zoomTarget) < 0.001) zoom = zoomTarget;
+        cameraPitch += THREE.MathUtils.clamp(pitch - cameraPitch, -20 * wallStep, 20 * wallStep);
+        cameraDistance += THREE.MathUtils.clamp(distance - cameraDistance, -1200 * wallStep, 1200 * wallStep);
       }
       updateCamera(zooming);
       for (let index = deaths.length - 1; index >= 0; index -= 1) {
