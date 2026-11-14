@@ -14,7 +14,7 @@ const ui = Object.fromEntries([
   'prep', 'prep-text', 'go', 'minimap', 'health-bar', 'health', 'shield-bar', 'shield', 'armor', 'regen', 'gold', 'income',
   'kills', 'shop', 'reroll', 'treasure', 'market', 'arsenal', 'clear', 'clears', 'pause', 'speed', 'lobby', 'resume',
   'tooltip', 'dialog', 'dialog-title', 'dialog-content', 'name', 'sound', 'weapon-damage', 'tower-damage', 'total-damage', 'repair',
-  'arena-schedule', 'next-wave', 'next-skills', 'skills-progress', 'shop-hint',
+  'arena-schedule', 'next-wave', 'shop-timer', 'shop-hint',
   'sound-files',
 ].map(id => [id, byId(id)]));
 ui.repair.title = 'Восстанавливает до ' + (repairFraction * 100) + '% здоровья. Перезарядка ' + repairInterval + ' с';
@@ -104,8 +104,13 @@ function renderSoundToggle() {
 async function enableAudio(confirm = false) {
   if (!profile.sound) return;
   await audio.enable();
-  if (confirm) audio.play('click');
+  if (confirm) void audio.play('mouseclick1');
 }
+
+document.addEventListener('click', event => {
+  if (event.target.closest('#sound')) return;
+  void enableAudio(Boolean(event.target.closest('#lobby button')));
+}, { capture: true });
 
 ui.sound.addEventListener('click', () => {
   profile.sound = !profile.sound;
@@ -124,7 +129,7 @@ ui['sound-files'].addEventListener('change', async () => {
   if (imported) {
     profile.sound = true;
     persist();
-    audio.play('click');
+    await enableAudio(true);
     announce('Подключено звуков Warcraft III: ' + imported, 3, 'achievement');
   } else {
     if (!profile.sound) audio.mute();
@@ -158,13 +163,17 @@ function processFrame(next, reset = false) {
   frame = next;
   if (changedArena || reset) {
     graphics.reset(frame.arena.layout, frame.arena.color, frame.arena.skin);
+    audio.reset();
     lastSequence = frame.arena.events.at(-1)?.seq ?? 0;
   }
   for (const event of frame.arena.events) {
     if (event.seq <= lastSequence) continue;
     lastSequence = event.seq;
     graphics.event(event);
-    audio.event(event, frame.selected === frame.seat);
+    const model = event.kind === 'shot' || (event.kind === 'beam' && event.slot === 133)
+      ? event.model ?? original?.data.missiles[event.slot]
+      : undefined;
+    audio.event(event, frame.selected === frame.seat, (model && original?.pathFor(model)) ?? model, frame.arena.skin);
     if (event.kind === 'round') {
       const bonus = event.incomeBonus && frame.player?.alive ? ' · +' + roundNumber(event.incomeBonus) + ' золота/с' : '';
       announce('Волна ' + event.wave + bonus, 2.2, 'wave');
@@ -174,6 +183,7 @@ function processFrame(next, reset = false) {
     if (event.kind === 'lastStand' && frame.selected === frame.seat) announce('ПОСЛЕДНИЙ ЗАЩИТНИК');
     if (event.kind === 'boss') announce('СЭМУАЙЗ НА ПОЛЕ', 3);
   }
+  audio.advance(frame.time);
   if (local) {
     const result = recordChallengeCompletions(profile, recordedChallenges, frame.player.challenges, map.challenges);
     if (result.changed) {
@@ -227,8 +237,7 @@ function localAction(action) {
     return;
   }
   const accepted = local.action(1, action);
-  if (accepted && ['buy', 'market', 'treasure'].includes(action.type)) audio.play('click');
-  if (accepted && action.type === 'reroll') audio.play('click');
+  if (accepted && ['buy', 'market', 'treasure', 'reroll', 'clear'].includes(action.type)) void audio.play('mouseclick1');
   processFrame(local.snapshot(1, viewSeat, lastSequence));
   renderUI();
 }
@@ -365,10 +374,12 @@ function renderUI() {
     ui['next-wave'].textContent = 'Волны завершены';
   }
   const shopClosed = !schedule || !player.alive || (schedule.shopCloses && frame.wave >= 31);
-  ui['next-skills'].textContent = shopClosed ? 'Лавка закрыта'
-    : schedule.shopCloses ? 'До закрытия лавки' : 'Новый набор навыков';
-  ui['skills-progress'].hidden = shopClosed;
-  ui['skills-progress'].value = shopClosed ? 0 : schedule.skillsProgress;
+  const shopTimer = ui['shop-timer'];
+  shopTimer.hidden = !matchActive() || shopClosed;
+  if (!shopTimer.hidden) {
+    shopTimer.style.setProperty('--shop-life', schedule.shopLife);
+    shopTimer.setAttribute('aria-valuenow', String(Math.round(schedule.shopLife * 100)));
+  }
   fillBar(ui['health-bar'], ui.health, player.health, player.maxHealth);
   fillBar(ui['shield-bar'], ui.shield, player.shield, player.maxShield);
   ui.armor.textContent = '♜ ' + statNumber(player.armor);

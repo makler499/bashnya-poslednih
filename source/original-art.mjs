@@ -168,7 +168,7 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     instance.setScene(scene);
     const actor = { model, instance, animation };
     actor.attachment = model.attachments.findIndex(attachment => /^chest(?:\s|$)/i.test(attachment.name));
-    const tracks = model.eventObjects.filter(event => event.type === 'SND' && audioTracks[event.id.toUpperCase()]);
+    const tracks = model.eventObjects.filter(event => event.type === 'SND' && audioTracks.tracks[event.id.trim().toUpperCase()]);
     if (tracks.length) {
       actor.soundTracks = tracks;
       soundingActors.add(actor);
@@ -207,6 +207,7 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
 
   function playAnimationSounds() {
     for (const actor of soundingActors) {
+      if (actor.shot || actor.audioByEvent) continue;
       const { instance, model, lastSoundFrame } = actor;
       const sequence = model.sequences[instance.sequence];
       if (!sequence) continue;
@@ -217,28 +218,13 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
       const previousCounter = actor.lastSoundCounter ?? -1;
       actor.lastSoundCounter = instance.counter;
       for (const track of actor.soundTracks) {
-        const id = track.id.toUpperCase();
-        if (actor.handledSounds?.includes(id)) continue;
+        const id = track.id.trim().toUpperCase();
         const period = track.globalSequence;
         const crossed = period > 0
           ? track.tracks.some(at => Math.floor((instance.counter - at) / period) > Math.floor((previousCounter - at) / period))
           : track.tracks.some(at => at >= start && at <= end
             && (frame >= previous ? previous < at && at <= frame : previous < at || at <= frame));
         if (crossed) playSound('#' + id);
-      }
-    }
-  }
-
-  function playSequenceSounds(actor, name) {
-    if (!actor.soundTracks) return;
-    const animation = actor.model.sequences.find(entry => entry.name.toLowerCase() === name);
-    if (!animation) return;
-    const [start, end] = animation.interval;
-    for (const track of actor.soundTracks) {
-      const id = track.id.toUpperCase();
-      if (track.globalSequence > 0 || actor.handledSounds?.includes(id)) continue;
-      for (const at of track.tracks) {
-        if (at >= start && at <= end) playSound('#' + id, (at - start) / 1000);
       }
     }
   }
@@ -426,13 +412,7 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
       actor.attachedTo = event.targetId;
       parasites.set(event.targetId, actor);
     }
-    if (tesla) actor.handledSounds = ['MFAR'];
-    if (chain) actor.handledSounds = ['AOLB'];
-    if (pillar) actor.handledSounds = ['MFRB'];
-    if (firebreath) actor.handledSounds = ['ACBC'];
-    if (stormStrike) actor.handledSounds = ['ANMO'];
-    if (event.slot === 38) actor.handledSounds = ['SHSL', 'SHSI'];
-    if (event.kind === 'shot' && !tesla) playSequenceSounds(actor, 'birth');
+    actor.audioByEvent = chain || pillar || firebreath || stormStrike;
     if (infernal) actor.infernal = true;
     actor.instance.setSequenceLoopMode(loop ? 2 : 1);
     actor.age = 0;
@@ -457,7 +437,6 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
     if (chain) actor.chain = event;
     if (tesla || firebreath || monsoon || profile) actor.deathDuration = sequenceSeconds(model, 'death');
     if (tesla || monsoon || profile) actor.birthDuration = sequenceSeconds(model, 'birth');
-    if (tesla) actor.impactSound = 'tesla';
     if (effects.length >= 180) {
       const oldest = effects.shift();
       if (oldest.attachedTo !== undefined) parasites.delete(oldest.attachedTo);
@@ -484,7 +463,6 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
       if (flight) actor.age = flight.progress * actor.duration + (flight.at === undefined ? 0 : Math.max(0, time - flight.at));
       if (actor.age >= actor.duration + (actor.deathDuration ?? 0)) {
         if (actor.attachedTo !== undefined) parasites.delete(actor.attachedTo);
-        if (actor.shot?.kind === 'shot' && !actor.impactSound) playSequenceSounds(actor, 'death');
         destroy(actor);
         items.splice(index, 1);
         continue;
@@ -501,7 +479,6 @@ export function createOriginalLayer(canvas, original, playSound = () => {}) {
       if (actor.deathDuration && ratio === 1 && actor.animation !== 'death') {
         animation(actor, 'death');
         actor.instance.setSequenceLoopMode(1);
-        if (actor.impactSound) playSound(actor.impactSound);
       } else if (actor.birthDuration && actor.age >= actor.birthDuration && actor.animation === 'birth') {
         animation(actor, 'stand');
         actor.instance.setSequenceLoopMode(2);

@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#171913">
     <meta name="description" content="Фэнтези-арена Tower Survivors. Покупайте оружие и держите оборону.">
     <title>Tower Survivors · Башня Последних</title>
-    <script type="module" crossorigin src="./assets/index-SfY1uftF.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DP_BHbpR.css">
+    <script type="module" crossorigin src="./assets/index-4ZSgn-ai.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CWnHdPdP.css">
   </head>
   <body>
     <main id="app">
@@ -35,10 +35,6 @@
           <small id="arena-detail">Селение · оборона</small>
           <div id="arena-schedule" class="arena-schedule" aria-label="Расписание боя" hidden>
             <span id="next-wave">Следующая волна</span>
-            <div class="skills-cycle">
-              <span id="next-skills">Новый набор навыков</span>
-              <progress id="skills-progress" aria-labelledby="next-skills" max="1" value="0"></progress>
-            </div>
           </div>
         </aside>
         <aside id="standings" class="standings" aria-label="Участники"></aside>
@@ -71,7 +67,7 @@
         </section>
 
         <section class="shop-panel" aria-label="Магазин">
-          <header class="panel-heading"><h2>Лавка</h2><span id="economy"><b id="gold">5 000</b><span id="income">+50/с</span></span></header>
+          <header class="panel-heading"><div class="shop-title"><h2>Лавка</h2><div id="shop-timer" class="shop-timer" role="meter" aria-label="Время действия набора навыков" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" hidden><span></span></div></div><span id="economy"><b id="gold">5 000</b><span id="income">+50/с</span></span></header>
           <div id="shop" class="shop-grid"></div>
           <div class="shop-actions">
             <button id="reroll" class="small-button" title="Обновить товары (R)">⟳ Обновить</button>

@@ -182,7 +182,8 @@ export function createMatch(map, players, options = {}) {
   let finished = false;
   let bossPhase = false;
   let time = 0;
-  let battleAt = options.preparation ?? rules.preparationSeconds ?? 30;
+  const preparationDuration = options.preparation ?? rules.preparationSeconds ?? 30;
+  let battleAt = preparationDuration;
   let pendingTime = 0;
   let baseIncome = rules.baseIncomePerTick;
   let wave = 1;
@@ -307,12 +308,13 @@ export function createMatch(map, players, options = {}) {
     const incomeBonus = rules.baseIncomePerRound ?? 0;
     baseIncome += incomeBonus;
     const active = aliveArenas();
+    const shopRefresh = arenas.length === 1 || wave < 31;
     for (const arena of active) {
       growEnemies(arena, wave, arenas.length === 1);
       if (capped) arena.damagePerSecond = wave > 30 && arenas.length > 1 ? 1.05 : 1.03;
       roundUpgrades(arena.tower);
       startRoundWeapons(arena, attacks);
-      if (arenas.length === 1 || wave < 31) {
+      if (shopRefresh) {
         arena.tower.roundRerolls = 1 + Math.min(5, Math.floor((wave - 1) / 5));
         newOffer(arena);
       } else if (wave === 31) {
@@ -321,7 +323,7 @@ export function createMatch(map, players, options = {}) {
         arena.tower.roundRerolls = 0;
         arena.tower.marketOpen = false;
       }
-      arena.emit({ kind: 'round', wave, incomeBonus });
+      arena.emit({ kind: 'round', wave, incomeBonus, shopRefresh });
     }
     if (arenas.length > 1 && wave >= 31 && active.length === 1) startBoss(active[0]);
   }
@@ -481,8 +483,7 @@ export function createMatch(map, players, options = {}) {
       schedule: finished || bossPhase ? null : {
         wave: preparation > 0 ? 1 : wave + 1,
         waveIn: preparation > 0 ? preparation : Math.max(0, roundAt - time),
-        skillsWave: wave + 1,
-        skillsProgress: Math.max(0, Math.min(1, 1 - (roundAt - time) / rules.roundSeconds)),
+        shopLife: Math.max(0, Math.min(1, (roundAt - time) / (rules.roundSeconds + (wave === 1 ? preparationDuration : 0)))),
         shopCloses: arenas.length > 1 && wave >= 30,
       },
       player: tower ? {

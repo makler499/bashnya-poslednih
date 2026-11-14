@@ -1,540 +1,658 @@
-{
-  "ABRW": [
-    "burrow"
-  ],
-  "ABSK": [
-    "berserkercaster"
-  ],
-  "ABTR": [
-    "battleroar"
-  ],
-  "ACAN": [
-    "cannibalize"
-  ],
-  "ACBC": [
-    "breathoffire1"
-  ],
-  "ACBF": [
-    "breathoffrost1"
-  ],
-  "ACCV": [
-    "crushingwavecaster1"
-  ],
-  "ACRH": [
-    "corrosivebreathmissiletarget1"
-  ],
-  "ACRI": [
-    "crippletarget1"
-  ],
-  "ACRL": [
-    "corrosivebreathmissilelaunch1"
-  ],
-  "ACWD": [
-    "crushingwavetarget1"
-  ],
-  "ADCA": [
-    "druidoftheclawmorphalternate1"
-  ],
-  "ADCM": [
-    "druidoftheclawmorph1"
-  ],
-  "ADEF": [
-    "defendcaster"
-  ],
-  "ADEV": [
-    "devour"
-  ],
-  "ADTA": [
-    "druidofthetalonmorphalternate1"
-  ],
-  "ADTM": [
-    "druidofthetalonmorph1"
-  ],
-  "ADVP": [
-    "kodobeastpuke1"
-  ],
-  "AEBA": [
-    "barkskintarget1"
-  ],
-  "AEFN": [
-    "forceofnaturebirth1"
-  ],
-  "AESM": [
-    "shadowstrikemissile1"
-  ],
-  "AFDE": [
-    "incinerate1"
-  ],
-  "AHDR": [
-    "siphonmana"
-  ],
-  "AHFT": [
-    "flamestriketargetwavenonloop1"
-  ],
-  "AHHB": [
-    "holybolt"
-  ],
-  "AHRE": [
-    "resurrecttarget"
-  ],
-  "AHTB": [
-    "thunderboltmissiledeath"
-  ],
-  "AKDL": [
-    "kododrum1"
-  ],
-  "AKDR": [
-    "kododrum2"
-  ],
-  "ALSI": [
-    "lavaspawnmissiledeath1"
-  ],
-  "ANMO": [
-    "monsoonlightninghit"
-  ],
-  "ANSM": [
-    "strongdrinkmissile1"
-  ],
-  "AOHW": [
-    "healingwave"
-  ],
-  "AOLB": [
-    "lightningbolt"
-  ],
-  "AOSH": [
-    "shockwave"
-  ],
-  "AREP": [
-    "peonrepair1",
-    "peonrepair2",
-    "peonrepair3"
-  ],
-  "ASPL": [
-    "spiritlink1"
-  ],
-  "ASWE": [
-    "summonwaterelementalcaster"
-  ],
-  "AUCS": [
-    "carrionswarmlaunch1"
-  ],
-  "AUDA": [
-    "darkritualtarget1"
-  ],
-  "DABO": [
-    "abominationdeath1"
-  ],
-  "DADR": [
-    "druidofthetalondeath1"
-  ],
-  "DBAL": [
-    "ballistadeath1"
-  ],
-  "DBNT": [
-    "banditdeath1"
-  ],
-  "DCAT": [
-    "catapultdeath1"
-  ],
-  "DDCA": [
-    "druidoftheclawdeathalternate1"
-  ],
-  "DDOC": [
-    "druidoftheclawdeath1"
-  ],
-  "DDTA": [
-    "druidofthetalondeathalternate1"
-  ],
-  "DENT": [
-    "entdeath1"
-  ],
-  "DFDR": [
-    "faeriedragondeath1"
-  ],
-  "DGHO": [
-    "ghouldeath"
-  ],
-  "DGRU": [
-    "gruntdeath"
-  ],
-  "DGSP": [
-    "sapperblowsup"
-  ],
-  "DGST": [
-    "giantseaturtledeath1"
-  ],
-  "DGYR": [
-    "gyrocopterdeath1"
-  ],
-  "DHDA": [
-    "hydradeath1"
-  ],
-  "DHDS": [
-    "hydradeathswim1"
-  ],
-  "DHLS": [
-    "buildingdeathsmallhuman",
-    "buildingdeathsmallhuman2",
-    "buildingdeathsmallhuman3"
-  ],
-  "DINF": [
-    "infernaldeath"
-  ],
-  "DKNI": [
-    "knightdeath"
-  ],
-  "DKOD": [
-    "kodobeastdeath"
-  ],
-  "DMGS": [
-    "murguldeathswim1"
-  ],
-  "DMGT": [
-    "mountaingiantdeath1"
-  ],
-  "DMOR": [
-    "mortarteamdeath"
-  ],
-  "DMTW": [
-    "meatwagondeath1"
-  ],
-  "DMUR": [
-    "murlocdeath"
-  ],
-  "DMYR": [
-    "myrmidondeath1"
-  ],
-  "DMYS": [
-    "myrmidondeathswim1"
-  ],
-  "DPEO": [
-    "peondeath"
-  ],
-  "DPES": [
-    "peasantdeath"
-  ],
-  "DPIT": [
-    "pitfienddeath1"
-  ],
-  "DRAI": [
-    "raiderdeath"
-  ],
-  "DRAN": [
-    "archerdeath1"
-  ],
-  "DRIF": [
-    "riflemandeath"
-  ],
-  "DSEN": [
-    "sentineldeath1"
-  ],
-  "DSHM": [
-    "shamandeath"
-  ],
-  "DSND": [
-    "snapdragondeath"
-  ],
-  "DSNS": [
-    "snapdragondeathswim1"
-  ],
-  "DSTT": [
-    "steamtankdeath1"
-  ],
-  "DTDS": [
-    "giantturtledeathswim1"
-  ],
-  "DWAT": [
-    "waterelementaldeath"
-  ],
-  "DWCD": [
-    "wyverncagedeath1"
-  ],
-  "DWTC": [
-    "watcherdeath1"
-  ],
-  "DZOM": [
-    "zombiedeath1"
-  ],
-  "FDFL": [
-    "step1",
-    "step2",
-    "step3",
-    "step4"
-  ],
-  "FDFR": [
-    "step1",
-    "step2",
-    "step3",
-    "step4"
-  ],
-  "FDSL": [
-    "fiendstep1",
-    "fiendstep2",
-    "fiendstep3",
-    "fiendstep4"
-  ],
-  "FDSR": [
-    "fiendstep1",
-    "fiendstep2",
-    "fiendstep3",
-    "fiendstep4"
-  ],
-  "KBLL": [
-    "ballistaattackeffort1"
-  ],
-  "KCAN": [
-    "cannontowermissilelaunch1",
-    "cannontowermissilelaunch2",
-    "cannontowermissilelaunch3"
-  ],
-  "KCAT": [
-    "catapultattack1"
-  ],
-  "KGYR": [
-    "gyrocopterimpacthit1",
-    "gyrocopterimpacthit2"
-  ],
-  "KIN1": [
-    "infernalattack1"
-  ],
-  "KIN2": [
-    "infernalattack2"
-  ],
-  "KLIC": [
-    "lichattackeffort1",
-    "lichattackeffort2",
-    "lichattackeffort3"
-  ],
-  "KMT1": [
-    "mortarteamattack1"
-  ],
-  "KMTW": [
-    "catapultattack1"
-  ],
-  "KRIF": [
-    "riflemanattack1",
-    "riflemanattack2"
-  ],
-  "KSTT": [
-    "steamtankattack1"
-  ],
-  "MANG": [
-    "ancestralguardianhit1"
-  ],
-  "MANL": [
-    "ancestralguardianmissilelaunch"
-  ],
-  "MANP": [
-    "ancientprotectormissilehit1",
-    "ancientprotectormissilehit2",
-    "ancientprotectormissilehit3"
-  ],
-  "MAPL": [
-    "ancientprotectormissilelaunch1",
-    "ancientprotectormissilelaunch2",
-    "ancientprotectormissilelaunch3"
-  ],
-  "MARL": [
-    "arrowattack1"
-  ],
-  "MARR": [
-    "arrowimpact"
-  ],
-  "MAXE": [
-    "axemissile1",
-    "axemissile2"
-  ],
-  "MBAL": [
-    "guardtowermissilehit1",
-    "guardtowermissilehit2",
-    "guardtowermissilehit3"
-  ],
-  "MBHL": [
-    "boatattack1"
-  ],
-  "MBHT": [
-    "boatmissilehit"
-  ],
-  "MCAN": [
-    "cannontowermissile1",
-    "cannontowermissile2",
-    "cannontowermissile3"
-  ],
-  "MCAT": [
-    "catapultmissile1",
-    "catapultmissile2",
-    "catapultmissile3",
-    "catapultmissile4"
-  ],
-  "MCDA": [
-    "coldarrow1",
-    "coldarrow2",
-    "coldarrow3"
-  ],
-  "MDCL": [
-    "deathcoilmissilelaunch1"
-  ],
-  "MDEM": [
-    "demonhuntermissilehit1",
-    "demonhuntermissilehit2",
-    "demonhuntermissilehit3"
-  ],
-  "MDML": [
-    "herodemonmissilelaunch1",
-    "herodemonmissilelaunch2"
-  ],
-  "MDRY": [
-    "dryadmissile1",
-    "dryadmissile2"
-  ],
-  "MFAR": [
-    "farseermissile"
-  ],
-  "MFBH": [
-    "frostbolthit1"
-  ],
-  "MFLA": [
-    "searingarrowtarget1",
-    "searingarrowtarget2",
-    "searingarrowtarget3"
-  ],
-  "MFRB": [
-    "fireballmissiledeath"
-  ],
-  "MFRL": [
-    "fireballmissilelaunch1",
-    "fireballmissilelaunch2",
-    "fireballmissilelaunch3"
-  ],
-  "MGML": [
-    "gryphonridermissilelaunch1",
-    "gryphonridermissilelaunch2",
-    "gryphonridermissilelaunch3"
-  ],
-  "MHAR": [
-    "harpymissilehit1",
-    "harpymissilehit2",
-    "harpymissilehit3"
-  ],
-  "MHNL": [
-    "headhuntermissilelaunch"
-  ],
-  "MHRL": [
-    "harpymissilelaunch1",
-    "harpymissilelaunch2",
-    "harpymissilelaunch3"
-  ],
-  "MHUN": [
-    "headhuntermissilehit1",
-    "headhuntermissilehit2"
-  ],
-  "MKGL": [
-    "keeperofthegrovemissilelaunch1",
-    "keeperofthegrovemissilelaunch2",
-    "keeperofthegrovemissilelaunch3"
-  ],
-  "MKMH": [
-    "necromancermissilehit1",
-    "necromancermissilehit2",
-    "necromancermissilehit3"
-  ],
-  "MKML": [
-    "necromancermissilelaunch1",
-    "necromancermissilelaunch2"
-  ],
-  "MLIC": [
-    "lichmissilehit1",
-    "lichmissilehit2",
-    "lichmissilehit3"
-  ],
-  "MMEA": [
-    "meatwagonmissilehit1"
-  ],
-  "MMTI": [
-    "mortarimpact"
-  ],
-  "MPAH": [
-    "poisonarrowhit1"
-  ],
-  "MPML": [
-    "priestcastattack1"
-  ],
-  "MPXL": [
-    "phoenixattack"
-  ],
-  "MSBH": [
-    "priestmissilehit1",
-    "priestmissilehit2",
-    "priestmissilehit3"
-  ],
-  "MSBL": [
-    "priestcastattack1"
-  ],
-  "MSEL": [
-    "huntressmissilelaunch"
-  ],
-  "MSHD": [
-    "heroshadowhuntermissilelaunch1"
-  ],
-  "MSHH": [
-    "heroshadowhuntermissilehit1"
-  ],
-  "MSML": [
-    "sorceressmissilelaunch1",
-    "sorceressmissilelaunch2",
-    "sorceressmissilelaunch3"
-  ],
-  "MSNL": [
-    "snapdragonmissilelaunch1"
-  ],
-  "MSVL": [
-    "gargoylemissilelaunch1",
-    "gargoylemissilelaunch2",
-    "gargoylemissilelaunch3"
-  ],
-  "MTBL": [
-    "trollbatridermissile1",
-    "trollbatridermissile2",
-    "trollbatridermissile3"
-  ],
-  "MTRI": [
-    "tinkermissiledeath1"
-  ],
-  "MTRL": [
-    "tinkermissilelaunch1"
-  ],
-  "MWAT": [
-    "waterelementalmissile1",
-    "waterelementalmissile2",
-    "waterelementalmissile3"
-  ],
-  "MWEB": [
-    "webmissilelaunch1"
-  ],
-  "MWIN": [
-    "windserpentmissile"
-  ],
-  "MWYV": [
-    "wyvernspearmissile1",
-    "wyvernspearmissile2"
-  ],
-  "MZGH": [
-    "zigguratmissilehit1",
-    "zigguratmissilehit2",
-    "zigguratmissilehit3"
-  ],
-  "MZIG": [
-    "zigguratmissilelaunch1",
-    "zigguratmissilelaunch2",
-    "zigguratmissilelaunch3"
-  ],
-  "SABI": [
-    "alchemistacidburnmissiledeath1"
-  ],
-  "SHSI": [
-    "healingspraydeath1"
-  ],
-  "SHSL": [
-    "healingspraybirth1"
-  ]
+{"tracks":{
+"DABO":{"paths":["Units/Undead/Abomination/AbominationDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"SABI":{"paths":["Abilities/Spells/Other/AcidBomb/AlchemistAcidBurnMissileDeath1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MANG":{"paths":["Abilities/Weapons/AncestralGuardianMissile/AncestralGuardianHit1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MANL":{"paths":["Abilities/Weapons/AncestralGuardianMissile/AncestralGuardianMissileLaunch.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MANP":{"paths":["Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileHit1.flac","Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileHit2.flac","Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MAPL":{"paths":["Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileLaunch1.flac","Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileLaunch2.flac","Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DRAN":{"paths":["Units/NightElf/Archer/ArcherDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MARR":{"paths":["Abilities/Weapons/Arrow/ArrowImpact.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MARL":{"paths":["Abilities/Weapons/Arrow/ArrowAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MAXE":{"paths":["Abilities/Weapons/Axe/AxeMissile1.flac","Abilities/Weapons/Axe/AxeMissile2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MAXL":{"paths":["Abilities/Weapons/Axe/AxeMissileLaunch1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"KBLL":{"paths":["Units/NightElf/Ballista/BallistaAttackEffort1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DBAL":{"paths":["Units/NightElf/Ballista/BallistaDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MBAL":{"paths":["Abilities/Weapons/GuardTowerMissile/GuardTowerMissileHit1.flac","Abilities/Weapons/GuardTowerMissile/GuardTowerMissileHit2.flac","Abilities/Weapons/GuardTowerMissile/GuardTowerMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DBNT":{"paths":["Units/Creeps/Bandit/BanditDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AEBA":{"paths":["Abilities/Spells/NightElf/Barkskin/BarkSkinTarget1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ABTR":{"paths":["Abilities/Spells/NightElf/BattleRoar/BattleRoar.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ABSK":{"paths":["Units/Orc/Grunt/BerserkerCaster.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MBHT":{"paths":["Abilities/Weapons/BoatMissile/BoatMissileHit.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MBHL":{"paths":["Abilities/Weapons/BoatMissile/BoatAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"ACBC":{"paths":["Abilities/Spells/Other/BreathOfFire/BreathOfFire1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ACBF":{"paths":["Abilities/Spells/Other/BreathOfFrost/BreathOfFrost1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ABRW":{"paths":["Abilities/Spells/Undead/Burrow/Burrow.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ACAN":{"paths":["Units/Undead/Ghoul/Cannibalize.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"KCAN":{"paths":["Abilities/Weapons/CannonTowerMissile/CannonTowerMissileLaunch1.flac","Abilities/Weapons/CannonTowerMissile/CannonTowerMissileLaunch2.flac","Abilities/Weapons/CannonTowerMissile/CannonTowerMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MCAN":{"paths":["Abilities/Weapons/CannonTowerMissile/CannonTowerMissile1.flac","Abilities/Weapons/CannonTowerMissile/CannonTowerMissile2.flac","Abilities/Weapons/CannonTowerMissile/CannonTowerMissile3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AUCS":{"paths":["Abilities/Spells/Undead/CarrionSwarm/CarrionSwarmLaunch1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MCAT":{"paths":["Abilities/Weapons/Catapult/CatapultMissile1.flac","Abilities/Weapons/Catapult/CatapultMissile2.flac","Abilities/Weapons/Catapult/CatapultMissile3.flac","Abilities/Weapons/Catapult/CatapultMissile4.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"KCAT":{"paths":["Units/Orc/Catapult/CatapultAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DCAT":{"paths":["Units/Orc/Catapult/CatapultDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MCAH":{"paths":["Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileHit1.flac","Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileHit2.flac","Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MCAL":{"paths":["Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileLaunch1.flac","Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileLaunch2.flac","Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MTRI":{"paths":["Abilities/Spells/Other/TinkerRocket/TinkerMissileDeath1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MTRL":{"paths":["Abilities/Spells/Other/TinkerRocket/TinkerMissileLaunch1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MCDA":{"paths":["Abilities/Weapons/ColdArrow/ColdArrow1.flac","Abilities/Weapons/ColdArrow/ColdArrow2.flac","Abilities/Weapons/ColdArrow/ColdArrow3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"ACRH":{"paths":["Abilities/Spells/NightElf/CorrosiveBreath/CorrosiveBreathMissileTarget1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ACRL":{"paths":["Abilities/Spells/NightElf/CorrosiveBreath/CorrosiveBreathMissileLaunch1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ACRI":{"paths":["Abilities/Spells/Undead/Cripple/CrippleTarget1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"ACCV":{"paths":["Abilities/Spells/Other/CrushingWave/CrushingWaveCaster1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"ACWD":{"paths":["Abilities/Spells/Other/CrushingWave/CrushingWaveTarget1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DPIT":{"paths":["Units/Undead/CryptFiend/PitFiendDeath1.ogg"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MCRH":{"paths":["Abilities/Weapons/CryptFiendMissile/CryptFiendMissileHit1.flac","Abilities/Weapons/CryptFiendMissile/CryptFiendMissileHit2.flac","Abilities/Weapons/CryptFiendMissile/CryptFiendMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MCRL":{"paths":["Abilities/Weapons/CryptFiendMissile/CryptFiendMissileLaunch1.flac","Abilities/Weapons/CryptFiendMissile/CryptFiendMissileLaunch2.flac","Abilities/Weapons/CryptFiendMissile/CryptFiendMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AUDA":{"paths":["Abilities/Spells/Undead/DarkRitual/DarkRitualTarget1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MDCL":{"paths":["Abilities/Spells/Undead/DeathCoil/DeathCoilMissileLaunch1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DHLB":{"paths":["Sound/Buildings/Death/BuildingDeathLargeHuman.flac","Sound/Buildings/Death/BuildingDeathLargeHuman2.flac","Sound/Buildings/Death/BuildingDeathLargeHuman3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DHLS":{"paths":["Sound/Buildings/Death/BuildingDeathSmallHuman.flac","Sound/Buildings/Death/BuildingDeathSmallHuman2.flac","Sound/Buildings/Death/BuildingDeathSmallHuman3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DELB":{"paths":["Sound/Buildings/Death/NightElfBuildingDeathLarge1.flac","Sound/Buildings/Death/NightElfBuildingDeathLarge2.flac","Sound/Buildings/Death/NightElfBuildingDeathLarge3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DELS":{"paths":["Sound/Buildings/Death/NightElfBuildingDeathSmall1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DOLB":{"paths":["Sound/Buildings/Death/BuildingDeathLargeOrc.flac","Sound/Buildings/Death/BuildingDeathLargeOrc2.flac","Sound/Buildings/Death/BuildingDeathLargeOrc3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DOLS":{"paths":["Sound/Buildings/Death/OrcBuildingDeathSmall1.flac","Sound/Buildings/Death/OrcBuildingDeathSmall2.flac","Sound/Buildings/Death/OrcBuildingDeathSmall3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DULB":{"paths":["Sound/Buildings/Death/UndeadBuildingDeathLarge1.flac","Sound/Buildings/Death/UndeadBuildingDeathLarge2.flac","Sound/Buildings/Death/UndeadBuildingDeathLarge3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DEBA":{"paths":["Sound/Buildings/Death/AncientUprootDeath1.flac","Sound/Buildings/Death/AncientUprootDeath2.flac","Sound/Buildings/Death/AncientUprootDeath3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"FDFL":{"paths":["Sound/Units/Footsteps/Step1.flac","Sound/Units/Footsteps/Step2.flac","Sound/Units/Footsteps/Step3.flac","Sound/Units/Footsteps/Step4.flac"],"pitch":1.0,"variance":0.1,"gain":0.315},
+"FDFR":{"paths":["Sound/Units/Footsteps/Step1.flac","Sound/Units/Footsteps/Step2.flac","Sound/Units/Footsteps/Step3.flac","Sound/Units/Footsteps/Step4.flac"],"pitch":1.0,"variance":0.1,"gain":0.315},
+"ADEF":{"paths":["Abilities/Spells/Human/Defend/DefendCaster.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MDEM":{"paths":["Abilities/Weapons/DemonHunterMissile/DemonHunterMissileHit1.flac","Abilities/Weapons/DemonHunterMissile/DemonHunterMissileHit2.flac","Abilities/Weapons/DemonHunterMissile/DemonHunterMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MDML":{"paths":["Abilities/Weapons/DemonHunterMissile/HeroDemonMissileLaunch1.flac","Abilities/Weapons/DemonHunterMissile/HeroDemonMissileLaunch2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"ADEV":{"paths":["Units/Orc/KotoBeast/Devour.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ADVP":{"paths":["Units/Orc/KotoBeast/KodoBeastPuke1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DDWF":{"paths":["Units/Creeps/DireWolf/DireWolfDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MWIN":{"paths":["Abilities/Weapons/DragonHawkMissile/WindSerpentMissile.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DDOC":{"paths":["Units/NightElf/DruidOfTheClaw/DruidOfTheClawDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DDCA":{"paths":["Units/NightElf/DruidOfTheClaw/DruidOfTheClawDeathAlternate1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ADCM":{"paths":["Units/NightElf/DruidOfTheClaw/DruidOfTheClawMorph1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ADCA":{"paths":["Units/NightElf/DruidOfTheClaw/DruidOfTheClawMorphAlternate1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DADR":{"paths":["Units/NightElf/DruidOfTheTalon/DruidOfTheTalonDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DDTA":{"paths":["Units/NightElf/DruidOfTheTalon/DruidOfTheTalonDeathAlternate1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MDTH":{"paths":["Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileHit1.flac","Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileHit2.flac","Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MDTL":{"paths":["Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileLaunch1.flac","Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileLaunch2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"ADTM":{"paths":["Units/NightElf/DruidOfTheTalon/DruidOfTheTalonMorph1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ADTA":{"paths":["Units/NightElf/DruidOfTheTalon/DruidOfTheTalonMorphAlternate1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DDRY":{"paths":["Units/NightElf/Dryad/DryadDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MDRY":{"paths":["Abilities/Weapons/Dryadmissile/DryadMissile1.flac","Abilities/Weapons/Dryadmissile/DryadMissile2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AEAT":{"paths":["Abilities/Spells/NightElf/EatTree/EatTreeTarget1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AENM":{"paths":["Abilities/Spells/Orc/Ensnare/EnsnareMissile.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DENT":{"paths":["Units/Creeps/CorruptedEnt/EntDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DFDR":{"paths":["Units/NightElf/FaerieDragon/FaerieDragonDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MFDL":{"paths":["Abilities/Weapons/FaerieDragonMissile/FaerieDragonAttack.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MFAR":{"paths":["Abilities/Weapons/FarseerMissile/FarseerMissile.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"FDSL":{"paths":["Sound/Units/Footsteps/FiendStep1.flac","Sound/Units/Footsteps/FiendStep2.flac","Sound/Units/Footsteps/FiendStep3.flac","Sound/Units/Footsteps/FiendStep4.flac"],"pitch":1.0,"variance":0.1,"gain":0.157},
+"FDSR":{"paths":["Sound/Units/Footsteps/FiendStep1.flac","Sound/Units/Footsteps/FiendStep2.flac","Sound/Units/Footsteps/FiendStep3.flac","Sound/Units/Footsteps/FiendStep4.flac"],"pitch":1.0,"variance":0.1,"gain":0.157},
+"MFRB":{"paths":["Abilities/Weapons/FireBallMissile/FireBallMissileDeath.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MFRL":{"paths":["Abilities/Weapons/FireBallMissile/FireBallMissileLaunch1.flac","Abilities/Weapons/FireBallMissile/FireBallMissileLaunch2.flac","Abilities/Weapons/FireBallMissile/FireBallMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AHFT":{"paths":["Abilities/Spells/Human/FlameStrike/FlameStrikeTargetWaveNonLoop1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AEFN":{"paths":["Units/NightElf/Ent/ForceOfNatureBirth1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MFBH":{"paths":["Abilities/Spells/Other/FrostBolt/FrostBoltHit1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MFBL":{"paths":["Abilities/Spells/Other/FrostBolt/FrostBoltLaunch1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DFRM":{"paths":["Buildings/Other/Frostmourne/FrostmourneDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MGRH":{"paths":["Abilities/Weapons/GargoyleMissile/GargoyleMissileHit1.flac","Abilities/Weapons/GargoyleMissile/GargoyleMissileHit2.flac","Abilities/Weapons/GargoyleMissile/GargoyleMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MGRL":{"paths":["Abilities/Weapons/GargoyleMissile/GargoyleMissileLaunch1.flac","Abilities/Weapons/GargoyleMissile/GargoyleMissileLaunch2.flac","Abilities/Weapons/GargoyleMissile/GargoyleMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MSVL":{"paths":["Abilities/Weapons/GargoyleMissile/GargoyleMissileLaunch1.flac","Abilities/Weapons/GargoyleMissile/GargoyleMissileLaunch2.flac","Abilities/Weapons/GargoyleMissile/GargoyleMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DGOB":{"paths":["Buildings/Other/BridgeObelisk/EnchantedGemstoneObeliskDeath1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DGHO":{"paths":["Units/Undead/Ghoul/GhoulDeath.ogg"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DGST":{"paths":["Units/Creeps/GiantSeaTurtle/GiantSeaTurtleDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DTDS":{"paths":["Units/Creeps/GiantSeaTurtle/GiantTurtleDeathSwim1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DGSP":{"paths":["Units/Creeps/GoblinSapper/SapperBlowsUp.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DGLD":{"paths":["Buildings/Other/GoldMine/GoldMineDeath1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DGRU":{"paths":["Units/Orc/Grunt/GruntDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MGML":{"paths":["Abilities/Weapons/GryphonRiderMissile/GryphonRiderMissileLaunch1.flac","Abilities/Weapons/GryphonRiderMissile/GryphonRiderMissileLaunch2.flac","Abilities/Weapons/GryphonRiderMissile/GryphonRiderMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"KGYR":{"paths":["Units/Human/Gyrocopter/GyrocopterImpactHit1.flac","Units/Human/Gyrocopter/GyrocopterImpactHit2.flac"],"pitch":1.0,"variance":0.03,"gain":1.0},
+"DGYR":{"paths":["Units/Human/Gyrocopter/GyrocopterDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MHAR":{"paths":["Abilities/Weapons/HarpyMissile/HarpyMissileHit1.flac","Abilities/Weapons/HarpyMissile/HarpyMissileHit2.flac","Abilities/Weapons/HarpyMissile/HarpyMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MHRL":{"paths":["Abilities/Weapons/HarpyMissile/HarpyMissileLaunch1.flac","Abilities/Weapons/HarpyMissile/HarpyMissileLaunch2.flac","Abilities/Weapons/HarpyMissile/HarpyMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"SHSI":{"paths":["Abilities/Spells/Other/HealingSpray/HealingSprayDeath1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"SHSL":{"paths":["Abilities/Spells/Other/HealingSpray/HealingSprayBirth1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AOHW":{"paths":["Abilities/Spells/Orc/HealingWave/HealingWave.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"KDK1":{"paths":["Units/Undead/HeroDeathKnight/HeroDeathKnightAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DDKN":{"paths":["Units/Undead/HeroDeathKnight/HeroDeathKnightDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"KFAR":{"paths":["Abilities/Weapons/FarseerMissile/FarseerMissileLaunch.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"KLIC":{"paths":["Units/Undead/HeroLich/LichAttackEffort1.flac","Units/Undead/HeroLich/LichAttackEffort2.flac","Units/Undead/HeroLich/LichAttackEffort3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AHHB":{"paths":["Abilities/Spells/Human/HolyBolt/HolyBolt.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MHUN":{"paths":["Abilities/Weapons/huntermissile/HeadHunterMissileHit1.flac","Abilities/Weapons/huntermissile/HeadHunterMissileHit2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MHNL":{"paths":["Abilities/Weapons/huntermissile/HeadHunterMissileLaunch.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DHDA":{"paths":["Units/Creeps/Hydra/HydraDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DHDS":{"paths":["Units/Creeps/Hydra/HydraDeathSwim1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DHYD":{"paths":["Units/Critters/Hydralisk/HydraliskDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AFDE":{"paths":["Abilities/Spells/Other/Incinerate/Incinerate1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"KIN1":{"paths":["Units/Demon/Infernal/InfernalAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"KIN2":{"paths":["Units/Demon/Infernal/InfernalAttack2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DINF":{"paths":["Units/Demon/Infernal/InfernalDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MKGH":{"paths":["Abilities/Weapons/KeeperGroveMissile/KeeperOfTheGroveMissileHit1.flac","Abilities/Weapons/KeeperGroveMissile/KeeperOfTheGroveMissileHit2.flac","Abilities/Weapons/KeeperGroveMissile/KeeperOfTheGroveMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MKGL":{"paths":["Abilities/Weapons/KeeperGroveMissile/KeeperOfTheGroveMissileLaunch1.flac","Abilities/Weapons/KeeperGroveMissile/KeeperOfTheGroveMissileLaunch2.flac","Abilities/Weapons/KeeperGroveMissile/KeeperOfTheGroveMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DKNI":{"paths":["Units/Human/Knight/KnightDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DKOB":{"paths":["Units/Creeps/Kobold/KoboldDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DKOD":{"paths":["Units/Orc/KotoBeast/KodoBeastDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AKDL":{"paths":["Units/Orc/KotoBeast/KodoDrum1.flac"],"pitch":1.0,"variance":0.0,"gain":0.394},
+"AKDR":{"paths":["Units/Orc/KotoBeast/KodoDrum2.flac"],"pitch":1.0,"variance":0.0,"gain":0.394},
+"ALSI":{"paths":["Abilities/Weapons/LavaSpawnMissile/LavaSpawnMissileDeath1.flac"],"pitch":1.0,"variance":0.1,"gain":0.315},
+"MLIC":{"paths":["Abilities/Weapons/LichMissile/LichMissileHit1.flac","Abilities/Weapons/LichMissile/LichMissileHit2.flac","Abilities/Weapons/LichMissile/LichMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AOLB":{"paths":["Abilities/Spells/Orc/LightningBolt/LightningBolt.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"KMTW":{"paths":["Units/Undead/Meatwagon/CatapultAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DMTW":{"paths":["Units/Undead/Meatwagon/MeatWagonDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MMEA":{"paths":["Abilities/Weapons/MeatwagonMissile/MeatwagonMissileHit1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"ANMO":{"paths":["Abilities/Spells/Other/Monsoon/MonsoonLightningHit.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MMTI":{"paths":["Abilities/Weapons/Mortar/MortarImpact.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"KMT1":{"paths":["Units/Human/MortarTeam/MortarTeamAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DMOR":{"paths":["Units/Human/MortarTeam/MortarteamDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DMGT":{"paths":["Units/NightElf/MountainGiant/MountainGiantDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DMGS":{"paths":["Units/Creeps/MurgulBloodGill/MurgulDeathSwim1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DMUR":{"paths":["Units/Creeps/Murloc/MurlocDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DMYR":{"paths":["Units/Naga/NagaMyrmidon/MyrmidonDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DMYS":{"paths":["Units/Naga/NagaMyrmidon/MyrmidonDeathSwim1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MKMH":{"paths":["Abilities/Weapons/NecromancerMissile/NecromancerMissileHit1.flac","Abilities/Weapons/NecromancerMissile/NecromancerMissileHit2.flac","Abilities/Weapons/NecromancerMissile/NecromancerMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MNCH":{"paths":["Abilities/Weapons/NecromancerMissile/NecromancerMissileHit1.flac","Abilities/Weapons/NecromancerMissile/NecromancerMissileHit2.flac","Abilities/Weapons/NecromancerMissile/NecromancerMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MKML":{"paths":["Abilities/Weapons/NecromancerMissile/NecromancerMissileLaunch1.flac","Abilities/Weapons/NecromancerMissile/NecromancerMissileLaunch2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MNCL":{"paths":["Abilities/Weapons/NecromancerMissile/NecromancerMissileLaunch1.flac","Abilities/Weapons/NecromancerMissile/NecromancerMissileLaunch2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DPES":{"paths":["Units/Human/Peasant/PeasantDeath.ogg"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DPEO":{"paths":["Units/Orc/Peon/PeonDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MPXL":{"paths":["Abilities/Weapons/PhoenixMissile/PhoenixAttack.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DPIG":{"paths":["Units/Critters/Pig/PigDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AHTF":{"paths":["Units/Creeps/HeroTinkerFactory/PocketFactoryBirth.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MPAH":{"paths":["Abilities/Weapons/PoisonArrow/PoisonArrowHit1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MSBH":{"paths":["Abilities/Weapons/PriestMissile/PriestMissileHit1.flac","Abilities/Weapons/PriestMissile/PriestMissileHit2.flac","Abilities/Weapons/PriestMissile/PriestMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MPML":{"paths":["Abilities/Weapons/PriestMissile/PriestCastAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MSBL":{"paths":["Abilities/Weapons/PriestMissile/PriestCastAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DRAI":{"paths":["Units/Orc/Wolfrider/RaiderDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AREP":{"paths":["Abilities/Spells/Other/Repair/PeonRepair1.flac","Abilities/Spells/Other/Repair/PeonRepair2.flac","Abilities/Spells/Other/Repair/PeonRepair3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AHRE":{"paths":["Abilities/Spells/Human/Resurrect/ResurrectTarget.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"KRIF":{"paths":["Units/Human/Rifleman/RiflemanAttack1.flac","Units/Human/Rifleman/RiflemanAttack2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DRIF":{"paths":["Units/Human/Rifleman/RiflemanDeath.ogg"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AROO":{"paths":["Abilities/Spells/NightElf/Root/Root.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MFLA":{"paths":["Abilities/Weapons/SearingArrow/SearingArrowTarget1.flac","Abilities/Weapons/SearingArrow/SearingArrowTarget2.flac","Abilities/Weapons/SearingArrow/SearingArrowTarget3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DSEN":{"paths":["Units/NightElf/Huntress/SentinelDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MSEL":{"paths":["Abilities/Weapons/SentinelMissile/HuntressMissileLaunch.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MSHH":{"paths":["Abilities/Weapons/ShadowHunterMissile/HeroShadowhunterMissileHit1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MSHD":{"paths":["Abilities/Weapons/ShadowHunterMissile/HeroShadowhunterMissileLaunch1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AESM":{"paths":["Abilities/Spells/NightElf/shadowstrike/ShadowStrikeMissile1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DSHM":{"paths":["Units/Orc/Shaman/ShamanDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AOSH":{"paths":["Abilities/Spells/Orc/Shockwave/Shockwave.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AHDR":{"paths":["Abilities/Spells/Other/Drain/SiphonMana.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DSKE":{"paths":["Units/Undead/Skeleton/SkeletonDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DSND":{"paths":["Units/Naga/SnapDragon/SnapDragonDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DSNS":{"paths":["Units/Naga/SnapDragon/SnapDragonDeathSwim1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MSNL":{"paths":["Abilities/Weapons/snapMissile/SnapDragonMissileLaunch1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MSML":{"paths":["Abilities/Weapons/SorceressMissile/SorceressMissileLaunch1.flac","Abilities/Weapons/SorceressMissile/SorceressMissileLaunch2.flac","Abilities/Weapons/SorceressMissile/SorceressMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"ASPL":{"paths":["Abilities/Spells/Orc/SpiritLink/SpiritLink1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"KSTT":{"paths":["Units/Human/SteamTank/SteamTankAttack1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DSTT":{"paths":["Units/Human/SteamTank/SteamTankDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"AHTB":{"paths":["Abilities/Spells/Human/StormBolt/ThunderBoltMissileDeath.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ANSM":{"paths":["Abilities/Spells/Other/StrongDrink/StrongDrinkMissile1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MTBL":{"paths":["Abilities/Weapons/BatTrollMissile/TrollBatriderMissile1.flac","Abilities/Weapons/BatTrollMissile/TrollBatriderMissile2.flac","Abilities/Weapons/BatTrollMissile/TrollBatriderMissile3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AUB1":{"paths":["Sound/Buildings/Undead/UndeadBuildingBirth1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AUB2":{"paths":["Sound/Buildings/Undead/UndeadBuildingBirth2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AUB3":{"paths":["Sound/Buildings/Undead/UndeadBuildingBirth3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AUB4":{"paths":["Sound/Buildings/Undead/UndeadBuildingBirth4.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"AUPR":{"paths":["Abilities/Spells/NightElf/Uproot/Uproot.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"DWTC":{"paths":["Units/Creeps/Watcher/WatcherDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"ASWE":{"paths":["Units/Human/WaterElemental/SummonWaterElementalCaster.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MWAT":{"paths":["Abilities/Weapons/WaterElementalMissile/WaterElementalMissile1.flac","Abilities/Weapons/WaterElementalMissile/WaterElementalMissile2.flac","Abilities/Weapons/WaterElementalMissile/WaterElementalMissile3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MWEB":{"paths":["Abilities/Spells/Undead/Web/WebMissileLaunch1.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DWCD":{"paths":["Doodads/Barrens/Terrain/WyvernCage/WyvernCageDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0},
+"MWYV":{"paths":["Abilities/Weapons/WyvernSpear/WyvernSpearMissile1.flac","Abilities/Weapons/WyvernSpear/WyvernSpearMissile2.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MZGH":{"paths":["Abilities/Weapons/ZigguratMissile/ZigguratMissileHit1.flac","Abilities/Weapons/ZigguratMissile/ZigguratMissileHit2.flac","Abilities/Weapons/ZigguratMissile/ZigguratMissileHit3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"MZIG":{"paths":["Abilities/Weapons/ZigguratMissile/ZigguratMissileLaunch1.flac","Abilities/Weapons/ZigguratMissile/ZigguratMissileLaunch2.flac","Abilities/Weapons/ZigguratMissile/ZigguratMissileLaunch3.flac"],"pitch":1.0,"variance":0.1,"gain":1.0},
+"DZOM":{"paths":["Units/Creeps/Zombie/ZombieDeath1.flac"],"pitch":1.0,"variance":0.0,"gain":1.0}
+},
+"named":{
+"goodjob":{"path":"Sound/Interface/GoodJob.flac","gain":1.0},
+"warning":{"path":"Sound/Interface/Warning.flac","gain":0.63},
+"questlog":{"path":"Sound/Interface/QuestLog.flac","gain":0.63},
+"questnew":{"path":"Sound/Interface/QuestNew.flac","gain":0.63},
+"questfailed":{"path":"Sound/Interface/QuestFailed.flac","gain":0.63},
+"questcompleted":{"path":"Sound/Interface/QuestCompleted.flac","gain":0.63},
+"heroicvictory":{"path":"Sound/Music/mp3Music/HeroicVictory.flac","gain":1.0},
+"credits":{"path":"Sound/Music/mp3Music/Credits.flac","gain":1.0},
+"mouseclick1":{"path":"Sound/Interface/MouseClick1.flac","gain":1.0},
+"kelthuzadwhat1":{"path":"Units/Undead/KelThuzadLich/KelThuzadWhat1.flac","gain":1.0},
+"darkvictory":{"path":"Sound/Music/mp3Music/DarkVictory.flac","gain":1.0},
+"undeaddissipate2":{"path":"Sound/Units/Undead/Dissipate/UndeadDissipate2.flac","gain":1.0},
+"tragicconfrontation":{"path":"Sound/Music/mp3Music/TragicConfrontation.flac","gain":1.0},
+"doom":{"path":"Sound/Music/mp3Music/Doom.flac","gain":1.0}
+},
+"samples":{
+"abilities/spells/human/calltoarms/humancalltoarmswhat1":{"file":"sound-v2/abilities/spells/human/calltoarms/humancalltoarmswhat1.flac","source":"TowerSurvivors-v2.0.w3x","path":"Abilities/Spells/Human/CallToArms/HumanCallToArmsWhat1.flac","sha256":"4e37855fd74a86ab8f678e131b11937f21fc758903ae35cde33411460516c2ae"},
+"abilities/spells/human/defend/defendcaster":{"file":"sound-v2/abilities/spells/human/defend/defendcaster.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/Human/Defend/DefendCaster.wav","sha256":"30a69072a15e032c07143963b595112d9e84a4203613ff4ea9bb00acb84d5512"},
+"abilities/spells/human/flamestrike/flamestriketargetwavenonloop1":{"file":"sound-v2/abilities/spells/human/flamestrike/flamestriketargetwavenonloop1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/human/flamestrike/flamestriketargetwavenonloop1.ogg","sha256":"fb75e7ffd0082d5f9a3e380358584ed1a3c515aec09c0ade85a6f0e0d9255db4"},
+"abilities/spells/human/holybolt/holybolt":{"file":"sound-v2/abilities/spells/human/holybolt/holybolt.ogg","source":"Warcraft III extracted files","path":"abilities/spells/human/holybolt/holybolt.ogg","sha256":"f74a7a639ba6ef5788c9158c8696f20a61a7ce5d3f6c715654a4268762679a60"},
+"abilities/spells/human/resurrect/resurrecttarget":{"file":"sound-v2/abilities/spells/human/resurrect/resurrecttarget.ogg","source":"Warcraft III extracted files","path":"abilities/spells/human/resurrect/resurrecttarget.ogg","sha256":"5acda78a5d811e6bfd37f5112e0596c66df43a4cdc29175af84b2d6c064bf4a4"},
+"abilities/spells/human/stormbolt/thunderboltmissiledeath":{"file":"sound-v2/abilities/spells/human/stormbolt/thunderboltmissiledeath.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/Human/StormBolt/ThunderBoltMissileDeath.wav","sha256":"bfdea6562eb0485c9f8f4ed0e76c71982fc0d0b413fb31cec00de4b0b6d216ce"},
+"abilities/spells/nightelf/barkskin/barkskintarget1":{"file":"sound-v2/abilities/spells/nightelf/barkskin/barkskintarget1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/nightelf/barkskin/barkskintarget1.ogg","sha256":"732fc40d28320b0cac9596f5e5b48be016bcb30d6f71db03f1b81bce244bd551"},
+"abilities/spells/nightelf/battleroar/battleroar":{"file":"sound-v2/abilities/spells/nightelf/battleroar/battleroar.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/NightElf/BattleRoar/BattleRoar.wav","sha256":"b0c210f54a75cf466e27e4be15df5789c746e54462f6e0350b9b3c6b7b46f4f3"},
+"abilities/spells/nightelf/corrosivebreath/corrosivebreathmissilelaunch1":{"file":"sound-v2/abilities/spells/nightelf/corrosivebreath/corrosivebreathmissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/nightelf/corrosivebreath/corrosivebreathmissilelaunch1.ogg","sha256":"745b4f895b16ffb2eb2d0cb6454cb96a30264fb7aad931c7f50b0c86776db56d"},
+"abilities/spells/nightelf/corrosivebreath/corrosivebreathmissiletarget1":{"file":"sound-v2/abilities/spells/nightelf/corrosivebreath/corrosivebreathmissiletarget1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/nightelf/corrosivebreath/corrosivebreathmissiletarget1.ogg","sha256":"71300a938bf62b4501013548b47c0c486227ff133e0b33e0eb0192904b6c86e1"},
+"abilities/spells/nightelf/shadowstrike/shadowstrikemissile1":{"file":"sound-v2/abilities/spells/nightelf/shadowstrike/shadowstrikemissile1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/nightelf/shadowstrike/shadowstrikemissile1.ogg","sha256":"91cbc14b11674941191bad74f487c689cf6e2d36e34131aa1a944cec76633372"},
+"abilities/spells/orc/ensnare/ensnaremissile":{"file":"sound-v2/abilities/spells/orc/ensnare/ensnaremissile.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/Orc/Ensnare/EnsnareMissile.wav","sha256":"f9322e87042dcb26b2a94305309d7ece6edc3d53d0fa5e13af2b3331f182f60b"},
+"abilities/spells/orc/healingwave/healingwave":{"file":"sound-v2/abilities/spells/orc/healingwave/healingwave.flac","source":"TowerSurvivors-v2.0.w3x","path":"Abilities/Spells/Orc/HealingWave/HealingWave.flac","sha256":"e425e30942610901ca9b596ce441cd771e479482e9cb927011c3aaae463cac78"},
+"abilities/spells/orc/lightningbolt/lightningbolt":{"file":"sound-v2/abilities/spells/orc/lightningbolt/lightningbolt.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/Orc/LightningBolt/LightningBolt.wav","sha256":"ff2e16587f031374553d87b9a90b5a7f1905929a181b33a14e465503add47d63"},
+"abilities/spells/orc/shockwave/shockwave":{"file":"sound-v2/abilities/spells/orc/shockwave/shockwave.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/Orc/Shockwave/Shockwave.wav","sha256":"a3e1581e7eccc0478baa51574cd2608cad5c2e76b48687a1fd4ff34aaeba8467"},
+"abilities/spells/orc/spiritlink/spiritlink1":{"file":"sound-v2/abilities/spells/orc/spiritlink/spiritlink1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/orc/spiritlink/spiritlink1.ogg","sha256":"76c0bfa0496ede47a436b795d7ad6713437cc0092d82b07d0eeb0e407a363d0f"},
+"abilities/spells/other/acidbomb/alchemistacidburnmissiledeath1":{"file":"sound-v2/abilities/spells/other/acidbomb/alchemistacidburnmissiledeath1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/other/acidbomb/alchemistacidburnmissiledeath1.ogg","sha256":"da4ada0dc75a517e4b3b929c2ac1a543c08fabd72ba0752fc0dc370742eb4fe1"},
+"abilities/spells/other/breathoffire/breathoffire1":{"file":"sound-v2/abilities/spells/other/breathoffire/breathoffire1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/other/breathoffire/breathoffire1.ogg","sha256":"cbd9d9cc9fa336dc009b0d5491f46e3c6de1d45221a162fdb1cce8e84d885074"},
+"abilities/spells/other/breathoffrost/breathoffrost1":{"file":"sound-v2/abilities/spells/other/breathoffrost/breathoffrost1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/other/breathoffrost/breathoffrost1.ogg","sha256":"4fd360d61dab5b75149f1b4de506e167ff4000e2e3d4864f1d088fc28561d067"},
+"abilities/spells/other/crushingwave/crushingwavecaster1":{"file":"sound-v2/abilities/spells/other/crushingwave/crushingwavecaster1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/other/crushingwave/crushingwavecaster1.ogg","sha256":"b84ed9b37acc67a978985e551c6fcadfd4768e6e4fc5e1bcf845a2229c9b733c"},
+"abilities/spells/other/crushingwave/crushingwavetarget1":{"file":"sound-v2/abilities/spells/other/crushingwave/crushingwavetarget1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/other/crushingwave/crushingwavetarget1.ogg","sha256":"0b526f93757624b24a09956afa01c8b929930904ca2da0a33b1747f3df89a247"},
+"abilities/spells/other/drain/siphonmana":{"file":"sound-v2/abilities/spells/other/drain/siphonmana.ogg","source":"Warcraft III extracted files","path":"abilities/spells/other/drain/siphonmana.ogg","sha256":"ca7d05329080dee329ff4ccdd2fd13d2f15775012e33f51194d689236285b38e"},
+"abilities/spells/other/frostbolt/frostbolthit1":{"file":"sound-v2/abilities/spells/other/frostbolt/frostbolthit1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/other/frostbolt/frostbolthit1.ogg","sha256":"d7f6339961c3a03787a13916f452a117cd1904e8d6b173523a24503097d9447d"},
+"abilities/spells/other/healingspray/healingspraybirth1":{"file":"sound-v2/abilities/spells/other/healingspray/healingspraybirth1.flac","source":"TowerSurvivors-v2.0.w3x","path":"Abilities/Spells/Other/HealingSpray/HealingSprayBirth1.flac","sha256":"3e4c288188b7efb57d0315649aaafad9e150066d53fdc928c95d7c2160a400cc"},
+"abilities/spells/other/healingspray/healingspraydeath1":{"file":"sound-v2/abilities/spells/other/healingspray/healingspraydeath1.flac","source":"TowerSurvivors-v2.0.w3x","path":"Abilities/Spells/Other/HealingSpray/HealingSprayDeath1.flac","sha256":"d34616f36fdcae51dfd4fe92bb1949819853a8eda7eb75323c022b74a402b4ab"},
+"abilities/spells/other/incinerate/incinerate1":{"file":"sound-v2/abilities/spells/other/incinerate/incinerate1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/other/incinerate/incinerate1.ogg","sha256":"7941977e0be646c468d04f2fea5ef608204ccb3a8b57d5c024d925ac9279d595"},
+"abilities/spells/other/monsoon/monsoonlightninghit":{"file":"sound-v2/abilities/spells/other/monsoon/monsoonlightninghit.ogg","source":"Warcraft III extracted files","path":"abilities/spells/other/monsoon/monsoonlightninghit.ogg","sha256":"132c2bc26a7a65b5dec5ac6eada1408a055973477c8408ca04157520babac6e2"},
+"abilities/spells/other/repair/peonrepair1":{"file":"sound-v2/abilities/spells/other/repair/peonrepair1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/Other/Repair/PeonRepair1.wav","sha256":"72b112ac59bb8080e61d6fa5354589123c590499f3b75a8827fc879e4566c788"},
+"abilities/spells/other/repair/peonrepair2":{"file":"sound-v2/abilities/spells/other/repair/peonrepair2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/Other/Repair/PeonRepair2.wav","sha256":"38643dd0222070244987d79993399503ec66de2394bdbbe45b15641be961b58d"},
+"abilities/spells/other/repair/peonrepair3":{"file":"sound-v2/abilities/spells/other/repair/peonrepair3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/Other/Repair/PeonRepair3.wav","sha256":"c27f28089f89a264796d29a09a7ac71988ab2b0333d1b4ac23130ea9ca7da651"},
+"abilities/spells/other/strongdrink/strongdrinkmissile1":{"file":"sound-v2/abilities/spells/other/strongdrink/strongdrinkmissile1.flac","source":"TowerSurvivors-v2.0.w3x","path":"Abilities/Spells/Other/StrongDrink/StrongDrinkMissile1.flac","sha256":"c46483dd0a39e03d4b9f88cd39124e16767766c79030badf6eec75e2531567e0"},
+"abilities/spells/other/tinkerrocket/tinkermissiledeath1":{"file":"sound-v2/abilities/spells/other/tinkerrocket/tinkermissiledeath1.flac","source":"TowerSurvivors-v2.0.w3x","path":"Abilities/Spells/Other/TinkerRocket/TinkerMissileDeath1.flac","sha256":"e51d65fc28d40143621b013870d6e8ac10d37a406c6e3a8cde8e5b50c0aa40a9"},
+"abilities/spells/other/tinkerrocket/tinkermissilelaunch1":{"file":"sound-v2/abilities/spells/other/tinkerrocket/tinkermissilelaunch1.flac","source":"TowerSurvivors-v2.0.w3x","path":"Abilities/Spells/Other/TinkerRocket/TinkerMissileLaunch1.flac","sha256":"3c438a894985704952e650705872634f6646f9e62d04ff0b84cfad128298924a"},
+"abilities/spells/undead/burrow/burrow":{"file":"sound-v2/abilities/spells/undead/burrow/burrow.ogg","source":"Warcraft III extracted files","path":"abilities/spells/undead/burrow/burrow.ogg","sha256":"308841eb7d8bde3033886355637d311ee355ca73f56056ff3f66b32b93fccd86"},
+"abilities/spells/undead/carrionswarm/carrionswarmlaunch1":{"file":"sound-v2/abilities/spells/undead/carrionswarm/carrionswarmlaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/undead/carrionswarm/carrionswarmlaunch1.ogg","sha256":"40d2fcb05090b2284cb74516d048fc2070e452a1ccf8df96cdef59f33e64283c"},
+"abilities/spells/undead/cripple/crippletarget1":{"file":"sound-v2/abilities/spells/undead/cripple/crippletarget1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Spells/Undead/Cripple/CrippleTarget1.wav","sha256":"0ab1bf98eb0b0030a5518b17562614a48a5a8ea95f8e3181c62db47f75ec1366"},
+"abilities/spells/undead/darkritual/darkritualtarget1":{"file":"sound-v2/abilities/spells/undead/darkritual/darkritualtarget1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/undead/darkritual/darkritualtarget1.ogg","sha256":"57590ad39926e2c05423dfd009c0a4b10ce227b9c9d9b7ddae137e55e38e5a6e"},
+"abilities/spells/undead/deathcoil/deathcoilmissilelaunch1":{"file":"sound-v2/abilities/spells/undead/deathcoil/deathcoilmissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/undead/deathcoil/deathcoilmissilelaunch1.ogg","sha256":"86deee1b624e291798b8eb83d3c93443613ed04dadcd996bdd60b04b08a16242"},
+"abilities/spells/undead/web/webmissilelaunch1":{"file":"sound-v2/abilities/spells/undead/web/webmissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/spells/undead/web/webmissilelaunch1.ogg","sha256":"ba7584741087b0342af868d93f064db5bfd47cd4cc0a1b6f2efed1075520cc28"},
+"abilities/weapons/ancestralguardianmissile/ancestralguardianhit1":{"file":"sound-v2/abilities/weapons/ancestralguardianmissile/ancestralguardianhit1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/ancestralguardianmissile/ancestralguardianhit1.ogg","sha256":"e01a11aa49d40d4bdf039af41f3a973a7a793a52d04815b508864a891fd314ad"},
+"abilities/weapons/ancestralguardianmissile/ancestralguardianmissilelaunch":{"file":"sound-v2/abilities/weapons/ancestralguardianmissile/ancestralguardianmissilelaunch.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/ancestralguardianmissile/ancestralguardianmissilelaunch.ogg","sha256":"de63f6124b8531684bce3e30842e69602162a208d9facc4e036a1d82cb421956"},
+"abilities/weapons/ancientprotectormissile/ancientprotectormissilehit1":{"file":"sound-v2/abilities/weapons/ancientprotectormissile/ancientprotectormissilehit1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileHit1.wav","sha256":"6dd3e8611d75574797c27b95078df9a7c8915c8d1d1429411e836fb15f4ff810"},
+"abilities/weapons/ancientprotectormissile/ancientprotectormissilehit2":{"file":"sound-v2/abilities/weapons/ancientprotectormissile/ancientprotectormissilehit2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileHit2.wav","sha256":"28e8d609b2dea2fbd9d2a6da5da02020f759379131005b0c6e39fc36e3f1ad77"},
+"abilities/weapons/ancientprotectormissile/ancientprotectormissilehit3":{"file":"sound-v2/abilities/weapons/ancientprotectormissile/ancientprotectormissilehit3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileHit3.wav","sha256":"12c210665a203d3c1f2b7ee55739f675653dd936194b1df8af5d324f092fbe63"},
+"abilities/weapons/ancientprotectormissile/ancientprotectormissilelaunch1":{"file":"sound-v2/abilities/weapons/ancientprotectormissile/ancientprotectormissilelaunch1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileLaunch1.wav","sha256":"ce9ee960b00246e9918e8d4de940faf36f37b8bf0347934fb8087fe74adee4b2"},
+"abilities/weapons/ancientprotectormissile/ancientprotectormissilelaunch2":{"file":"sound-v2/abilities/weapons/ancientprotectormissile/ancientprotectormissilelaunch2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileLaunch2.wav","sha256":"40fe19767b1e3de091bb026f8b268f418300eaa92217594f1b13da13b4244521"},
+"abilities/weapons/ancientprotectormissile/ancientprotectormissilelaunch3":{"file":"sound-v2/abilities/weapons/ancientprotectormissile/ancientprotectormissilelaunch3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/AncientProtectorMissile/AncientProtectorMissileLaunch3.wav","sha256":"a6562ef816bbd67de30545293299ad52d1ca9e31dc03801f7de24cdf23a3d23d"},
+"abilities/weapons/arrow/arrowattack1":{"file":"sound-v2/abilities/weapons/arrow/arrowattack1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Arrow/ArrowAttack1.wav","sha256":"ce8436cd685c0235c2d351f025e69b29e657e2c7b71df0cde1807393b8d872a6"},
+"abilities/weapons/arrow/arrowimpact":{"file":"sound-v2/abilities/weapons/arrow/arrowimpact.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Arrow/ArrowImpact.wav","sha256":"97abca4a7a1b2b4e5ba261d2d2e35d5e3483f8b75b4380fa014b0b604cac9b0a"},
+"abilities/weapons/axe/axemissile1":{"file":"sound-v2/abilities/weapons/axe/axemissile1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Axe/AxeMissile1.wav","sha256":"a29a53899321cdf3e39ddaa1a800df7d535dad7843d11eaa79c2c27946d439ff"},
+"abilities/weapons/axe/axemissile2":{"file":"sound-v2/abilities/weapons/axe/axemissile2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Axe/AxeMissile2.wav","sha256":"80130275a183708f89ac2e68c9a6d93d07f5ce1bbcb68d58f04a313341a78a36"},
+"abilities/weapons/axe/axemissilelaunch1":{"file":"sound-v2/abilities/weapons/axe/axemissilelaunch1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Axe/AxeMissileLaunch1.wav","sha256":"b22f3b73468d94c6028cb9220291ba23847f1dad1ad360fdbf4d17697ccae601"},
+"abilities/weapons/battrollmissile/trollbatridermissile1":{"file":"sound-v2/abilities/weapons/battrollmissile/trollbatridermissile1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/battrollmissile/trollbatridermissile1.ogg","sha256":"73752493bd856dc82b7db6ea99bf9a1983d7549017ee9900a3436ffee2a666e9"},
+"abilities/weapons/battrollmissile/trollbatridermissile2":{"file":"sound-v2/abilities/weapons/battrollmissile/trollbatridermissile2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/battrollmissile/trollbatridermissile2.ogg","sha256":"7bd3daac6f1e4aaaa28b96c57cc1bb5136cb29cc558af3f61114c08261a48bd0"},
+"abilities/weapons/battrollmissile/trollbatridermissile3":{"file":"sound-v2/abilities/weapons/battrollmissile/trollbatridermissile3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/battrollmissile/trollbatridermissile3.ogg","sha256":"4bfd9f762a87918e01f568f3930740a0c6184987760e2f7a06fff3aed2309e49"},
+"abilities/weapons/boatmissile/boatattack1":{"file":"sound-v2/abilities/weapons/boatmissile/boatattack1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/boatmissile/boatattack1.ogg","sha256":"1448391392f45a757fae356c8544ed8916a932c48ca94c22874449de5b7f44b6"},
+"abilities/weapons/boatmissile/boatmissilehit":{"file":"sound-v2/abilities/weapons/boatmissile/boatmissilehit.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/boatmissile/boatmissilehit.ogg","sha256":"585b39800263f8188189cbbb8f0a5f0f8bccfecef3fb60a98e11531f2d331b0f"},
+"abilities/weapons/cannontowermissile/cannontowermissile1":{"file":"sound-v2/abilities/weapons/cannontowermissile/cannontowermissile1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/CannonTowerMissile/CannonTowerMissile1.wav","sha256":"9322444c19c17a7a290cf92f0ba7c3e0cbb6bc0ef55d7601c8a9b348dd81f965"},
+"abilities/weapons/cannontowermissile/cannontowermissile2":{"file":"sound-v2/abilities/weapons/cannontowermissile/cannontowermissile2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/CannonTowerMissile/CannonTowerMissile2.wav","sha256":"4070f915b4ccb9a56420e70fe52045f9bd9e89d504c2c5adca5c30a55e808aba"},
+"abilities/weapons/cannontowermissile/cannontowermissile3":{"file":"sound-v2/abilities/weapons/cannontowermissile/cannontowermissile3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/CannonTowerMissile/CannonTowerMissile3.wav","sha256":"5da152432350559b402402853d2ee85ad766867928039f570ed5a09473765b2d"},
+"abilities/weapons/cannontowermissile/cannontowermissilelaunch1":{"file":"sound-v2/abilities/weapons/cannontowermissile/cannontowermissilelaunch1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/CannonTowerMissile/CannonTowerMissileLaunch1.wav","sha256":"e265299a74aeb6285f9a3dcb826f3843921f38dc62d88651c4a6a9a3795ae0ff"},
+"abilities/weapons/cannontowermissile/cannontowermissilelaunch2":{"file":"sound-v2/abilities/weapons/cannontowermissile/cannontowermissilelaunch2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/CannonTowerMissile/CannonTowerMissileLaunch2.wav","sha256":"ee8383b98eb008967b259929ab21d4208cdc210ee9ccb6813784cfe557273e10"},
+"abilities/weapons/cannontowermissile/cannontowermissilelaunch3":{"file":"sound-v2/abilities/weapons/cannontowermissile/cannontowermissilelaunch3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/CannonTowerMissile/CannonTowerMissileLaunch3.wav","sha256":"0c407147327cf7734e078f3341e2f9f6db020b5b3a0947cf339db94c9ae901c8"},
+"abilities/weapons/catapult/catapultmissile1":{"file":"sound-v2/abilities/weapons/catapult/catapultmissile1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Catapult/CatapultMissile1.wav","sha256":"fa97ee7c5dd052c94bd9b9319d679df67961264a4d7ff8c337266a2bb451c7db"},
+"abilities/weapons/catapult/catapultmissile2":{"file":"sound-v2/abilities/weapons/catapult/catapultmissile2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Catapult/CatapultMissile2.wav","sha256":"e0aa82d2079967f63222ebdfee16d5e01f28cb3004fa0523c6d6193fb8c7ca17"},
+"abilities/weapons/catapult/catapultmissile3":{"file":"sound-v2/abilities/weapons/catapult/catapultmissile3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Catapult/CatapultMissile3.wav","sha256":"5723b71fb80fc6b538469b102cf0a3fe350b2f9c5875d3b075d8527e1d1c71bf"},
+"abilities/weapons/catapult/catapultmissile4":{"file":"sound-v2/abilities/weapons/catapult/catapultmissile4.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Catapult/CatapultMissile4.wav","sha256":"d7887fb9bdf0f69efc5fbb8e9312009fff1e2241bacdd324c2b4f1e69f5a4b8b"},
+"abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilehit1":{"file":"sound-v2/abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilehit1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileHit1.wav","sha256":"b5ac00c1086268b8d3bb4d7682f38555663eb61815fb48305caa774623ff1c0b"},
+"abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilehit2":{"file":"sound-v2/abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilehit2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileHit2.wav","sha256":"94ec6a7b5174726d0e53edd655f6f75ff2b93872391ce174f0f95205db210d10"},
+"abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilehit3":{"file":"sound-v2/abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilehit3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileHit3.wav","sha256":"725c18f60949701b7865da1cf320e39ce7b2bcc8da7c5972a59c92f499e973a1"},
+"abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilelaunch1":{"file":"sound-v2/abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilelaunch1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileLaunch1.wav","sha256":"8a90b891d80009ccef8ddb23abddf654a381d15c0214508ae70d120440ca7c9d"},
+"abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilelaunch2":{"file":"sound-v2/abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilelaunch2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileLaunch2.wav","sha256":"3ae1e7656954722c02c12fc5722b0118aaa18395e22d3d0fb73164b470cb8086"},
+"abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilelaunch3":{"file":"sound-v2/abilities/weapons/chimaeraacidmissile/chimaeraalternatemissilelaunch3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAlternateMissileLaunch3.wav","sha256":"9145fdc9b23270f805d78aae4ee7ea8b082fcdb0f0a11b9dfac1142424aef36f"},
+"abilities/weapons/coldarrow/coldarrow1":{"file":"sound-v2/abilities/weapons/coldarrow/coldarrow1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/ColdArrow/ColdArrow1.wav","sha256":"577bda397b734b674f9236f3d5ce18e89a03f90e073d99030fc10dc6ef07033f"},
+"abilities/weapons/coldarrow/coldarrow2":{"file":"sound-v2/abilities/weapons/coldarrow/coldarrow2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/ColdArrow/ColdArrow2.wav","sha256":"6c6b80ee145cce1c2a91c2890f5a9bd0a1081dea8c434987ebcc2434edfe7da3"},
+"abilities/weapons/coldarrow/coldarrow3":{"file":"sound-v2/abilities/weapons/coldarrow/coldarrow3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/ColdArrow/ColdArrow3.wav","sha256":"59a1ed73b1b2b2aa9caee8993913ba3a45c80056f7ebd4ee7c32f6f11bd57729"},
+"abilities/weapons/demonhuntermissile/demonhuntermissilehit1":{"file":"sound-v2/abilities/weapons/demonhuntermissile/demonhuntermissilehit1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/demonhuntermissile/demonhuntermissilehit1.ogg","sha256":"3eada7030aefebcf12db0ff33a91a01d546b56246a6e79ec5e59e59a9d4288ae"},
+"abilities/weapons/demonhuntermissile/demonhuntermissilehit2":{"file":"sound-v2/abilities/weapons/demonhuntermissile/demonhuntermissilehit2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/demonhuntermissile/demonhuntermissilehit2.ogg","sha256":"14cb81cd7fd0697a9dc113d915dfb6dfc75c29650940a2e03648c0e199eacec3"},
+"abilities/weapons/demonhuntermissile/demonhuntermissilehit3":{"file":"sound-v2/abilities/weapons/demonhuntermissile/demonhuntermissilehit3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/demonhuntermissile/demonhuntermissilehit3.ogg","sha256":"2096713efe0d194e7db5b02250c9d5dc3aaf709c6407a3a6bf6cd4868c04c19e"},
+"abilities/weapons/demonhuntermissile/herodemonmissilelaunch1":{"file":"sound-v2/abilities/weapons/demonhuntermissile/herodemonmissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/demonhuntermissile/herodemonmissilelaunch1.ogg","sha256":"414071009dd07bdc3688a8412765190c3755538c3af051a678afdbf6fe676872"},
+"abilities/weapons/demonhuntermissile/herodemonmissilelaunch2":{"file":"sound-v2/abilities/weapons/demonhuntermissile/herodemonmissilelaunch2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/demonhuntermissile/herodemonmissilelaunch2.ogg","sha256":"9c329b753d842388e0dfdaf7fcf8d64372674e2d5109592ea6c70e18bb101725"},
+"abilities/weapons/dragonhawkmissile/windserpentmissile":{"file":"sound-v2/abilities/weapons/dragonhawkmissile/windserpentmissile.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/dragonhawkmissile/windserpentmissile.ogg","sha256":"c5bd04fbc0e57adbd5c19a238adca6391d9ab5dd468ec8d255fbbf511fb5f16f"},
+"abilities/weapons/druidofthetalonmissile/druidofthetalonmissilehit1":{"file":"sound-v2/abilities/weapons/druidofthetalonmissile/druidofthetalonmissilehit1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileHit1.wav","sha256":"f35d4b73bf8983d4e428fe65b3bccd8ce4b100d1e500bb1db7728ce32f31214a"},
+"abilities/weapons/druidofthetalonmissile/druidofthetalonmissilehit2":{"file":"sound-v2/abilities/weapons/druidofthetalonmissile/druidofthetalonmissilehit2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileHit2.wav","sha256":"16ac595f816e81d992f703162809181a4578d3903d29861aff002f67716aa66e"},
+"abilities/weapons/druidofthetalonmissile/druidofthetalonmissilehit3":{"file":"sound-v2/abilities/weapons/druidofthetalonmissile/druidofthetalonmissilehit3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileHit3.wav","sha256":"23bd32cbc471e12cdac8e905f0a2bb5d74e8d83084b750e8397e356d4bebde4a"},
+"abilities/weapons/druidofthetalonmissile/druidofthetalonmissilelaunch1":{"file":"sound-v2/abilities/weapons/druidofthetalonmissile/druidofthetalonmissilelaunch1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileLaunch1.wav","sha256":"97968eb4cbced9ffed3628b21e5a11f46406fd042a0396505369945723df8b70"},
+"abilities/weapons/druidofthetalonmissile/druidofthetalonmissilelaunch2":{"file":"sound-v2/abilities/weapons/druidofthetalonmissile/druidofthetalonmissilelaunch2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/DruidoftheTalonMissile/DruidOfTheTalonMissileLaunch2.wav","sha256":"d5e92617c8f180d3d76c5f7ea682045c082d54129f3b09ce6edf4132f3f377cc"},
+"abilities/weapons/dryadmissile/dryadmissile1":{"file":"sound-v2/abilities/weapons/dryadmissile/dryadmissile1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/dryadmissile/dryadmissile1.ogg","sha256":"7e298ffa01d6aedb34613cfcea33b832c39130c6cb17950a41ce730fd93482da"},
+"abilities/weapons/dryadmissile/dryadmissile2":{"file":"sound-v2/abilities/weapons/dryadmissile/dryadmissile2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/dryadmissile/dryadmissile2.ogg","sha256":"35ee297ec6c58c9cd310d0610b5d47b2bd9c0598367214397284ff8e6feb6ecd"},
+"abilities/weapons/farseermissile/farseermissile":{"file":"sound-v2/abilities/weapons/farseermissile/farseermissile.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/FarseerMissile/FarseerMissile.wav","sha256":"3067c1f7a8f51bf224d10f7075c80c057d88024114a0d05d0a7bb6f83c7149eb"},
+"abilities/weapons/farseermissile/farseermissilelaunch":{"file":"sound-v2/abilities/weapons/farseermissile/farseermissilelaunch.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/FarseerMissile/FarseerMissileLaunch.wav","sha256":"5a7698aa6b9d2648c7b02a3a14b76c96a1654f5cb23fd023c4a4fb5941cd8aef"},
+"abilities/weapons/fireballmissile/fireballmissiledeath":{"file":"sound-v2/abilities/weapons/fireballmissile/fireballmissiledeath.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/FireBallMissile/FireBallMissileDeath.wav","sha256":"7820824786f4fbc013786b8c52f672ab90dc7560c148420cb4bbe92778eb64f0"},
+"abilities/weapons/fireballmissile/fireballmissilelaunch1":{"file":"sound-v2/abilities/weapons/fireballmissile/fireballmissilelaunch1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/FireBallMissile/FireBallMissileLaunch1.wav","sha256":"9efc67e433a0ad1b3fa8cd3c8b1f4d008f60ac34f2a22a1c6dbe9efeb376d35b"},
+"abilities/weapons/fireballmissile/fireballmissilelaunch2":{"file":"sound-v2/abilities/weapons/fireballmissile/fireballmissilelaunch2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/FireBallMissile/FireBallMissileLaunch2.wav","sha256":"884ae043b8d371605310e099c8449e0b0e0b345f26b6113cdb20efe8416a081a"},
+"abilities/weapons/fireballmissile/fireballmissilelaunch3":{"file":"sound-v2/abilities/weapons/fireballmissile/fireballmissilelaunch3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/FireBallMissile/FireBallMissileLaunch3.wav","sha256":"74650b9c8db33c8738c2a76528a8a46121e82dd04d147a6eb65d426bf30648a5"},
+"abilities/weapons/gargoylemissile/gargoylemissilelaunch1":{"file":"sound-v2/abilities/weapons/gargoylemissile/gargoylemissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/gargoylemissile/gargoylemissilelaunch1.ogg","sha256":"9cc1cb3f34b6088149d0a4f37a9951b105277094c15e1225925f2b6e3415bfa5"},
+"abilities/weapons/gargoylemissile/gargoylemissilelaunch2":{"file":"sound-v2/abilities/weapons/gargoylemissile/gargoylemissilelaunch2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/gargoylemissile/gargoylemissilelaunch2.ogg","sha256":"4611b0be3fb81b19666dc0ec4b3685086a9f245ff81389c26e129335f3d75599"},
+"abilities/weapons/gargoylemissile/gargoylemissilelaunch3":{"file":"sound-v2/abilities/weapons/gargoylemissile/gargoylemissilelaunch3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/gargoylemissile/gargoylemissilelaunch3.ogg","sha256":"46ddf8e284d608e4aaf688a0fa6a40c07cde7e7ea500319543ff773d796d7a13"},
+"abilities/weapons/gryphonridermissile/gryphonridermissilelaunch1":{"file":"sound-v2/abilities/weapons/gryphonridermissile/gryphonridermissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/gryphonridermissile/gryphonridermissilelaunch1.ogg","sha256":"e9bf7aa1aa9bedf64a8d42f47cd9b83727f60473b5e9a5d8c86350d2f0694a94"},
+"abilities/weapons/gryphonridermissile/gryphonridermissilelaunch2":{"file":"sound-v2/abilities/weapons/gryphonridermissile/gryphonridermissilelaunch2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/gryphonridermissile/gryphonridermissilelaunch2.ogg","sha256":"b8fb9765984c751cc9abbbf7090418bb3b63e41ffc0d0144215729302f22f97f"},
+"abilities/weapons/gryphonridermissile/gryphonridermissilelaunch3":{"file":"sound-v2/abilities/weapons/gryphonridermissile/gryphonridermissilelaunch3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/gryphonridermissile/gryphonridermissilelaunch3.ogg","sha256":"91effbf0b169500879d9f94060bea44ab35c84bd347ee092769150474eabd44b"},
+"abilities/weapons/guardtowermissile/guardtowermissilehit1":{"file":"sound-v2/abilities/weapons/guardtowermissile/guardtowermissilehit1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/GuardTowerMissile/GuardTowerMissileHit1.wav","sha256":"ae5413f5dcf45fa0ff765fa18a778b5a0b490834c4fbbae54aa4e95016e02341"},
+"abilities/weapons/guardtowermissile/guardtowermissilehit2":{"file":"sound-v2/abilities/weapons/guardtowermissile/guardtowermissilehit2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/GuardTowerMissile/GuardTowerMissileHit2.wav","sha256":"c3c5206ad6dbe9f04195c4a0658225b06e6ce711775244e3950acfccb87f78a3"},
+"abilities/weapons/guardtowermissile/guardtowermissilehit3":{"file":"sound-v2/abilities/weapons/guardtowermissile/guardtowermissilehit3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/GuardTowerMissile/GuardTowerMissileHit3.wav","sha256":"f14d707a5fb1437b17a8e158315480b24e59c855c72619cbde1c6567eee92462"},
+"abilities/weapons/harpymissile/harpymissilehit1":{"file":"sound-v2/abilities/weapons/harpymissile/harpymissilehit1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/harpymissile/harpymissilehit1.ogg","sha256":"5e2d532032b732822add94f8c868d4c4c497655c84e79bbfec3039d34eb56c5a"},
+"abilities/weapons/harpymissile/harpymissilehit2":{"file":"sound-v2/abilities/weapons/harpymissile/harpymissilehit2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/harpymissile/harpymissilehit2.ogg","sha256":"45690dced54cc2ed3eb0588442e18c7b01f9e19768a12dc8756909ba26d2aeb3"},
+"abilities/weapons/harpymissile/harpymissilehit3":{"file":"sound-v2/abilities/weapons/harpymissile/harpymissilehit3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/harpymissile/harpymissilehit3.ogg","sha256":"cb4b79619a3bfff6de3fdd18ea60dbe450122698779c5e0e3126ded3ba33460b"},
+"abilities/weapons/harpymissile/harpymissilelaunch1":{"file":"sound-v2/abilities/weapons/harpymissile/harpymissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/harpymissile/harpymissilelaunch1.ogg","sha256":"ccb463fa85ca48a05886fef9dd8b76d5df86bb1b87cf5a84f5c9d2e4fc950d9d"},
+"abilities/weapons/harpymissile/harpymissilelaunch2":{"file":"sound-v2/abilities/weapons/harpymissile/harpymissilelaunch2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/harpymissile/harpymissilelaunch2.ogg","sha256":"c52b4e737090c3cfe9e3e260bea3c94aac1fde575a2858dfa8b67367eaac4f8d"},
+"abilities/weapons/harpymissile/harpymissilelaunch3":{"file":"sound-v2/abilities/weapons/harpymissile/harpymissilelaunch3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/harpymissile/harpymissilelaunch3.ogg","sha256":"64d1eabfc3ede3d082acb5a79f27e07840b26f006e4b5fd6518c84b98b64d84c"},
+"abilities/weapons/huntermissile/headhuntermissilehit1":{"file":"sound-v2/abilities/weapons/huntermissile/headhuntermissilehit1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/huntermissile/HeadHunterMissileHit1.wav","sha256":"a3c13b9a65c4577d1bfed52a9accc3cc8f7bfdd83b73548d96069805d4079f44"},
+"abilities/weapons/huntermissile/headhuntermissilehit2":{"file":"sound-v2/abilities/weapons/huntermissile/headhuntermissilehit2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/huntermissile/HeadHunterMissileHit2.wav","sha256":"3df04720319bff210501fe6928d4c119ace64ac0786edc0a18a019b0627a5f26"},
+"abilities/weapons/huntermissile/headhuntermissilelaunch":{"file":"sound-v2/abilities/weapons/huntermissile/headhuntermissilelaunch.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/huntermissile/HeadHunterMissileLaunch.wav","sha256":"55dd197d8cbd05ffe93d28711bc4ab94231fdb42a739f5c2c7e39d81e7e68f2b"},
+"abilities/weapons/keepergrovemissile/keeperofthegrovemissilelaunch1":{"file":"sound-v2/abilities/weapons/keepergrovemissile/keeperofthegrovemissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/keepergrovemissile/keeperofthegrovemissilelaunch1.ogg","sha256":"50db5cc1368ada44103a996fed1d1f9da0c159715c84d4ab657fb73796e1844d"},
+"abilities/weapons/keepergrovemissile/keeperofthegrovemissilelaunch2":{"file":"sound-v2/abilities/weapons/keepergrovemissile/keeperofthegrovemissilelaunch2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/keepergrovemissile/keeperofthegrovemissilelaunch2.ogg","sha256":"197a35306dc9c01f142b871c4c409f0f050c5d9070c6beefbb7e5b697f360eb2"},
+"abilities/weapons/keepergrovemissile/keeperofthegrovemissilelaunch3":{"file":"sound-v2/abilities/weapons/keepergrovemissile/keeperofthegrovemissilelaunch3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/keepergrovemissile/keeperofthegrovemissilelaunch3.ogg","sha256":"f07bfa7a237b009f8866d2d156c4211aa056310a4cebe98c9325a3c998d80392"},
+"abilities/weapons/lavaspawnmissile/lavaspawnmissiledeath1":{"file":"sound-v2/abilities/weapons/lavaspawnmissile/lavaspawnmissiledeath1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/lavaspawnmissile/lavaspawnmissiledeath1.ogg","sha256":"50eaa7dfdc83cd2d00f5adad534bee5bda2a288dcf105fcd9f28d3e919548676"},
+"abilities/weapons/lichmissile/lichmissilehit1":{"file":"sound-v2/abilities/weapons/lichmissile/lichmissilehit1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/LichMissile/LichMissileHit1.wav","sha256":"2effb00b4062104a5cd010719c04a6794cb931bd4e991975307037d39821f1ed"},
+"abilities/weapons/lichmissile/lichmissilehit2":{"file":"sound-v2/abilities/weapons/lichmissile/lichmissilehit2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/LichMissile/LichMissileHit2.wav","sha256":"333f94535b48682561661fd90da461d0e3a3f29144c24f7dc521f2f4c2bfd352"},
+"abilities/weapons/lichmissile/lichmissilehit3":{"file":"sound-v2/abilities/weapons/lichmissile/lichmissilehit3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/LichMissile/LichMissileHit3.wav","sha256":"493615880a3254e2fa42db4fa80b95c39c932e487701392fd67f6bbe12678d82"},
+"abilities/weapons/meatwagonmissile/meatwagonmissilehit1":{"file":"sound-v2/abilities/weapons/meatwagonmissile/meatwagonmissilehit1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/meatwagonmissile/meatwagonmissilehit1.ogg","sha256":"c95a93a45103aeca2a94fb7f3951faf7629075f504fcc54d2e047954ede81cb8"},
+"abilities/weapons/mortar/mortarimpact":{"file":"sound-v2/abilities/weapons/mortar/mortarimpact.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/Mortar/MortarImpact.wav","sha256":"7ff03fb3368410d380c784808c1376473534c63221a4575ade6f013130e7e6e4"},
+"abilities/weapons/necromancermissile/necromancermissilehit1":{"file":"sound-v2/abilities/weapons/necromancermissile/necromancermissilehit1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/NecromancerMissile/NecromancerMissileHit1.wav","sha256":"6c82c298873a3a96fd0d644dd77d858480bd7155febb7836d7bf555ddf989edb"},
+"abilities/weapons/necromancermissile/necromancermissilehit2":{"file":"sound-v2/abilities/weapons/necromancermissile/necromancermissilehit2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/NecromancerMissile/NecromancerMissileHit2.wav","sha256":"081598ce6d4641425223015b1a843ca3621a68219a0b8270ac4a3debb12124b8"},
+"abilities/weapons/necromancermissile/necromancermissilehit3":{"file":"sound-v2/abilities/weapons/necromancermissile/necromancermissilehit3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/NecromancerMissile/NecromancerMissileHit3.wav","sha256":"3f3a56054ae096b73be1bfadcc6e2ff8e5a16ccde7786d1ad945da660cbfbea3"},
+"abilities/weapons/necromancermissile/necromancermissilelaunch1":{"file":"sound-v2/abilities/weapons/necromancermissile/necromancermissilelaunch1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/NecromancerMissile/NecromancerMissileLaunch1.wav","sha256":"4590087cac06b6f7f1771c1324d26bc213e40850d6c11ceba8de3af359062e53"},
+"abilities/weapons/necromancermissile/necromancermissilelaunch2":{"file":"sound-v2/abilities/weapons/necromancermissile/necromancermissilelaunch2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/NecromancerMissile/NecromancerMissileLaunch2.wav","sha256":"d1ad9d8e6dd36362d52899042c3684b1eaa66eb5e28c9e9f6d38fba644e61cfb"},
+"abilities/weapons/phoenixmissile/phoenixattack":{"file":"sound-v2/abilities/weapons/phoenixmissile/phoenixattack.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/phoenixmissile/phoenixattack.ogg","sha256":"9ba84829c2265eb6c6c061f2674da65a8b201347cb2d0744bcf7d50f03c596da"},
+"abilities/weapons/poisonarrow/poisonarrowhit1":{"file":"sound-v2/abilities/weapons/poisonarrow/poisonarrowhit1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/poisonarrow/poisonarrowhit1.ogg","sha256":"023e4678fa41fadeb6c736c40e47e69caf45a15c135b735c9241d04ae88c7898"},
+"abilities/weapons/priestmissile/priestcastattack1":{"file":"sound-v2/abilities/weapons/priestmissile/priestcastattack1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/PriestMissile/PriestCastAttack1.wav","sha256":"c5b6dac73ac7d75845c57a8734a5e22935c8f7be1d6ed76e19c1203fc2939a6e"},
+"abilities/weapons/priestmissile/priestmissilehit1":{"file":"sound-v2/abilities/weapons/priestmissile/priestmissilehit1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/PriestMissile/PriestMissileHit1.wav","sha256":"09f6eb00ca8abec20d0c95f923ccfb0eba1fb6c6375992da65df938c396b8a83"},
+"abilities/weapons/priestmissile/priestmissilehit2":{"file":"sound-v2/abilities/weapons/priestmissile/priestmissilehit2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/PriestMissile/PriestMissileHit2.wav","sha256":"4388a71945d54538f2146bbdd681481b994c9fcfdd4e7d2f2ef4abe98d399f9e"},
+"abilities/weapons/priestmissile/priestmissilehit3":{"file":"sound-v2/abilities/weapons/priestmissile/priestmissilehit3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/PriestMissile/PriestMissileHit3.wav","sha256":"68f483c02a4d26af0c1bb1a22a39231bce1b74d83bb4a102af3d770b1dc2b7ec"},
+"abilities/weapons/searingarrow/searingarrowtarget1":{"file":"sound-v2/abilities/weapons/searingarrow/searingarrowtarget1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/searingarrow/searingarrowtarget1.ogg","sha256":"c546dacf6728f6a796bc7a5da7cebd170bc9097308840226f10f3f6e104d0204"},
+"abilities/weapons/searingarrow/searingarrowtarget2":{"file":"sound-v2/abilities/weapons/searingarrow/searingarrowtarget2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/searingarrow/searingarrowtarget2.ogg","sha256":"197937274644bafa53bf9bbe6beade7969d758c061c76511afb798263f4abeaf"},
+"abilities/weapons/searingarrow/searingarrowtarget3":{"file":"sound-v2/abilities/weapons/searingarrow/searingarrowtarget3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/searingarrow/searingarrowtarget3.ogg","sha256":"94e4fee22dc2826214aceb570f98735a0cc28143474d0094d7e8394333f81a75"},
+"abilities/weapons/sentinelmissile/huntressmissilelaunch":{"file":"sound-v2/abilities/weapons/sentinelmissile/huntressmissilelaunch.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/SentinelMissile/HuntressMissileLaunch.wav","sha256":"099d1a682f58897f9f9bf0d7611b3675e2b4932716d169f111927782712e2f7b"},
+"abilities/weapons/shadowhuntermissile/heroshadowhuntermissilehit1":{"file":"sound-v2/abilities/weapons/shadowhuntermissile/heroshadowhuntermissilehit1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/shadowhuntermissile/heroshadowhuntermissilehit1.ogg","sha256":"35ac6974b07db13a457cb44dd5031016468a25c516f31746f4098892c2bc88ca"},
+"abilities/weapons/shadowhuntermissile/heroshadowhuntermissilelaunch1":{"file":"sound-v2/abilities/weapons/shadowhuntermissile/heroshadowhuntermissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/shadowhuntermissile/heroshadowhuntermissilelaunch1.ogg","sha256":"a5ce689a941af076fd844c2d66ee662bfcc391b813abf29d00f0f7fb28aa61ef"},
+"abilities/weapons/snapmissile/snapdragonmissilelaunch1":{"file":"sound-v2/abilities/weapons/snapmissile/snapdragonmissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/snapmissile/snapdragonmissilelaunch1.ogg","sha256":"752b9df51f13c69f9fa4663a41312d9df50b57538760b06e72690bab568b29b6"},
+"abilities/weapons/sorceressmissile/sorceressmissilelaunch1":{"file":"sound-v2/abilities/weapons/sorceressmissile/sorceressmissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/sorceressmissile/sorceressmissilelaunch1.ogg","sha256":"45a296b9f6ee56b9437fa4814eb62d65cebf319531da528e49dbbd133cc4b58a"},
+"abilities/weapons/sorceressmissile/sorceressmissilelaunch2":{"file":"sound-v2/abilities/weapons/sorceressmissile/sorceressmissilelaunch2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/sorceressmissile/sorceressmissilelaunch2.ogg","sha256":"e77fc8e0d2ee84569ac61932522a48b776afe92acb514277864187cf97a4a575"},
+"abilities/weapons/sorceressmissile/sorceressmissilelaunch3":{"file":"sound-v2/abilities/weapons/sorceressmissile/sorceressmissilelaunch3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/sorceressmissile/sorceressmissilelaunch3.ogg","sha256":"ca4eef9931ba783b3c8fc243283c78991f6b1b97e648558e59b7b19b4fb1a0fd"},
+"abilities/weapons/waterelementalmissile/waterelementalmissile1":{"file":"sound-v2/abilities/weapons/waterelementalmissile/waterelementalmissile1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/WaterElementalMissile/WaterElementalMissile1.wav","sha256":"8543a037ea90ac2868c53a8d8cb57909e869d3313e0f31ef4a30bddc5aa4afe6"},
+"abilities/weapons/waterelementalmissile/waterelementalmissile2":{"file":"sound-v2/abilities/weapons/waterelementalmissile/waterelementalmissile2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/WaterElementalMissile/WaterElementalMissile2.wav","sha256":"90b6451de818c2458e79489077922f7b16d72f8338b0239d15eaca2f1e2c0dc6"},
+"abilities/weapons/waterelementalmissile/waterelementalmissile3":{"file":"sound-v2/abilities/weapons/waterelementalmissile/waterelementalmissile3.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/WaterElementalMissile/WaterElementalMissile3.wav","sha256":"c6cbf0f04320fecd08fce69ab436b47c3c8e32c5a07ad92d780c1540aa0ef44c"},
+"abilities/weapons/wyvernspear/wyvernspearmissile1":{"file":"sound-v2/abilities/weapons/wyvernspear/wyvernspearmissile1.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/WyvernSpear/WyvernSpearMissile1.wav","sha256":"ed379ebde82411cdd8c82d3b29ed4756372cd129f1d64db20fcc0d4936347057"},
+"abilities/weapons/wyvernspear/wyvernspearmissile2":{"file":"sound-v2/abilities/weapons/wyvernspear/wyvernspearmissile2.wav","source":"Warcraft III classic MPQ","path":"Abilities/Weapons/WyvernSpear/WyvernSpearMissile2.wav","sha256":"77574957f210b30faee71bae499ac532046d02236442e5d731785ef54cbdada5"},
+"abilities/weapons/zigguratmissile/zigguratmissilehit1":{"file":"sound-v2/abilities/weapons/zigguratmissile/zigguratmissilehit1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/zigguratmissile/zigguratmissilehit1.ogg","sha256":"ed67565d9e9adca875f05bb8ec7fee9a756152c599905f532c71d065b424f294"},
+"abilities/weapons/zigguratmissile/zigguratmissilehit2":{"file":"sound-v2/abilities/weapons/zigguratmissile/zigguratmissilehit2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/zigguratmissile/zigguratmissilehit2.ogg","sha256":"009dd7090098133bfc7458a06146646c38f149e6a176d176889bfacd4fda2611"},
+"abilities/weapons/zigguratmissile/zigguratmissilehit3":{"file":"sound-v2/abilities/weapons/zigguratmissile/zigguratmissilehit3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/zigguratmissile/zigguratmissilehit3.ogg","sha256":"130edd9d6e07853c3658d48a326db51a42266bc995433fddc871daa19f0a4ecf"},
+"abilities/weapons/zigguratmissile/zigguratmissilelaunch1":{"file":"sound-v2/abilities/weapons/zigguratmissile/zigguratmissilelaunch1.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/zigguratmissile/zigguratmissilelaunch1.ogg","sha256":"ace1866ea415ae1d7a5dd346949441f09f63d13af5c6c9b1f3ff7f74e2a145af"},
+"abilities/weapons/zigguratmissile/zigguratmissilelaunch2":{"file":"sound-v2/abilities/weapons/zigguratmissile/zigguratmissilelaunch2.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/zigguratmissile/zigguratmissilelaunch2.ogg","sha256":"853a0d98e34cce61f4dd6c38dd828ff41705919268485ebc7d7bdceaa913a363"},
+"abilities/weapons/zigguratmissile/zigguratmissilelaunch3":{"file":"sound-v2/abilities/weapons/zigguratmissile/zigguratmissilelaunch3.ogg","source":"Warcraft III extracted files","path":"abilities/weapons/zigguratmissile/zigguratmissilelaunch3.ogg","sha256":"6299bda2bec3abcd32eb721f1425d03d0629117b4310c6b1f2d31091a7617b11"},
+"buildings/other/bridgeobelisk/enchantedgemstoneobeliskdeath1":{"file":"sound-v2/buildings/other/bridgeobelisk/enchantedgemstoneobeliskdeath1.wav","source":"Warcraft III classic MPQ","path":"Buildings/Other/BridgeObelisk/EnchantedGemstoneObeliskDeath1.wav","sha256":"37ca90f18b7f59facd7de77e08a937890cf6223739cd02a788c2235e08b1563b"},
+"buildings/other/goldmine/goldminedeath1":{"file":"sound-v2/buildings/other/goldmine/goldminedeath1.wav","source":"Warcraft III classic MPQ","path":"Buildings/Other/GoldMine/GoldMineDeath1.wav","sha256":"7051fbf0fd32b5006ebc3fb9d58fbfa8cd8459877f997d35a47e14d73881445f"},
+"doodads/barrens/terrain/wyverncage/wyverncagedeath1":{"file":"sound-v2/doodads/barrens/terrain/wyverncage/wyverncagedeath1.wav","source":"Warcraft III classic MPQ","path":"Doodads/Barrens/Terrain/WyvernCage/WyvernCageDeath1.wav","sha256":"d3d35a1827984498d785f6faab7d9a714a4ba34f5969195205cc7587bbb25fb9"},
+"sound/buildings/death/buildingdeathlargehuman":{"file":"sound-v2/sound/buildings/death/buildingdeathlargehuman.wav","source":"Warcraft III classic MPQ","path":"Sound/Buildings/Death/BuildingDeathLargeHuman.wav","sha256":"faf98a72bffba36a320f7c00a1c7addc313fc701e3fe026a25e3b82df8764f16"},
+"sound/buildings/death/buildingdeathlargeorc":{"file":"sound-v2/sound/buildings/death/buildingdeathlargeorc.wav","source":"Warcraft III classic MPQ","path":"Sound/Buildings/Death/BuildingDeathLargeOrc.wav","sha256":"0a2cb59de45bdced7aed99835126a334ec485151d7507f8f751b7357c66f9f48"},
+"sound/buildings/death/buildingdeathsmallhuman":{"file":"sound-v2/sound/buildings/death/buildingdeathsmallhuman.wav","source":"Warcraft III classic MPQ","path":"Sound/Buildings/Death/BuildingDeathSmallHuman.wav","sha256":"2ea422f85ab87a548b86ca24f2aaa15cc56a811e8c19c90a63b731902570a937"},
+"sound/buildings/death/buildingdeathsmallhuman2":{"file":"sound-v2/sound/buildings/death/buildingdeathsmallhuman2.ogg","source":"Warcraft III extracted files","path":"sound/buildings/death/buildingdeathsmallhuman2.ogg","sha256":"a9ee51fd57d9e6f5ac2dd5f414ce30268c26a39dfef1177b06d4d9fcca49f70a"},
+"sound/buildings/death/buildingdeathsmallhuman3":{"file":"sound-v2/sound/buildings/death/buildingdeathsmallhuman3.ogg","source":"Warcraft III extracted files","path":"sound/buildings/death/buildingdeathsmallhuman3.ogg","sha256":"ddc6ee9e044a82a9b4ece3ac448baf27808d0c67d103bea5ffcec262f2fa231f"},
+"sound/buildings/death/orcbuildingdeathsmall1":{"file":"sound-v2/sound/buildings/death/orcbuildingdeathsmall1.wav","source":"Warcraft III classic MPQ","path":"Sound/Buildings/Death/OrcBuildingDeathSmall1.wav","sha256":"c79f460812c4b6fb379d7af6b3f0e08fa689409bd11678eb7b2aa990cc853dd8"},
+"sound/interface/goodjob":{"file":"sound-v2/sound/interface/goodjob.wav","source":"Warcraft III classic MPQ","path":"Sound/Interface/GoodJob.wav","sha256":"042bcf1f56171ab3551e1163dda0a30f802724d4d48fe7cd4c81b66c12aa9c00"},
+"sound/interface/mouseclick1":{"file":"sound-v2/sound/interface/mouseclick1.wav","source":"Warcraft III classic MPQ","path":"Sound/Interface/MouseClick1.wav","sha256":"a5bdba1fc6d04830501bb45340c87b81be807ed961f2e5d79a702cc658170e1a"},
+"sound/interface/questcompleted":{"file":"sound-v2/sound/interface/questcompleted.wav","source":"Warcraft III classic MPQ","path":"Sound/Interface/QuestCompleted.wav","sha256":"cf9b9c5ce974ba0764b4e39abaa387bb2e8cd6859b9272b7bbe02ce6e46867ff"},
+"sound/interface/questfailed":{"file":"sound-v2/sound/interface/questfailed.wav","source":"Warcraft III classic MPQ","path":"Sound/Interface/QuestFailed.wav","sha256":"8b9383b3ed0ca8a5c380e5571f032f38e3c178321bdabe1f77562e241cfa7907"},
+"sound/interface/questlog":{"file":"sound-v2/sound/interface/questlog.wav","source":"Warcraft III classic MPQ","path":"Sound/Interface/QuestLog.wav","sha256":"e79c3abba3a245c4d570e1126db01da718300b072a732c1301a8e039edb44456"},
+"sound/interface/questnew":{"file":"sound-v2/sound/interface/questnew.wav","source":"Warcraft III classic MPQ","path":"Sound/Interface/QuestNew.wav","sha256":"8bafdceebdd585613f4ca8e058d59d84f55301e3d8de3d2339b26bf908328c6f"},
+"sound/interface/warning":{"file":"sound-v2/sound/interface/warning.flac","source":"Warcraft III extracted files","path":"sound/interface/warning.flac","sha256":"fcdb700c08bf2db9eeef6459a8dfeb9f6bafaa3f6096893694d7c8d6717fa6b4"},
+"sound/music/mp3music/credits":{"file":"sound-v2/sound/music/mp3music/credits.flac","source":"Warcraft III extracted files","path":"sound/music/mp3music/credits.flac","sha256":"d31caa3267ddd39b54a1b98cb46da57885a5453da879e8ea4a84851d508312e9"},
+"sound/music/mp3music/darkvictory":{"file":"sound-v2/sound/music/mp3music/darkvictory.flac","source":"Warcraft III extracted files","path":"sound/music/mp3music/darkvictory.flac","sha256":"455a2009e8ab83a6d830d5edb8b335cc6ce2c29677fe5122c8b9eec6bde7334d"},
+"sound/music/mp3music/doom":{"file":"sound-v2/sound/music/mp3music/doom.flac","source":"Warcraft III extracted files","path":"sound/music/mp3music/doom.flac","sha256":"0134b238afb0a79b4e44f3209771097b03974250ca6b279d288e77d6b9e3daff"},
+"sound/music/mp3music/heroicvictory":{"file":"sound-v2/sound/music/mp3music/heroicvictory.flac","source":"Warcraft III extracted files","path":"sound/music/mp3music/heroicvictory.flac","sha256":"fd1ffeef55307df11e6a11f7ebd02eb715c6aa7afaf8cf134f89a0c2d5161605"},
+"sound/music/mp3music/tragicconfrontation":{"file":"sound-v2/sound/music/mp3music/tragicconfrontation.flac","source":"Warcraft III extracted files","path":"sound/music/mp3music/tragicconfrontation.flac","sha256":"759360aa1f7baba84ffbb5919494972f326faf01877376f4197bf8a9f6800059"},
+"sound/units/footsteps/fiendstep1":{"file":"sound-v2/sound/units/footsteps/fiendstep1.wav","source":"Warcraft III classic MPQ","path":"Sound/Units/Footsteps/FiendStep1.wav","sha256":"0984f6694642bf1346de699848fbe2b8b63d278601cdc7dcad5888354afe3bdd"},
+"sound/units/footsteps/fiendstep2":{"file":"sound-v2/sound/units/footsteps/fiendstep2.wav","source":"Warcraft III classic MPQ","path":"Sound/Units/Footsteps/FiendStep2.wav","sha256":"5ad0b8abd43255dd78429313a2ddcde3430317c1651c61665e4177fcc36f23e8"},
+"sound/units/footsteps/fiendstep3":{"file":"sound-v2/sound/units/footsteps/fiendstep3.wav","source":"Warcraft III classic MPQ","path":"Sound/Units/Footsteps/FiendStep3.wav","sha256":"a29ba756280a95452bff707685bf198fd7b4652a04d36c7135703467d68afb1e"},
+"sound/units/footsteps/fiendstep4":{"file":"sound-v2/sound/units/footsteps/fiendstep4.wav","source":"Warcraft III classic MPQ","path":"Sound/Units/Footsteps/FiendStep4.wav","sha256":"9dc9d44ee5c6afea2c21c6c7b3ecfbe68af6ef58e410ad9162575d6b13829408"},
+"sound/units/footsteps/step1":{"file":"sound-v2/sound/units/footsteps/step1.wav","source":"Warcraft III classic MPQ","path":"Sound/Units/Footsteps/Step1.wav","sha256":"df165bd6a7a7e1d1cbe25a7cd6ba2d8659dc32aa10c1dd0079f124053ea014eb"},
+"sound/units/footsteps/step2":{"file":"sound-v2/sound/units/footsteps/step2.wav","source":"Warcraft III classic MPQ","path":"Sound/Units/Footsteps/Step2.wav","sha256":"1d7d17b03d87ca8cfdb516e90bee4999eebee6bc178b33b3251aeeaf79cba843"},
+"sound/units/footsteps/step3":{"file":"sound-v2/sound/units/footsteps/step3.wav","source":"Warcraft III classic MPQ","path":"Sound/Units/Footsteps/Step3.wav","sha256":"8fb4e3af738bf60a002cefe7473bef888f1b00263b32eb05867d287066f13396"},
+"sound/units/footsteps/step4":{"file":"sound-v2/sound/units/footsteps/step4.wav","source":"Warcraft III classic MPQ","path":"Sound/Units/Footsteps/Step4.wav","sha256":"4732c38f416f39f180cabf19924e9afd00de4342f0eb3ed1d2848837ba73e169"},
+"sound/units/undead/dissipate/undeaddissipate2":{"file":"sound-v2/sound/units/undead/dissipate/undeaddissipate2.flac","source":"Warcraft III extracted files","path":"sound/units/undead/dissipate/undeaddissipate2.flac","sha256":"e71a192f518e376a1bc791da2bc191694a8217baaf13cd1ef1d651b4d7819709"},
+"units/creeps/bandit/banditdeath1":{"file":"sound-v2/units/creeps/bandit/banditdeath1.wav","source":"Warcraft III classic MPQ","path":"Units/Creeps/Bandit/BanditDeath1.wav","sha256":"67022ea07fd64928934beeb23be2356d91a30c0c16c41180a0b334796fcb43c7"},
+"units/creeps/corruptedent/entdeath1":{"file":"sound-v2/units/creeps/corruptedent/entdeath1.ogg","source":"Warcraft III extracted files","path":"units/creeps/corruptedent/entdeath1.ogg","sha256":"c93d444fbdd3b762ff12450c7ae5a19ced45605f0904710fb06dece8a038c558"},
+"units/creeps/direwolf/direwolfdeath1":{"file":"sound-v2/units/creeps/direwolf/direwolfdeath1.wav","source":"Warcraft III classic MPQ","path":"Units/Creeps/DireWolf/DireWolfDeath1.wav","sha256":"728f1d486703c4a0ac2408f91afdf49a57a6a8d0f8be923ae8763a2476fc28ad"},
+"units/creeps/giantseaturtle/giantseaturtledeath1":{"file":"sound-v2/units/creeps/giantseaturtle/giantseaturtledeath1.ogg","source":"Warcraft III extracted files","path":"units/creeps/giantseaturtle/giantseaturtledeath1.ogg","sha256":"5f104fae42ed86eef310036b39320af6db47a46408ff7ffe4d448e96c713ffc6"},
+"units/creeps/giantseaturtle/giantturtledeathswim1":{"file":"sound-v2/units/creeps/giantseaturtle/giantturtledeathswim1.ogg","source":"Warcraft III extracted files","path":"units/creeps/giantseaturtle/giantturtledeathswim1.ogg","sha256":"6f2f44e5b4520ea08ef389ed09d6d75fd2beb30bd1b1d7bb1c12da5b8169556b"},
+"units/creeps/goblinsapper/sapperblowsup":{"file":"sound-v2/units/creeps/goblinsapper/sapperblowsup.ogg","source":"Warcraft III extracted files","path":"units/creeps/goblinsapper/sapperblowsup.ogg","sha256":"2d8a0dfce305b668c3b511abd486a3ab75f669d24477a0ffe1e31d0166c58a8e"},
+"units/creeps/hydra/hydradeath1":{"file":"sound-v2/units/creeps/hydra/hydradeath1.ogg","source":"Warcraft III extracted files","path":"units/creeps/hydra/hydradeath1.ogg","sha256":"9b041d39f52e0b8e208f9863e45c0aa5a6b670fe8afc4a1e298dfcde0146ea9c"},
+"units/creeps/hydra/hydradeathswim1":{"file":"sound-v2/units/creeps/hydra/hydradeathswim1.ogg","source":"Warcraft III extracted files","path":"units/creeps/hydra/hydradeathswim1.ogg","sha256":"c24f9dff9ca69c7e6c31626af572d1e36171af078ae4e012e61aee5204ab7b10"},
+"units/creeps/murgulbloodgill/murguldeathswim1":{"file":"sound-v2/units/creeps/murgulbloodgill/murguldeathswim1.ogg","source":"Warcraft III extracted files","path":"units/creeps/murgulbloodgill/murguldeathswim1.ogg","sha256":"a1e6131dbdd407b449e1ee80ff96fa990039b38fb44437a7443a91f601a00e2d"},
+"units/creeps/murloc/murlocdeath":{"file":"sound-v2/units/creeps/murloc/murlocdeath.wav","source":"Warcraft III classic MPQ","path":"Units/Creeps/Murloc/MurlocDeath.wav","sha256":"06d44196708fa5862f7c092c407bbbc4f2964ef1363f9442a893ab15f5444d34"},
+"units/creeps/watcher/watcherdeath1":{"file":"sound-v2/units/creeps/watcher/watcherdeath1.ogg","source":"Warcraft III extracted files","path":"units/creeps/watcher/watcherdeath1.ogg","sha256":"125cd9599c79d76ed840d9e34dd70694952ad72fe7576e150a87bccc02ce1472"},
+"units/creeps/zombie/zombiedeath1":{"file":"sound-v2/units/creeps/zombie/zombiedeath1.ogg","source":"Warcraft III extracted files","path":"units/creeps/zombie/zombiedeath1.ogg","sha256":"1d5ed61ecb5173eadbdc797b61c40fbba25e573ca39f739e37f9dadf25e331cd"},
+"units/critters/pig/pigdeath":{"file":"sound-v2/units/critters/pig/pigdeath.wav","source":"Warcraft III classic MPQ","path":"Units/Critters/Pig/PigDeath.wav","sha256":"69478a8e5b66dad18a68ccadf32325de146e53c3afc06c39bb0360763bb3626d"},
+"units/demon/infernal/infernalattack1":{"file":"sound-v2/units/demon/infernal/infernalattack1.ogg","source":"Warcraft III extracted files","path":"units/demon/infernal/infernalattack1.ogg","sha256":"54f3f6020b23becdce7ce6f460b87e388159bc56d80d1553f8471a9d7a0910e2"},
+"units/demon/infernal/infernalattack2":{"file":"sound-v2/units/demon/infernal/infernalattack2.ogg","source":"Warcraft III extracted files","path":"units/demon/infernal/infernalattack2.ogg","sha256":"f728ca15e57cf28626c161d8843dee13c5090140930ed616b392e18e7cb3b31d"},
+"units/demon/infernal/infernaldeath":{"file":"sound-v2/units/demon/infernal/infernaldeath.flac","source":"TowerSurvivors-v2.0.w3x","path":"Units/Demon/Infernal/InfernalDeath.flac","sha256":"7eb28dffc0c847dee120e771976bca104f8d772de3691e2a6d6c744a4da58002"},
+"units/human/gyrocopter/gyrocopterdeath1":{"file":"sound-v2/units/human/gyrocopter/gyrocopterdeath1.ogg","source":"Warcraft III extracted files","path":"units/human/gyrocopter/gyrocopterdeath1.ogg","sha256":"2e153a725770296a6b7ca100dea3a6c0872383850d7bb2fddc0b139da45bac1a"},
+"units/human/gyrocopter/gyrocopterimpacthit1":{"file":"sound-v2/units/human/gyrocopter/gyrocopterimpacthit1.ogg","source":"Warcraft III extracted files","path":"units/human/gyrocopter/gyrocopterimpacthit1.ogg","sha256":"a0819d9ddd28e9dc8b1805e5a06ac88b169f43a86069483dca65ab6e09c6c9e2"},
+"units/human/gyrocopter/gyrocopterimpacthit2":{"file":"sound-v2/units/human/gyrocopter/gyrocopterimpacthit2.ogg","source":"Warcraft III extracted files","path":"units/human/gyrocopter/gyrocopterimpacthit2.ogg","sha256":"44cac83b91c56163bfb60747a62c507d5ec415caa54d9fda34fe9222ea3800b2"},
+"units/human/knight/knightdeath":{"file":"sound-v2/units/human/knight/knightdeath.ogg","source":"Warcraft III extracted files","path":"units/human/knight/knightdeath.ogg","sha256":"4a5c1ab74c1675cb304407a3d0ecee4a05a81192c0d8045a754e48bae2364f34"},
+"units/human/mortarteam/mortarteamattack1":{"file":"sound-v2/units/human/mortarteam/mortarteamattack1.ogg","source":"Warcraft III extracted files","path":"units/human/mortarteam/mortarteamattack1.ogg","sha256":"6e7b305f9cbf5797bf3e0efc8fb01a05c562ee4252a488da5b0acaca72864de0"},
+"units/human/mortarteam/mortarteamdeath":{"file":"sound-v2/units/human/mortarteam/mortarteamdeath.ogg","source":"Warcraft III extracted files","path":"units/human/mortarteam/mortarteamdeath.ogg","sha256":"ee0264ff174d80bad088de750646785c05b2d9c4b0b50b3534cfaa15e90f3903"},
+"units/human/peasant/peasantdeath":{"file":"sound-v2/units/human/peasant/peasantdeath.wav","source":"Warcraft III classic MPQ","path":"Units/Human/Peasant/PeasantDeath.wav","sha256":"52a5636c4c622cb3a05ceaba9da240600f8d2fe4817080510331ab17a0a87ae3"},
+"units/human/rifleman/riflemanattack1":{"file":"sound-v2/units/human/rifleman/riflemanattack1.wav","source":"Warcraft III classic MPQ","path":"Units/Human/Rifleman/RiflemanAttack1.wav","sha256":"21fb846d1333c409ea67422bb301242d9b0b0cb91a2561c9e8ff1439eff52824"},
+"units/human/rifleman/riflemanattack2":{"file":"sound-v2/units/human/rifleman/riflemanattack2.wav","source":"Warcraft III classic MPQ","path":"Units/Human/Rifleman/RiflemanAttack2.wav","sha256":"73be3f81fd518b7dcc6e44d0d31178194c461abcfe2dcf57a4d680ba7d2bd988"},
+"units/human/rifleman/riflemandeath":{"file":"sound-v2/units/human/rifleman/riflemandeath.wav","source":"Warcraft III classic MPQ","path":"Units/Human/Rifleman/RiflemanDeath.wav","sha256":"534c75c475294c63f537565404204129cf0982f52baa67368b48dd6c95aadfb3"},
+"units/human/steamtank/steamtankattack1":{"file":"sound-v2/units/human/steamtank/steamtankattack1.ogg","source":"Warcraft III extracted files","path":"units/human/steamtank/steamtankattack1.ogg","sha256":"c63cfd545fc2a2f135ab6699f541d6d13e0902e912562c708ac2e7dae65f168b"},
+"units/human/steamtank/steamtankdeath1":{"file":"sound-v2/units/human/steamtank/steamtankdeath1.ogg","source":"Warcraft III extracted files","path":"units/human/steamtank/steamtankdeath1.ogg","sha256":"909cbc95dba328b258dc565df133a027b9dbce757fe6c78c7db91a503efb5f86"},
+"units/human/waterelemental/summonwaterelementalcaster":{"file":"sound-v2/units/human/waterelemental/summonwaterelementalcaster.wav","source":"Warcraft III classic MPQ","path":"Units/Human/WaterElemental/SummonWaterElementalCaster.wav","sha256":"2c57783292fb5e5ec69aadef92eb3c88eb8cde131ac7662762c0924ae6ed8fb9"},
+"units/naga/nagamyrmidon/myrmidondeath1":{"file":"sound-v2/units/naga/nagamyrmidon/myrmidondeath1.ogg","source":"Warcraft III extracted files","path":"units/naga/nagamyrmidon/myrmidondeath1.ogg","sha256":"df4e53321805e3e818b24cf272d7ca62a5f5ea620bc971263d0e8898aae036f3"},
+"units/naga/nagamyrmidon/myrmidondeathswim1":{"file":"sound-v2/units/naga/nagamyrmidon/myrmidondeathswim1.ogg","source":"Warcraft III extracted files","path":"units/naga/nagamyrmidon/myrmidondeathswim1.ogg","sha256":"a3f19a72dfd31740749f56572041c002a99045f70cc7b82f351ed256551deaba"},
+"units/naga/snapdragon/snapdragondeath":{"file":"sound-v2/units/naga/snapdragon/snapdragondeath.ogg","source":"Warcraft III extracted files","path":"units/naga/snapdragon/snapdragondeath.ogg","sha256":"7e4d3f7a4e8f6619fe11caa326c6a089ca8a59907fcdc5534010f11220034dcf"},
+"units/naga/snapdragon/snapdragondeathswim1":{"file":"sound-v2/units/naga/snapdragon/snapdragondeathswim1.ogg","source":"Warcraft III extracted files","path":"units/naga/snapdragon/snapdragondeathswim1.ogg","sha256":"9d70352ca9cd25db7fac6c89f8b95ad0e731b86b697822d675ce9b7f0a8e9f60"},
+"units/nightelf/archer/archerdeath1":{"file":"sound-v2/units/nightelf/archer/archerdeath1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/archer/archerdeath1.ogg","sha256":"645b225b78a591780ab3dedceb3d4bcca4d1062f8502c5a2bffaaff8f28f83a7"},
+"units/nightelf/ballista/ballistaattackeffort1":{"file":"sound-v2/units/nightelf/ballista/ballistaattackeffort1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/ballista/ballistaattackeffort1.ogg","sha256":"741b246e865cece18f332d5b728da8785d841c4e9f0f8a51f22138ea68c7e4ef"},
+"units/nightelf/ballista/ballistadeath1":{"file":"sound-v2/units/nightelf/ballista/ballistadeath1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/ballista/ballistadeath1.ogg","sha256":"2795d83d1dfc00b840fcd5dcf2b1fd54bcf3598d82bd86a64762bfc8a5338f5e"},
+"units/nightelf/druidoftheclaw/druidoftheclawdeath1":{"file":"sound-v2/units/nightelf/druidoftheclaw/druidoftheclawdeath1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/druidoftheclaw/druidoftheclawdeath1.ogg","sha256":"d5449cb75fd5f081557c83acd87c7f5f4ee716dfd4f6d5eb0e6c25813ceef559"},
+"units/nightelf/druidoftheclaw/druidoftheclawdeathalternate1":{"file":"sound-v2/units/nightelf/druidoftheclaw/druidoftheclawdeathalternate1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/druidoftheclaw/druidoftheclawdeathalternate1.ogg","sha256":"2135ad4b2a248c17b4ed18eac1e7e52c87ff89a0a8e45b8f9dadbb34eab2f9bd"},
+"units/nightelf/druidoftheclaw/druidoftheclawmorph1":{"file":"sound-v2/units/nightelf/druidoftheclaw/druidoftheclawmorph1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/druidoftheclaw/druidoftheclawmorph1.ogg","sha256":"16beb4c9d66eeb244ee9e488d7f202d68965b349473cfb6b066f5af6ba62ffbc"},
+"units/nightelf/druidoftheclaw/druidoftheclawmorphalternate1":{"file":"sound-v2/units/nightelf/druidoftheclaw/druidoftheclawmorphalternate1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/druidoftheclaw/druidoftheclawmorphalternate1.ogg","sha256":"d5479a8502c36ef956d7d6e6a39a09a62a21426f60aeb2a890c2dd6896dad280"},
+"units/nightelf/druidofthetalon/druidofthetalondeath1":{"file":"sound-v2/units/nightelf/druidofthetalon/druidofthetalondeath1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/druidofthetalon/druidofthetalondeath1.ogg","sha256":"7923e4a50ad533c0ac12a2d047b305cfe98925344752be1f6b41b9ad46d49908"},
+"units/nightelf/druidofthetalon/druidofthetalondeathalternate1":{"file":"sound-v2/units/nightelf/druidofthetalon/druidofthetalondeathalternate1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/druidofthetalon/druidofthetalondeathalternate1.ogg","sha256":"cac35e1b7b241dfcfd5ed3fbd6fe29902a447a79a3c5e36f6e72560745f5f197"},
+"units/nightelf/druidofthetalon/druidofthetalonmorph1":{"file":"sound-v2/units/nightelf/druidofthetalon/druidofthetalonmorph1.wav","source":"Warcraft III classic MPQ","path":"Units/NightElf/DruidOfTheTalon/DruidOfTheTalonMorph1.wav","sha256":"ed78ee18a3f85125963f05908c6336527c49def64b97ea262ab36c698ccdab72"},
+"units/nightelf/druidofthetalon/druidofthetalonmorphalternate1":{"file":"sound-v2/units/nightelf/druidofthetalon/druidofthetalonmorphalternate1.wav","source":"Warcraft III classic MPQ","path":"Units/NightElf/DruidOfTheTalon/DruidOfTheTalonMorphAlternate1.wav","sha256":"cd6b3298f10d98f6c3dd218d94330a2cc11ade599965a1d2290fe1d6be14408f"},
+"units/nightelf/ent/forceofnaturebirth1":{"file":"sound-v2/units/nightelf/ent/forceofnaturebirth1.wav","source":"Warcraft III classic MPQ","path":"Units/NightElf/Ent/ForceOfNatureBirth1.wav","sha256":"f624456ca72b155f46a2c4569edc85cb89f9cbeceae7f297877b67eac21292cd"},
+"units/nightelf/faeriedragon/faeriedragondeath1":{"file":"sound-v2/units/nightelf/faeriedragon/faeriedragondeath1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/faeriedragon/faeriedragondeath1.ogg","sha256":"23a2ddd8546fbbcf5992ed7aaa04d987268802f002752ca82da398771b0e340e"},
+"units/nightelf/huntress/sentineldeath1":{"file":"sound-v2/units/nightelf/huntress/sentineldeath1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/huntress/sentineldeath1.ogg","sha256":"35f890dae50e65934173d6efa655da34fe83dffa17196e2542f4f26ad95bcd74"},
+"units/nightelf/mountaingiant/mountaingiantdeath1":{"file":"sound-v2/units/nightelf/mountaingiant/mountaingiantdeath1.ogg","source":"Warcraft III extracted files","path":"units/nightelf/mountaingiant/mountaingiantdeath1.ogg","sha256":"1be6c0613c988f283d4c70630a16fd16f000b172d37a99dbf848ef642263e48a"},
+"units/orc/catapult/catapultattack1":{"file":"sound-v2/units/orc/catapult/catapultattack1.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/Catapult/CatapultAttack1.wav","sha256":"ed23358190c14b6490ffbe26775de8093d91ef4ad91e3f948f770be57be12ba8"},
+"units/orc/catapult/catapultdeath1":{"file":"sound-v2/units/orc/catapult/catapultdeath1.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/Catapult/CatapultDeath1.wav","sha256":"c654828d98636a0b7c8056c6f06c03e5c3c9f5a0342d670aa9116eb118566865"},
+"units/orc/grunt/berserkercaster":{"file":"sound-v2/units/orc/grunt/berserkercaster.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/Grunt/BerserkerCaster.wav","sha256":"3a56bf684e5671e0be371f1550b931201f4fa05c7874b9888eadbdf22499c93a"},
+"units/orc/grunt/gruntdeath":{"file":"sound-v2/units/orc/grunt/gruntdeath.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/Grunt/GruntDeath.wav","sha256":"0670e45fa6ce92c9fa31b423c4129b2a6a57a05e89eba37604190d26889c7851"},
+"units/orc/kotobeast/devour":{"file":"sound-v2/units/orc/kotobeast/devour.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/KotoBeast/Devour.wav","sha256":"79c5fdac94c3f2330871b57c653bf8740dec798149fd63350ff8fb1b2ba6851b"},
+"units/orc/kotobeast/kodobeastdeath":{"file":"sound-v2/units/orc/kotobeast/kodobeastdeath.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/KotoBeast/KodoBeastDeath.wav","sha256":"1d040271e88ad3a7f653701fb87c526a692cb57ff5b53f28696d72fff0d7ad2f"},
+"units/orc/kotobeast/kodobeastpuke1":{"file":"sound-v2/units/orc/kotobeast/kodobeastpuke1.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/KotoBeast/KodoBeastPuke1.wav","sha256":"db6249eb7297c2d3231261ed349589bd60b5cc5210284b1c131708ddd868acb6"},
+"units/orc/kotobeast/kododrum1":{"file":"sound-v2/units/orc/kotobeast/kododrum1.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/KotoBeast/KodoDrum1.wav","sha256":"1c672dbb033344aa7900956bb37b9cb73eedd3fbf3ef04ecc8b6bd3952bcfb82"},
+"units/orc/kotobeast/kododrum2":{"file":"sound-v2/units/orc/kotobeast/kododrum2.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/KotoBeast/KodoDrum2.wav","sha256":"e52902d5bcb0e3a48ebaaa2b1ce16542093f79e07f0d69b177e7b413a29ceab8"},
+"units/orc/peon/peondeath":{"file":"sound-v2/units/orc/peon/peondeath.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/Peon/PeonDeath.wav","sha256":"d4719463ccb20b6275c74f45a3c05895d272ceb38409e8b7e7626dafe46d1ead"},
+"units/orc/shaman/shamandeath":{"file":"sound-v2/units/orc/shaman/shamandeath.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/Shaman/ShamanDeath.wav","sha256":"6e067c95e9e1c2e44dfd99ab865f0f532c31e5f788cab498aba35b4411853d09"},
+"units/orc/wolfrider/raiderdeath":{"file":"sound-v2/units/orc/wolfrider/raiderdeath.wav","source":"Warcraft III classic MPQ","path":"Units/Orc/Wolfrider/RaiderDeath.wav","sha256":"a47ab40453183cc7ce3c5212861f7575b688ecb720c778cdb252b486956538dd"},
+"units/undead/abomination/abominationdeath1":{"file":"sound-v2/units/undead/abomination/abominationdeath1.ogg","source":"Warcraft III extracted files","path":"units/undead/abomination/abominationdeath1.ogg","sha256":"b40d257fc709546a78f0468e812f4180ec9dd584a87d0efc0835e62ecc0a471f"},
+"units/undead/cryptfiend/pitfienddeath1":{"file":"sound-v2/units/undead/cryptfiend/pitfienddeath1.ogg","source":"Warcraft III extracted files","path":"units/undead/cryptfiend/pitfienddeath1.ogg","sha256":"1b07f44531d5590aa3f01cc154cb3f7be13f5b8221f580b29c851d0c34d89d6b"},
+"units/undead/ghoul/cannibalize":{"file":"sound-v2/units/undead/ghoul/cannibalize.wav","source":"Warcraft III classic MPQ","path":"Units/Undead/Ghoul/Cannibalize.wav","sha256":"420263479b7355f0db42dddb64b468906c7903fff093657a1fb237bde50659bb"},
+"units/undead/ghoul/ghouldeath":{"file":"sound-v2/units/undead/ghoul/ghouldeath.ogg","source":"Warcraft III extracted files","path":"units/undead/ghoul/ghouldeath.ogg","sha256":"f2bc3fd718e6768a291dd913d84aaa2e8e050090622e6abc1869c5bd0e1f88a4"},
+"units/undead/herolich/lichattackeffort1":{"file":"sound-v2/units/undead/herolich/lichattackeffort1.ogg","source":"Warcraft III extracted files","path":"units/undead/herolich/lichattackeffort1.ogg","sha256":"d99483b88f99d57954a275bcc03df300fee7ff2ffff61173e7663efc3b5843d8"},
+"units/undead/herolich/lichattackeffort2":{"file":"sound-v2/units/undead/herolich/lichattackeffort2.ogg","source":"Warcraft III extracted files","path":"units/undead/herolich/lichattackeffort2.ogg","sha256":"34ffe0f6210d939f07fdf5dbb5f1d2e69657a9d622d477468c1df95258caad00"},
+"units/undead/herolich/lichattackeffort3":{"file":"sound-v2/units/undead/herolich/lichattackeffort3.ogg","source":"Warcraft III extracted files","path":"units/undead/herolich/lichattackeffort3.ogg","sha256":"804426dfa305b13b54c521048dc55ff79e024d69515771da080efc83c6b32540"},
+"units/undead/kelthuzadlich/kelthuzadwhat1":{"file":"sound-v2/units/undead/kelthuzadlich/kelthuzadwhat1.flac","source":"Warcraft III extracted files","path":"units/undead/kelthuzadlich/kelthuzadwhat1.flac","sha256":"5f7b2ed31dbe577cd62c48894f19f447530eaf0dc95fa3b2d6b9b01cff382927"},
+"units/undead/meatwagon/catapultattack1":{"file":"sound-v2/units/undead/meatwagon/catapultattack1.wav","source":"Warcraft III extracted files","path":"units/undead/meatwagon/catapultattack1.wav","sha256":"ed23358190c14b6490ffbe26775de8093d91ef4ad91e3f948f770be57be12ba8"},
+"units/undead/meatwagon/meatwagondeath1":{"file":"sound-v2/units/undead/meatwagon/meatwagondeath1.ogg","source":"Warcraft III extracted files","path":"units/undead/meatwagon/meatwagondeath1.ogg","sha256":"a520a689852830191b355622e362cf77d94483d9aeff79e2c178df57a0c57238"},
+"units/undead/skeleton/skeletondeath1":{"file":"sound-v2/units/undead/skeleton/skeletondeath1.wav","source":"Warcraft III classic MPQ","path":"Units/Undead/Skeleton/SkeletonDeath1.wav","sha256":"43600b08aba2541160a0df60bec9dcc7833c3cdf090c7f252bf5d6d5937d4b79"}
+},
+"missiles":{
+"abilities/spells/human/resurrect/resurrecttarget":{"stand":[["AHRE",0]]},
+"abilities/spells/nightelf/corrosivebreath/corrosivebreathmissile":{"birth":[["ACRL",0]],"death":[["ACRH",0]]},
+"abilities/spells/nightelf/spiritofvengeance/spiritofvengeancebirthmissile":{"birth":[["MZIG",0]],"death":[["MZGH",0]]},
+"abilities/spells/orc/ensnare/ensnaremissile":{"birth":[["AENM",0]]},
+"abilities/spells/undead/web/webmissile":{"birth":[["MWEB",0]]},
+"abilities/weapons/ancientprotectormissile/ancientprotectormissile":{"birth":[["MAPL",0]],"death":[["MANP",0]]},
+"abilities/weapons/arrow/arrowmissile":{"birth":[["MARL",0]],"death":[["MARR",0]]},
+"abilities/weapons/axe/axemissile":{"birth":[["MAXL",0]],"death":[["MAXE",0]]},
+"abilities/weapons/ballistamissile/ballistamissile":{"death":[["MBAL",0]]},
+"abilities/weapons/banditmissile/banditmissile":{"birth":[["MHNL",0]],"death":[["MHUN",0]]},
+"abilities/weapons/bloodelfspellthiefmissile/bloodelfspellthiefmissile":{"birth":[["MSBL",67]],"death":[["MSBH",34]]},
+"abilities/weapons/catapult/catapultmissile":{"death":[["MCAT",0]]},
+"abilities/weapons/chimaeraacidmissile/chimaeraacidmissile":{"birth":[["MCAL",0]],"death":[["MCAH",0]]},
+"abilities/weapons/cryptfiendmissile/cryptfiendmissile":{"birth":[["MCRL",0]],"death":[["MCRH",0]]},
+"abilities/weapons/demolisherfiremissile/demolisherfiremissile":{"death":[["MCAT",0]]},
+"abilities/weapons/demolishermissile/demolishermissile":{"death":[["MCAT",0]]},
+"abilities/weapons/druidofthetalonmissile/druidofthetalonmissile":{"birth":[["MDTL",0]],"death":[["MDTH",0]]},
+"abilities/weapons/dryadmissile/dryadmissile":{"birth":[["MHNL",0]],"death":[["MDRY",0]]},
+"abilities/weapons/faeriedragonmissile/faeriedragonmissile":{"birth":[["MFDL",0]],"death":[["MZGH",0]]},
+"abilities/weapons/farseermissile/farseermissile":{"birth":[["KFAR",0]],"death":[["MFAR",0]]},
+"abilities/weapons/fireballmissile/fireballmissile":{"birth":[["MFRL",0]],"death":[["MFRB",0]]},
+"abilities/weapons/gargoylemissile/gargoylemissile":{"birth":[["MGRL",0]],"death":[["MGRH",0]]},
+"abilities/weapons/glaivemissile/glaivemissile":{"death":[["MBAL",33]]},
+"abilities/weapons/harpymissile/harpymissile":{"birth":[["MHRL",0]],"death":[["MHAR",0]]},
+"abilities/weapons/meatwagonmissile/meatwagonmissile":{"death":[["MMEA",33]]},
+"abilities/weapons/mortar/mortarmissile":{"death":[["MMTI",0]]},
+"abilities/weapons/necromancermissile/necromancermissile":{"birth":[["MNCL",0]],"death":[["MNCH",0]]},
+"abilities/weapons/rexxarmissile/rexxarmissile":{"birth":[["MSHD",0]],"death":[["MSHH",0]]},
+"abilities/weapons/sentinelmissile/sentinelmissile":{"stand":[["MSEL",66]]},
+"abilities/weapons/snapmissile/snapmissile":{"birth":[["MSNL",0]],"death":[["MPAH",0]]},
+"abilities/weapons/tuskarspear/tuskarspear":{"birth":[["MHNL",0]],"death":[["MHUN",0]]},
+"abilities/weapons/wingedserpentmissile/wingedserpentmissile":{"birth":[["MGRL",0]],"death":[["MGRH",0]]},
+"abilities/weapons/wyvernspear/wyvernspearmissile":{"birth":[["MHNL",0]],"death":[["MWYV",0]]},
+"abilities/weapons/zigguratmissile/zigguratmissile":{"birth":[["MZIG",0]],"death":[["MZGH",0]]},
+"buildings/demon/corruptedtreeoflife/corruptedtreeoflife":{"death":[["DEBA",0]]},
+"buildings/human/altarofkings/altarofkings":{"death":[["DHLB",0]]},
+"buildings/human/arcanesanctum/arcanesanctum":{"death":[["DHLS",34]]},
+"buildings/human/arcanevault/arcanevault":{"death":[["DHLS",0]]},
+"buildings/human/gryphonaviary/gryphonaviary":{"death":[["DHLS",33]]},
+"buildings/human/humantower/humantower":{"death":[["DHLS",33]]},
+"buildings/human/workshop/workshop":{"death":[["DHLS",34]]},
+"buildings/naga/altarofdepths/altarofdepths":{"death":[["DHLB",33]]},
+"buildings/nightelf/altarofelders/altarofelders":{"death":[["DELS",0]]},
+"buildings/nightelf/ancientoflore/ancientoflore":{"death":[["DEBA",0]]},
+"buildings/nightelf/chimaeraroost/chimaeraroost":{"death":[["DELS",0]]},
+"buildings/nightelf/huntershall/huntershall":{"death":[["DELS",0]]},
+"buildings/nightelf/treeoflife/treeoflife":{"death":[["DEBA",0]]},
+"buildings/orc/altarofstorms/altarofstorms":{"death":[["DOLB",0]]},
+"buildings/orc/orcbarracks/orcbarracks":{"death":[["DOLB",0]]},
+"buildings/orc/taurentotem/taurentotem":{"death":[["DOLS",0]]},
+"buildings/orc/trollburrow/trollburrow":{"death":[["DOLB",0]]},
+"buildings/orc/voodoolounge/voodoolounge":{"death":[["DOLS",0]]},
+"buildings/orc/watchtower/watchtower":{"death":[["DOLS",33]]},
+"buildings/other/bridgeobelisk/bridgeobelisk":{"death":[["DGOB",0]]},
+"buildings/other/dragonbuilding/dragonbuilding":{"death":[["DHLB",34]]},
+"buildings/other/dragonbuildingblue/dragonbuildingblue":{"death":[["DHLB",34]]},
+"buildings/other/dragonbuildinggreen/dragonbuildinggreen":{"death":[["DHLB",34]]},
+"buildings/other/frostmourne/frostmourne":{"death":[["DFRM",0]]},
+"buildings/other/goldmine/goldmine":{"death":[["DGLD",33]]},
+"buildings/other/harpynest/harpynest":{"death":[["DOLS",34]]},
+"buildings/other/magicvault/magicvault":{"death":[["DWCD",0]]},
+"buildings/other/sacrificialaltar/sacrificialaltar":{"death":[["DULB",33]]},
+"buildings/other/towerdefensetower/towerdefensetower":{"death":[["DHLS",234]]},
+"buildings/other/wyverncage2/wyverncage2":{"death":[["DWCD",0]]},
+"buildings/undead/boneyard/boneyard":{"death":[["DULB",0]]},
+"buildings/undead/hauntedmine/hauntedmine":{"death":[["DULB",0]]},
+"buildings/undead/sacrificialpit/sacrificialpit":{"death":[["DULB",0]]},
+"buildings/undead/slaughterhouse/slaughterhouse":{"death":[["DULB",0]]},
+"buildings/undead/tombofrelics/tombofrelics":{"death":[["DULB",0]]},
+"crippletargetgreen":{"birth":[["ACRI",0]]},
+"demonboltimpactgreen":{"stand":[["AOLB",33]]},
+"sharedmodels/nebirth":{"birth":[["ASWE",0]]},
+"sharedmodels/ubirth":{"birth":[["AUB1",34],["AUB2",1700],["AUB3",14300],["AUB4",59967]]},
+"units/creeps/bandit/bandit":{"death":[["DBNT",0]]},
+"units/creeps/banditlord/banditlord":{"death":[["DKNI",0]]},
+"units/creeps/banditspearthrower/banditspearthrower":{"death":[["DBNT",0]]},
+"units/creeps/dragonseaturtlerange/dragonseaturtlerange":{"death":[["DGST",33]]},
+"units/creeps/herotinkerfactory/herotinkerfactory":{"birth":[["AHTF",0]]},
+"units/creeps/hydra/hydra":{"death":[["DHDA",0]]},
+"units/creeps/murgultidewarrior/murgultidewarrior":{"death":[["DMUR",0]]},
+"units/creeps/sylvanuswindrunner/sylvanuswindrunner":{"death":[["DRAN",0]]},
+"units/creeps/watcher/watcher":{"death":[["DWTC",0]]},
+"units/creeps/whitewolf/whitewolf":{"death":[["DDWF",100]]},
+"units/creeps/zombie/zombie":{"death":[["DZOM",0]]},
+"units/critters/hydralisk/hydralisk":{"death":[["DHYD",33]]},
+"units/critters/marine/marine":{"death":[["DRIF",0]]},
+"units/critters/pig/pig":{"death":[["DPIG",67]]},
+"units/critters/shoveler/shoveler":{"death":[["DKOB",0]]},
+"units/demon/chaosgrunt/chaosgrunt":{"death":[["DGRU",0]]},
+"units/demon/chaoskotobeast/chaoskotobeast":{"death":[["DKOD",0]]},
+"units/demon/chaospeon/chaospeon":{"death":[["DPEO",0]]},
+"units/demon/chaoswarlock/chaoswarlock":{"death":[["DGRU",33]]},
+"units/demon/chaoswolfrider/chaoswolfrider":{"death":[["DRAI",0]]},
+"units/human/gyrocopter/gyrocopter":{"death":[["DGYR",0]]},
+"units/human/militia/militia":{"death":[["DPES",34]]},
+"units/human/mortarteam/mortarteam":{"death":[["DMOR",400]]},
+"units/human/rifleman/rifleman":{"death":[["DRIF",0]]},
+"units/human/warwagon/warwagonold":{"death":[["DSTT",33]]},
+"units/naga/nagamyrmidon/nagamyrmidon":{"death":[["DMYR",34]]},
+"units/naga/snapdragon/snapdragon":{"death":[["DSND",33]]},
+"units/nightelf/archer/archer":{"death":[["DRAN",0]]},
+"units/nightelf/ballista/ballista":{"death":[["DBAL",0]]},
+"units/nightelf/druidoftheclaw/druidoftheclaw":{"death":[["DDOC",0]]},
+"units/nightelf/druidofthetalon/druidofthetalon":{"death":[["DADR",0]]},
+"units/nightelf/dryad/dryad":{"death":[["DDRY",0]]},
+"units/nightelf/ent/ent":{"birth":[["AEFN",0]],"death":[["DENT",0]]},
+"units/nightelf/faeriedragon/faeriedragon":{"death":[["DFDR",0]]},
+"units/nightelf/huntress/huntress":{"death":[["DSEN",34]]},
+"units/nightelf/mountaingiant/mountaingiant":{"death":[["DMGT",33]]},
+"units/orc/catapult/catapult":{"death":[["DCAT",0]]},
+"units/orc/catapult/catapultold":{"death":[["DCAT",0]]},
+"units/orc/grunt/grunt":{"death":[["DGRU",0]]},
+"units/orc/peon/peon":{"death":[["DPEO",0]]},
+"units/orc/shaman/shaman":{"death":[["DSHM",0]]},
+"units/orc/wolfrider/wolfrider":{"death":[["DRAI",0]]},
+"units/other/bloodelfwagon/bloodelfwagon":{"death":[["DWCD",0]]},
+"units/undead/abomination/abomination":{"death":[["DABO",167]]},
+"units/undead/cryptfiend/cryptfiend":{"death":[["DPIT",0]]},
+"units/undead/evilarthas/undeadarthas":{"death":[["DDKN",0]]},
+"units/undead/ghoul/ghoul":{"death":[["DGHO",0]]},
+"units/undead/meatwagon/meatwagon":{"death":[["DMTW",67]]},
+"units/undead/skeletonmage/skeletonmage":{"death":[["DSKE",0]]},
+"war3mapimported/absorbmanabirthmissile2":{"birth":[["MPML",0]],"death":[["MZGH",0]]},
+"war3mapimported/battrollmissile":{"birth":[["MTBL",0]],"death":[["MFRB",0]]},
+"war3mapimported/bloodblaster":{"death":[["MMTI",0]]},
+"war3mapimported/bloodbomb":{"birth":[["KCAN",0]],"death":[["MMTI",0]]},
+"war3mapimported/boatmissile":{"birth":[["MBHT",0],["MBHL",0]],"death":[["MBHT",0]]},
+"war3mapimported/boltimpact":{"stand":[["AOLB",33]]},
+"war3mapimported/bottlemissile":{"birth":[["ANSM",0]],"death":[["SABI",0]]},
+"war3mapimported/bouncingshield":{"death":[["ADEF",33]]},
+"war3mapimported/breathoffiremissile":{"birth":[["ACBC",33]]},
+"war3mapimported/breathoffrostmissile":{"birth":[["ACBF",0]]},
+"war3mapimported/brewmastermissile":{"birth":[["ANSM",0]]},
+"war3mapimported/carrionswarmmissile":{"birth":[["AUCS",0]]},
+"war3mapimported/catapultmissile":{"death":[["MCAT",0]]},
+"war3mapimported/coldarrowmissile":{"death":[["MCDA",0]]},
+"war3mapimported/crushingwavemissile":{"birth":[["ACCV",0]]},
+"war3mapimported/dalaran_arcanegenerator":{"death":[["DHLS",28]]},
+"war3mapimported/deathcoilmissile":{"birth":[["MDCL",0]]},
+"war3mapimported/demolishermissile":{"death":[["MCAT",0]]},
+"war3mapimported/demonboltimpactgreen":{"stand":[["AOLB",33]]},
+"war3mapimported/demonhuntermissile":{"birth":[["MDML",0]],"death":[["MDEM",0]]},
+"war3mapimported/diskofscythes":{"birth":[["AEBA",0],["MSVL",0],["MSVL",150]],"stand":[["MSVL",0],["MSVL",100],["MSVL",200],["MSVL",270]]},
+"war3mapimported/dragonhawkmissile":{"birth":[["MSML",0]],"death":[["MWIN",0]]},
+"war3mapimported/endemicfieldarea":{"birth":[["MPXL",0]],"death":[["ASPL",0]]},
+"war3mapimported/firebolt rough major edited":{"birth":[["MFRL",0]],"death":[["MFRB",0],["ACWD",0]]},
+"war3mapimported/firebolt rough major":{"birth":[["MFRL",0]],"death":[["MFRB",0],["ACWD",0]]},
+"war3mapimported/firetrapupbirth":{"birth":[["MFRB",33]]},
+"war3mapimported/flamingarrowmissile":{"death":[["MFLA",0]]},
+"war3mapimported/frostboltmissile":{"birth":[["MFBL",0]],"death":[["MFBH",0]]},
+"war3mapimported/frostwyrmmissile":{"death":[["MFRB",0]]},
+"war3mapimported/greendragonmissile":{"death":[["MFRB",0]]},
+"war3mapimported/gryphonridermissile":{"birth":[["MGML",0]],"death":[["AHTB",0]]},
+"war3mapimported/gyrocoptermissile":{"birth":[["KCAN",0]],"death":[["MMTI",0]]},
+"war3mapimported/healbottlemissile":{"birth":[["ANSM",0],["SHSL",0]],"death":[["SHSI",0]]},
+"war3mapimported/holyboltspecialart":{"birth":[["AHHB",0]]},
+"war3mapimported/holyboltstand":{"stand":[["AHHB",0]]},
+"war3mapimported/icedraincaster":{"birth":[["AHDR",0]]},
+"war3mapimported/immolationpulse":{"birth":[["AFDE",34]]},
+"war3mapimported/infernal_ts":{"death":[["DINF",0]]},
+"war3mapimported/keepergrovemissile":{"birth":[["MKGL",0]],"death":[["MKGH",0]]},
+"war3mapimported/lavaspawnmissile":{"death":[["ALSI",0]]},
+"war3mapimported/lichmissilepurple":{"birth":[["KLIC",0]],"death":[["MLIC",0]]},
+"war3mapimported/lightninggun":{"death":[["MFAR",0]]},
+"war3mapimported/magicacidmissile":{"birth":[["MCAL",0]],"death":[["MCAH",0]]},
+"war3mapimported/magicacidmissiletarget":{"birth":[["MCDA",0]]},
+"war3mapimported/meatwagonmissile":{"death":[["MMEA",33]]},
+"war3mapimported/monsoonbolttarget":{"stand":[["ANMO",0]]},
+"war3mapimported/mortarmissile":{"death":[["MMTI",0]]},
+"war3mapimported/orbofdeathmissile":{"birth":[["MKGL",0]],"death":[["MKGH",0]]},
+"war3mapimported/phoenix_missile":{"birth":[["MPXL",0]],"death":[["MZGH",0]]},
+"war3mapimported/poisonarrowmissile":{"birth":[["MARL",0]],"death":[["MPAH",0]]},
+"war3mapimported/reddragonmissilebigger":{"death":[["MFRB",0]]},
+"war3mapimported/seaelementalmissile":{"birth":[["MWAT",0]]},
+"war3mapimported/serpentwardmissile":{"birth":[["MANL",0]],"death":[["MANG",0]]},
+"war3mapimported/shadowhuntermissilebigger":{"birth":[["MSHD",0]],"death":[["MSHH",0]]},
+"war3mapimported/shadowstrikemissilepoison":{"birth":[["AESM",0]]},
+"war3mapimported/shockwavemissile":{"birth":[["AOSH",0]]},
+"war3mapimported/skeletalmagemissile":{"birth":[["MKML",33]],"death":[["MKMH",33]]},
+"war3mapimported/snapmissile":{"birth":[["MSNL",0]],"death":[["MPAH",0]]},
+"war3mapimported/steamtankimpact":{"birth":[["MCAN",0]]},
+"war3mapimported/tinkerrocketmissile":{"birth":[["MTRL",0]],"death":[["MTRI",0]]},
+"war3mapimported/waterelementalmissile":{"birth":[["MWAT",0]]},
+"war3mapimported/wightvillagerino":{"birth":[["AUDA",0],["AHFT",50]]}
+}
 }
