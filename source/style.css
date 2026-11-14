@@ -60,17 +60,53 @@ button:disabled { opacity: .47; cursor: default; }
   color: #eee1bf; font-size: 11px; font-weight: 600; letter-spacing: normal;
   font-variant-numeric: tabular-nums;
 }
-.standings { position: absolute; width: 156px; top: 19px; right: 20px; display: grid; gap: 3px; }
-.seat {
-  text-align: left; position: relative; overflow: hidden; min-height: 27px; width: 100%; border: 1px solid #c0a77750;
-  background: #23261bdc; padding: 5px 8px; display: flex; gap: 6px; align-items: center; font-size: 10px;
+.match-stats { position: absolute; top: .8dvh; right: .8dvh; }
+.match-stats details, .income-popover {
+  border: .8dvh solid transparent;
+  border-image: url('../map-art/ui/stats/border.png') 16 stretch;
+  background: url('../map-art/ui/stats/background.png') padding-box;
+  text-shadow: 0 1px #000;
 }
-.seat[aria-pressed="true"] { border-color: #debb76; }
-.seat:disabled { opacity: 1; }
-.seat em { width: 7px; height: 7px; background: var(--seat); rotate: 45deg; flex: 0 0 7px; }
-.seat i { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--seat); }
-.seat span { text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
-.seat b { margin-left: auto; color: var(--gold); font-size: 9px; }
+.match-stats summary {
+  cursor: pointer; color: #ffdc00; min-height: 18px; padding: 0 .4em .25em;
+  font-size: clamp(10px, 1.55dvh, 16px); text-align: end;
+}
+.match-stats table {
+  width: min(40dvh, 49vw); table-layout: fixed; border-collapse: collapse;
+  font-size: clamp(9px, 1.35dvh, 14px); text-align: left; font-variant-numeric: tabular-nums;
+}
+.match-stats .clear-column { width: 4%; }
+.match-stats .name-column { width: 29%; }
+.match-stats .spend-column { width: 21%; }
+.match-stats .score-column { width: 25%; }
+.match-stats th, .match-stats td { padding: .18em .25em; font-weight: normal; }
+.match-stats th[scope="col"] { color: #ffdc00; }
+.match-stats td img { display: block; width: 100%; }
+.board-player {
+  display: block; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  background: transparent; border: 0; padding: 0; text-align: left; text-shadow: 0 1px 1px #000, 0 0 2px #fff6;
+}
+.board-player:hover, .board-player[aria-pressed="true"] { text-decoration: underline; }
+.income-tools { position: absolute; left: calc(50% + 10dvh); top: 4.2dvh; display: flex; }
+.income-tools button {
+  width: clamp(19px, 3.33dvh, 35px); height: clamp(19px, 3.33dvh, 35px);
+  border: 1px solid #ad8745; padding: 0; background: #171e2c;
+}
+.income-tools img { width: 100%; display: block; }
+.income-popover {
+  position: absolute; z-index: 3; top: 100%; left: 50%; width: min(27dvh, 52vw);
+  padding: .35em .2em; color: #fff; font-size: clamp(10px, 1.7dvh, 16px);
+}
+.income-popover > * { display: block; }
+.income-popover strong { color: #fc0; margin-bottom: .25em; }
+.stats-title { margin: .85em 0 .35em; color: var(--gold); font-size: 15px; }
+.weapon-stats-scroll { max-height: min(35dvh, 300px); overflow: auto; }
+.weapon-stats { width: 100%; border-collapse: collapse; text-align: left; font-variant-numeric: tabular-nums; }
+.weapon-stats th, .weapon-stats td { padding: 4px 6px; }
+.weapon-stats thead { position: sticky; top: 0; background: #24251c; }
+.weapon-stats .school { color: #fc0; }
+.weapon-stats .weapon-range { color: #badbdc; }
+.weapon-stats .unowned { color: #939596; }
 .field-tools { position: absolute; right: 20px; bottom: 15px; display: flex; gap: 4px; }
 .field-tools button { font-size: 18px; width: 31px; padding: 0; }
 .announcer {
@@ -230,8 +266,9 @@ dialog::backdrop { background: #10110aaf; }
   .arena-identity strong { font-size: 12px; }
   .arena-identity small { display: none; }
   .arena-schedule span { font-size: 9px; }
-  .standings { right: 6px; top: 7px; width: 92px; }
-  .seat { min-height: 16px; padding: 2px 3px; font-size: 8px; }
+  .match-stats { right: 6px; top: 7px; }
+  .income-tools { left: auto; right: 7px; top: auto; bottom: 43px; }
+  .income-popover { left: auto; top: auto; right: 0; bottom: 100%; }
   .field-tools { right: 6px; bottom: 6px; }
   .prep { bottom: 6px; font-size: 9px; gap: 4px; padding: 4px; }
   .prep button { font-size: 9px; padding: 3px; }

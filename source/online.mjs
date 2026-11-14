@@ -14,7 +14,7 @@ function request(path, data) {
   });
 }
 
-export function createOnlineClient({ dialog, node, nameValue, start, update, failure }) {
+export function createOnlineClient({ dialog, node, nameValue, start, update, failure, playSound }) {
   let socket;
   let account;
   let currentRoom;
@@ -72,6 +72,7 @@ export function createOnlineClient({ dialog, node, nameValue, start, update, fai
           currentRoom = data;
           renderRoom();
         }
+        if (data.type === 'sound' && data.cue === 'mouseclick1') playSound(data.cue);
         if (data.type === 'frame') {
           if (!playing) {
             playing = true;

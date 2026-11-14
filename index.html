@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#171913">
     <meta name="description" content="Фэнтези-арена Tower Survivors. Покупайте оружие и держите оборону.">
     <title>Tower Survivors · Башня Последних</title>
-    <script type="module" crossorigin src="./assets/index-4ZSgn-ai.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CWnHdPdP.css">
+    <script type="module" crossorigin src="./assets/index-BPDB0Ghl.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DlQg96To.css">
   </head>
   <body>
     <main id="app">
@@ -37,7 +37,21 @@
             <span id="next-wave">Следующая волна</span>
           </div>
         </aside>
-        <aside id="standings" class="standings" aria-label="Участники"></aside>
+        <aside class="match-stats" aria-label="Статистика">
+          <details id="stats-board" open hidden>
+            <summary>Статистика</summary>
+            <table aria-label="Статистика игроков">
+              <colgroup><col class="clear-column"><col class="name-column"><col class="spend-column"><col class="spend-column"><col class="score-column"></colgroup>
+              <thead><tr><th scope="col" aria-label="Очистка"></th><th scope="col">Игрок</th><th scope="col" title="Золото, вложенное в урон, за каждые 500">Урон</th><th scope="col" title="Золото, вложенное в доход и награды, за каждые 500">Доход</th><th scope="col">Очки</th></tr></thead>
+              <tbody id="standings"></tbody>
+            </table>
+          </details>
+        </aside>
+        <div id="income-tools" class="income-tools" hidden>
+          <button id="income-detail" type="button" title="Доход золота" aria-label="Доход золота" hidden><img src="./assets/btnmgexchange-DXc3Kh3f.png" alt=""></button>
+          <button id="bounty-detail" type="button" title="Награда за убийство" aria-label="Награда за убийство" hidden><img src="./assets/btnspy-DJJtwGf2.png" alt=""></button>
+          <div id="income-popover" class="income-popover" hidden></div>
+        </div>
         <div class="field-tools">
           <button id="zoom-out" aria-label="Отдалить камеру">−</button>
           <button id="zoom-in" aria-label="Приблизить камеру">+</button>
@@ -80,7 +94,7 @@
         <section class="arsenal-panel" aria-label="Арсенал">
           <header class="panel-heading"><h2>Арсенал</h2><span id="kills">0 убито</span></header>
           <div id="arsenal" class="arsenal-list"></div>
-          <button id="stats" class="small-button">Статистика матча</button>
+          <button id="stats" class="small-button">Доход и урон</button>
         </section>
       </section>
 

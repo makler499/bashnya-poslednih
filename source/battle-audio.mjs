@@ -226,13 +226,14 @@ export function createBattleAudio() {
       case 'boss':
         if (ownArena) void play('doom');
         break;
-      case 'lastStand':
-        if (ownArena) void play('questfailed');
-        break;
       case 'defeat':
+        if (skin === 'H020') void play('undeaddissipate2');
         if (ownArena) {
-          void play('tragicconfrontation');
-          void play('questlog');
+          if (effect.postVictory) void play('questfailed');
+          else {
+            void play('tragicconfrontation');
+            void play('questlog');
+          }
         }
         break;
       case 'victory':

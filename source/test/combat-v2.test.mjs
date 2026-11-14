@@ -323,6 +323,31 @@ test('v2 catalog, round income, rerolls, growing spikes and special wagon varian
   assert.equal(createSpawnPlanner(map, () => 0)([{ arena: map.arenas[0], variant: 14 }])[0].unitId, 'h00G');
 });
 
+test('multiboard uses slot order and investments while viewed weapons and local income stay distinct', () => {
+  const players = [{ seat: 2, name: 'Синий', score: 100 }, { seat: 1, name: 'Красный', score: 50 }];
+  const match = createMatch(map, players, { seed: 36 });
+  assert.equal(match.snapshot(1).schedule.shopLife, 1);
+  match.tick(5);
+  assert.ok(match.snapshot(1).schedule.shopLife < 1);
+  assert.ok(match.action(1, { type: 'reroll' }));
+  assert.equal(match.snapshot(1).schedule.shopLife, 1);
+  const { version } = match.snapshot(2).player;
+  assert.ok(match.action(2, { type: 'buy', slot: 0, version }));
+  match.tick(5);
+  const observed = match.snapshot(1, 2);
+  assert.deepEqual(observed.seats.map(seat => [seat.seat, seat.boardColor, seat.damageInvestment, seat.score]), [
+    [1, '#ff0303', 0, 50], [2, '#0042ff', 1, 100],
+  ]);
+  assert.equal(observed.incomeDetails.gold, 5000);
+  assert.equal(observed.observedStats.name, 'Синий');
+  assert.equal(observed.observedStats.weapons[0].copies, 1);
+  match.tick(50);
+  const renewed = match.snapshot(1, 2);
+  assert.equal(renewed.wave, 2);
+  assert.equal(renewed.schedule.shopLife, 1);
+  assert.ok(renewed.arena.events.some(event => event.kind === 'round' && event.shopRefresh));
+});
+
 test('opening purchase reaches a real enemy and records weapon damage before a tower hit', () => {
   const tested = new Set();
   for (let seed = 0; tested.size < 5 && seed < 60; seed++) {

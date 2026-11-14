@@ -142,6 +142,7 @@ function grantKill(arena, enemy, bounty, source) {
   if (bounty) {
     tower.kills += 1;
     tower.gold += enemy.bounty;
+    tower.bountyEarned += enemy.bonusBounty ?? 0;
     heal(tower, 15 * count(tower, 'Mask of Death'));
     tower.shield = Math.min(tower.maxShield, tower.shield + 15 * count(tower, 'Maw of Death'));
     if (source) raiseSkeletalMage(arena, enemy);

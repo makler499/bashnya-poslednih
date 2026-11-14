@@ -1,3 +1,5 @@
+import statistics from './v2-statistics.json' with { type: 'json' };
+
 const groups = ['ABC', 'DEF', 'GHI', 'KLM', 'NOPQ', 'STW'];
 const pirate = new Set(['Mortar Launcher', 'Bombs', 'Steam Cannon', 'Bouncy Cannonball', 'Overloaded Catapult']);
 // The six weapon-purchase branches that increment the original glaive counter.
@@ -74,9 +76,11 @@ function matchesChallenge(challenge, arena) {
 
 export function rememberPurchase(arena, item, wave) {
   arena.purchaseLog.push({ item, wave });
-  if (grantsIncome(item) || grantsBounty(item)) arena.spentIncome += item.gold;
-  else if (doesDamage(item) || /Damage|Attack Speed/.test(effects(item))) arena.spentDamage += item.gold;
-  if (arena.spentDamage > arena.spentIncome) arena.exceededIncomeScore = true;
+  const { damage = 0, income = 0, bounty = 0 } = statistics.upgradeSpending[item.id] ?? {};
+  arena.spentDamage += item.kind === 'weapon' ? item.gold : damage;
+  arena.spentIncome += income;
+  arena.spentBounty += bounty;
+  if (arena.spentDamage > arena.spentIncome + arena.spentBounty) arena.exceededIncomeScore = true;
 }
 
 export function checkChallenges(arena, challenges) {

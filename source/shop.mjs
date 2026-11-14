@@ -93,7 +93,9 @@ export function createTower(startingGold, { startingHealth = 1500, startingArmor
     shieldRegen: 1,
     income: 0,
     incomeMultiplier: 1,
+    incomeEarned: 0,
     bountyMultiplier: 1,
+    bountyEarned: 0,
     flatReduction: 0,
     damageReduction: 0,
     shieldReduction: 0,
@@ -255,7 +257,9 @@ export function count(tower, name) {
 
 export function roundUpgrades(tower) {
   tower.income += count(tower, 'Entangled Gold Mine');
-  tower.gold += count(tower, 'Gold Delivery') * 1000 * tower.incomeMultiplier;
+  const delivery = count(tower, 'Gold Delivery') * 1000 * tower.incomeMultiplier;
+  tower.gold += Math.trunc(delivery + 0.05);
+  tower.incomeEarned += Math.trunc(delivery);
   tower.armor += count(tower, 'Blessed Armor') * 1.5;
   tower.spikes += count(tower, 'Growing Spikes') * 6;
   addStat(tower, 'all', count(tower, 'Power Generator') * 0.01);
@@ -264,8 +268,13 @@ export function roundUpgrades(tower) {
   tower.effects.delete('spikyArmor');
 }
 
+export function goldPerSecond(tower, baseIncome) {
+  return baseIncome + Math.trunc(tower.income * tower.incomeMultiplier + 0.05);
+}
+
 export function tickEconomy(tower, baseIncome) {
-  tower.gold += baseIncome + Math.trunc(tower.income * tower.incomeMultiplier + 0.05);
+  tower.gold += goldPerSecond(tower, baseIncome);
+  tower.incomeEarned += Math.trunc(tower.income * tower.incomeMultiplier);
   tower.regen += count(tower, 'Wisp') * 0.2;
   addHealth(tower, count(tower, 'Magic Seeds') * 5);
   tower.maxShield += count(tower, 'Moonwell') * 10;

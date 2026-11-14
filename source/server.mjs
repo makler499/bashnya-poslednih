@@ -7,6 +7,7 @@ import { promisify } from 'node:util';
 import { DatabaseSync } from 'node:sqlite';
 import { WebSocket, WebSocketServer } from 'ws';
 import { createMatch } from './match.mjs';
+import { challengeScore } from './challenges.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const staticRoot = resolve(root, 'dist');
@@ -18,7 +19,8 @@ database.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
 database.exec(
   'CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, name TEXT NOT NULL, salt TEXT NOT NULL, password_hash TEXT NOT NULL);' +
   'CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, account_id INTEGER NOT NULL REFERENCES accounts(id), expires INTEGER NOT NULL);' +
-  'CREATE TABLE IF NOT EXISTS matches (match_id TEXT NOT NULL, account_id INTEGER NOT NULL REFERENCES accounts(id), place INTEGER NOT NULL, wave INTEGER NOT NULL, kills INTEGER NOT NULL, duration INTEGER NOT NULL, won INTEGER NOT NULL, last_stand INTEGER NOT NULL, played INTEGER NOT NULL, PRIMARY KEY (match_id, account_id));'
+  'CREATE TABLE IF NOT EXISTS matches (match_id TEXT NOT NULL, account_id INTEGER NOT NULL REFERENCES accounts(id), place INTEGER NOT NULL, wave INTEGER NOT NULL, kills INTEGER NOT NULL, duration INTEGER NOT NULL, won INTEGER NOT NULL, last_stand INTEGER NOT NULL, played INTEGER NOT NULL, PRIMARY KEY (match_id, account_id));' +
+  'CREATE TABLE IF NOT EXISTS challenges (account_id INTEGER NOT NULL REFERENCES accounts(id), challenge TEXT NOT NULL, PRIMARY KEY (account_id, challenge));'
 );
 
 const oneWeek = 7 * 24 * 60 * 60;
@@ -30,7 +32,8 @@ const wss = new WebSocketServer({ noServer: true, maxPayload: 4096, perMessageDe
 const mime = new Map([
   ['.html', 'text/html; charset=utf-8'], ['.css', 'text/css; charset=utf-8'],
   ['.js', 'text/javascript; charset=utf-8'], ['.mjs', 'text/javascript; charset=utf-8'],
-  ['.json', 'application/json; charset=utf-8'], ['.svg', 'image/svg+xml'], ['.png', 'image/png'], ['.wav', 'audio/wav'],
+  ['.json', 'application/json; charset=utf-8'], ['.svg', 'image/svg+xml'], ['.png', 'image/png'],
+  ['.wav', 'audio/wav'], ['.flac', 'audio/flac'], ['.ogg', 'audio/ogg'], ['.mp3', 'audio/mpeg'],
 ]);
 const queries = {
   user: database.prepare('SELECT id, email, name, salt, password_hash FROM accounts WHERE email = ?'),
@@ -41,6 +44,8 @@ const queries = {
   purge: database.prepare('DELETE FROM sessions WHERE expires <= ?'),
   history: database.prepare('SELECT place, wave, kills, duration, won, last_stand, played FROM matches WHERE account_id = ? ORDER BY played DESC LIMIT 20'),
   record: database.prepare('INSERT OR IGNORE INTO matches VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'),
+  challenges: database.prepare('SELECT challenge FROM challenges WHERE account_id = ?'),
+  recordChallenge: database.prepare('INSERT OR IGNORE INTO challenges VALUES (?, ?)'),
 };
 
 function headers(response) {
@@ -290,12 +295,18 @@ wss.on('connection', socket => {
       const connected = [...room.players.values()].filter(player => player.socket);
       if (connected.length < 2) return fail('Нужно минимум два игрока.');
       connected.sort((a, b) => Number(b.id === room.host) - Number(a.id === room.host));
-      connected.forEach((player, index) => Object.assign(player, { seat: index + 1, view: index + 1, since: 0 }));
+      connected.forEach((player, index) => {
+        const unlocks = queries.challenges.all(player.id).map(row => row.challenge);
+        Object.assign(player, { seat: index + 1, view: index + 1, since: 0, score: challengeScore({ unlocks }, map.challenges) });
+      });
       room.players = new Map(connected.map(player => [player.id, player]));
       room.match = createMatch(map, connected);
       room.carry = 0;
     } else if (data.type === 'action' && room?.match && member && data.input && typeof data.input === 'object') {
-      room.match.action(member.seat, data.input);
+      if (data.input.type === 'go') return;
+      if (room.match.action(member.seat, data.input) && ['buy', 'market', 'treasure', 'reroll', 'clear'].includes(data.input.type)) {
+        send(socket, { type: 'sound', cue: 'mouseclick1' });
+      }
     } else if (data.type === 'view' && room?.match && member) {
       if (![...room.players.values()].some(player => player.seat === data.seat)) return;
       member.view = data.seat;
@@ -332,6 +343,7 @@ setInterval(() => {
       if (!player.recorded && (!frame.player.alive || frame.finished)) {
         queries.record.run(room.id, player.id, frame.player.place, frame.wave, frame.player.kills,
           Math.floor(frame.elapsed), Number(frame.player.won), Number(frame.player.lastStand), Date.now());
+        for (const challenge of frame.player.challenges) queries.recordChallenge.run(player.id, challenge);
         player.recorded = true;
       }
     }

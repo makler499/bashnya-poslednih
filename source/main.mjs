@@ -7,6 +7,9 @@ import { combatStep, repairFraction, repairInterval } from './combat.mjs';
 import { createBattleAudio } from './battle-audio.mjs';
 import skillsRu from './ru-skills.json';
 import { challengeScore, recordChallengeCompletions } from './challenges.mjs';
+import statistics from './v2-statistics.json';
+import clearIcon from '../map-art/ui/stats/clear.png';
+import usedClearIcon from '../map-art/ui/stats/clear-used.png';
 
 const byId = id => document.getElementById(id);
 const ui = Object.fromEntries([
@@ -15,12 +18,13 @@ const ui = Object.fromEntries([
   'kills', 'shop', 'reroll', 'treasure', 'market', 'arsenal', 'clear', 'clears', 'pause', 'speed', 'lobby', 'resume',
   'tooltip', 'dialog', 'dialog-title', 'dialog-content', 'name', 'sound', 'weapon-damage', 'tower-damage', 'total-damage', 'repair',
   'arena-schedule', 'next-wave', 'shop-timer', 'shop-hint',
-  'sound-files',
+  'sound-files', 'stats-board', 'income-tools', 'income-detail', 'bounty-detail', 'income-popover',
 ].map(id => [id, byId(id)]));
 ui.repair.title = 'Восстанавливает до ' + (repairFraction * 100) + '% здоровья. Перезарядка ' + repairInterval + ' с';
 const number = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
 const roundNumber = value => number.format(Math.max(0, value ?? 0));
 const statNumber = value => number.format(value ?? 0);
+const decimal = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const timerText = value => {
   const whole = Math.max(0, Math.floor(value));
   return String(Math.floor(whole / 60)).padStart(2, '0') + ':' + String(whole % 60).padStart(2, '0');
@@ -29,6 +33,7 @@ const glyphs = { Normal: '⚔', Piercing: '➶', Magic: '✦', Siege: '◉', Cha
 const rarityText = { common: 'Обычное', uncommon: 'Необычное', rare: 'Редкое', epic: 'Эпическое' };
 const schoolText = { Normal: 'Обычный', Piercing: 'Колющий', Magic: 'Магический', Siege: 'Осадный', Chaos: 'Хаос', Poison: 'Яд', Frost: 'Обморожение', Fire: 'Огонь', Spikes: 'Шипы' };
 const skillName = item => skillsRu[item.id]?.name ?? item.name;
+const weaponsForStats = new Map(map.weapons.map(weapon => [weapon.abilityId, { id: weapon.abilityId, name: weapon.name }]));
 
 function node(tag, classes, text) {
   const result = document.createElement(tag);
@@ -83,6 +88,8 @@ let nextUI = 0;
 let shownShop = null;
 let shownArsenal = null;
 let shownSeats = '';
+let shownStats = '';
+let incomePopover = '';
 let viewSeat = 1;
 let lastSequence = 0;
 let savedResult = false;
@@ -173,7 +180,8 @@ function processFrame(next, reset = false) {
     const model = event.kind === 'shot' || (event.kind === 'beam' && event.slot === 133)
       ? event.model ?? original?.data.missiles[event.slot]
       : undefined;
-    audio.event(event, frame.selected === frame.seat, (model && original?.pathFor(model)) ?? model, frame.arena.skin);
+    const towerUnit = original?.data.towerUnits?.[frame.arena.skin];
+    audio.event(event, frame.selected === frame.seat, (model && original?.pathFor(model)) ?? model, towerUnit);
     if (event.kind === 'round') {
       const bonus = event.incomeBonus && frame.player?.alive ? ' · +' + roundNumber(event.incomeBonus) + ' золота/с' : '';
       announce('Волна ' + event.wave + bonus, 2.2, 'wave');
@@ -207,6 +215,8 @@ function resetMatchUI(mode) {
   shownShop = null;
   shownArsenal = null;
   shownSeats = '';
+  ui['stats-board'].open = true;
+  setIncomePopover('');
   clearTimeout(announcementTimeout);
   ui.announcer.hidden = true;
   ui.tooltip.hidden = true;
@@ -221,13 +231,14 @@ function startLocal(mode) {
   profile.name = nameValue();
   persist();
   void enableAudio();
-  const players = [{ seat: 1, name: profile.name, skin: profile.skin }];
+  const players = [{ seat: 1, name: profile.name, skin: profile.skin, score: challengeScore(profile, map.challenges) }];
   const bots = ['Лесной дозор', 'Сумеречный страж', 'Каменный клинок', 'Северный гарнизон', 'Огненный бастион', 'Тихий рубеж', 'Серебряная башня'];
   if (mode === 'bots') bots.forEach((name, index) => players.push({ seat: index + 2, name, bot: true }));
   recordedChallenges.clear();
   local = createMatch(map, players);
   processFrame(local.snapshot(1), true);
   resetMatchUI(mode);
+  if (profile.skin === 'A0MR') void audio.play('kelthuzadwhat1');
 }
 
 function localAction(action) {
@@ -358,18 +369,18 @@ function renderUI() {
   ui.clock.textContent = timerText(prep ? Math.ceil(frame.preparation) : frame.elapsed);
   ui.wave.textContent = String(frame.wave).padStart(2, '0');
   ui.prep.hidden = !prep || !matchActive();
-  ui.go.hidden = frame.seat !== 1;
+  ui.go.hidden = frame.seat !== 1 || Boolean(online?.playing);
   ui['prep-text'].textContent = 'До первой волны · ' + Math.ceil(frame.preparation) + ' с';
   ui['arena-eyebrow'].textContent = 'АРЕНА ' + String(frame.selected).padStart(2, '0');
   const selected = frame.seats.find(seat => seat.seat === frame.selected);
   ui['arena-name'].textContent = frame.selected === frame.seat ? 'Башня выжившего' : (selected?.name ?? 'Башня соперника');
   ui['arena-detail'].textContent = finished ? (player.won ? 'Победа' : 'Башня пала')
     : 'На поле ' + frame.arena.enemies.length + ' · сила врагов ×' + frame.arena.enemyScale.health.toFixed(2);
-  ui['arena-schedule'].hidden = !matchActive();
+  ui['arena-schedule'].hidden = !matchActive() || (Boolean(frame.schedule) && !prep && !paused);
   const schedule = frame.schedule;
   if (schedule) {
     const suffix = paused ? ' · пауза' : '';
-    ui['next-wave'].textContent = 'Волна ' + schedule.wave + ' через ' + timerText(Math.ceil(schedule.waveIn)) + suffix;
+    ui['next-wave'].textContent = prep ? 'Волна ' + schedule.wave + ' через ' + timerText(Math.ceil(schedule.waveIn)) + suffix : 'Пауза';
   } else {
     ui['next-wave'].textContent = 'Волны завершены';
   }
@@ -440,29 +451,77 @@ function renderUI() {
   }
   for (const [index, label] of [...ui.arsenal.querySelectorAll('.arsenal-damage')].entries()) {
     const weapon = player.weapons[index];
-    const text = roundNumber(weapon.damage) + ' ур.';
+    const text = roundNumber(weapon.dps) + ' ур./с';
     if (label.textContent !== text) label.textContent = text;
   }
-  const seatKey = frame.seats.map(seat => [seat.seat, seat.name, seat.alive, seat.place, Math.ceil(seat.health / seat.maxHealth * 20)].join('/')).join('|') + ':' + frame.selected;
-  if (shownSeats !== seatKey) {
-    shownSeats = seatKey;
-    ui.standings.replaceChildren(...frame.seats.map(seat => {
-      const entry = node('button', 'seat');
-      entry.style.setProperty('--seat', '#' + seat.color.toString(16).padStart(6, '0'));
-      entry.setAttribute('aria-pressed', String(frame.selected === seat.seat));
-      entry.setAttribute('aria-label', 'Смотреть арену ' + seat.seat + ' · ' + seat.name);
-      const bar = node('i');
-      bar.style.width = Math.max(0, seat.health / seat.maxHealth * 100) + '%';
-      entry.append(node('em'), node('span', null, seat.name), node('b', null, seat.place ? '#' + seat.place : ''), bar);
-      entry.addEventListener('click', () => switchArena(seat.seat));
-      return entry;
-    }));
-  }
+  renderBoard();
+  renderIncomePopover();
+  if (ui.dialog.open && ui['dialog-content'].dataset.section === 'stats') renderStats();
   paintMinimap();
+}
+
+function renderBoard() {
+  ui['stats-board'].hidden = !matchActive();
+  const seatKey = JSON.stringify([frame.selected, frame.seats.map(seat => [
+    seat.seat, seat.name, seat.boardColor, seat.clear, seat.damageInvestment, seat.incomeInvestment, seat.score,
+  ])]);
+  if (shownSeats === seatKey) return;
+  shownSeats = seatKey;
+  const focus = ui.standings.contains(document.activeElement) ? document.activeElement.dataset.seat : null;
+  ui.standings.replaceChildren(...frame.seats.map(seat => {
+    const row = node('tr');
+    const icon = node('td');
+    if (seat.clear != null) {
+      const image = node('img');
+      image.src = seat.clear ? clearIcon : usedClearIcon;
+      image.alt = seat.clear ? 'Очистка доступна' : 'Очистка использована';
+      icon.append(image);
+    }
+    const name = node('th');
+    name.scope = 'row';
+    const button = node('button', 'board-player', seat.name);
+    button.dataset.seat = seat.seat;
+    button.style.color = seat.boardColor;
+    button.setAttribute('aria-pressed', String(frame.selected === seat.seat));
+    button.setAttribute('aria-label', 'Смотреть арену ' + seat.seat + ' · ' + seat.name);
+    button.addEventListener('click', () => switchArena(seat.seat));
+    name.append(button);
+    row.append(icon, name, node('td', null, seat.damageInvestment), node('td', null, seat.incomeInvestment),
+      node('td', null, seat.score));
+    return row;
+  }));
+  if (focus) ui.standings.querySelector('[data-seat="' + focus + '"]')?.focus({ preventScroll: true });
+}
+
+function setIncomePopover(type) {
+  incomePopover = type === incomePopover ? '' : type;
+  renderIncomePopover();
+}
+
+function renderIncomePopover() {
+  const info = frame.incomeDetails;
+  const income = ui['income-detail'];
+  const bounty = ui['bounty-detail'];
+  income.hidden = !info || !info.incomeBonus;
+  bounty.hidden = !info || !info.bountyMultiplier;
+  ui['income-tools'].hidden = !matchActive() || (income.hidden && bounty.hidden);
+  income.setAttribute('aria-expanded', String(incomePopover === 'income'));
+  bounty.setAttribute('aria-expanded', String(incomePopover === 'bounty'));
+  const popover = ui['income-popover'];
+  popover.hidden = !incomePopover || !info || (incomePopover === 'income' ? income.hidden : bounty.hidden);
+  if (popover.hidden) return;
+  const isIncome = incomePopover === 'income';
+  const rate = isIncome ? '+' + decimal.format(info.incomeBonus) + ' золота/с' : '+' + statNumber(info.bountyMultiplier) + '% к награде';
+  const rows = [isIncome ? 'Доход золота' : 'Награда за убийство', rate,
+    'Потрачено золота · ' + roundNumber(isIncome ? info.incomeSpent : info.bountySpent),
+    'Заработано золота · ' + roundNumber(isIncome ? info.incomeEarned : info.bountyEarned)];
+  if (popover.textContent === rows.join('')) return;
+  popover.replaceChildren(node('strong', null, rows[0]), ...rows.slice(1).map(text => node('span', null, text)));
 }
 
 function dialog(title) {
   ui['dialog-title'].textContent = title;
+  delete ui['dialog-content'].dataset.section;
   ui['dialog-content'].replaceChildren();
   if (!ui.dialog.open) ui.dialog.showModal();
   return ui['dialog-content'];
@@ -475,19 +534,84 @@ function statCard(label, value) {
 }
 
 function showStats() {
-  const content = dialog('Статистика матча');
-  const player = frame.player;
-  const grid = node('div', 'dialog-grid');
-  grid.append(statCard('Волна', String(frame.wave)), statCard('Время', timerText(frame.elapsed)),
-    statCard('Убийства', roundNumber(player.kills)), statCard('Весь урон', roundNumber(player.damage)),
-    statCard('Урон оружия', roundNumber(player.weaponDamage)), statCard('Урон шипов', roundNumber(player.towerDamage)),
-    statCard('Восстановлено здоровья', roundNumber(player.healed)),
-    statCard('Дополнительный доход за волны', roundNumber(player.waveBonusGold) + ' золота'));
-  content.append(grid);
-  if (player.otherDamage > 0) grid.append(statCard('Очистка и прочий урон', roundNumber(player.otherDamage)));
-  for (const weapon of [...player.weapons].sort((a, b) => b.damage - a.damage)) {
-    content.append(node('p', 'dialog-copy', skillName(weapon) + ' ×' + weapon.copies + ' · ' + roundNumber(weapon.damage) + ' урона'));
+  if (!matchActive()) return;
+  dialog('Доход и урон').dataset.section = 'stats';
+  shownStats = '';
+  renderStats();
+}
+
+function renderStats() {
+  const info = frame.incomeDetails;
+  const target = frame.observedStats;
+  if (!info || !target) return;
+  const previousTable = ui['dialog-content'].querySelector('.weapon-stats-scroll');
+  const key = JSON.stringify([info, target, frame.selected]);
+  if (shownStats === key) return;
+  shownStats = key;
+  const content = ui['dialog-content'];
+  const incomeGrid = node('div', 'dialog-grid');
+  incomeGrid.append(statCard('Золото в запасе', roundNumber(info.gold)),
+    statCard('Текущий доход', roundNumber(info.currentIncome) + ' золота/с'),
+    statCard('Базовый доход', roundNumber(info.baseIncome) + ' золота/с'),
+    statCard('Добавка к доходу', '+' + decimal.format(info.incomeBonus) + ' золота/с'),
+    statCard('Множитель добавки', '+' + statNumber(info.incomeMultiplier) + '%'),
+    statCard('Бонус к награде за убийство', '+' + statNumber(info.bountyMultiplier) + '%'),
+    statCard('Множитель «Трансмутации»', '+' + statNumber(info.transmute) + '%'),
+    statCard('Обновлений лавки за волну', String(info.rerolls)),
+    statCard('Вложено в доход / получено', roundNumber(info.incomeSpent) + ' / ' + roundNumber(info.incomeEarned)),
+    statCard('Вложено в награды / получено', roundNumber(info.bountySpent) + ' / ' + roundNumber(info.bountyEarned)));
+
+  const summary = node('div', 'dialog-grid');
+  summary.append(statCard('Всего нанесено', roundNumber(target.damage)),
+    statCard('Нанесено оружием', roundNumber(target.weaponDamage)),
+    statCard('Нанесено шипами', roundNumber(target.towerDamage)),
+    statCard('Очистка и прочий урон', roundNumber(target.otherDamage)),
+    statCard('Базовый урон шипов за удар', roundNumber(target.spikePower)),
+    statCard('Бонус урона шипов', '+' + statNumber(target.schools.Spikes) + '%'),
+    statCard('Шипы · средний урон/с', roundNumber(target.spikeDps)));
+
+  const tableKey = JSON.stringify([target.schools, target.weapons]);
+  let scroller = previousTable;
+  if (!scroller || scroller.dataset.values !== tableKey) scroller = renderWeaponStats(target, tableKey);
+  const previousScroll = previousTable?.scrollTop ?? 0;
+  content.replaceChildren(node('h3', 'stats-title', 'Доход · ' + (frame.seats.find(seat => seat.seat === frame.seat)?.name ?? profile.name)),
+    incomeGrid, node('h3', 'stats-title', 'Урон · ' + target.name), summary, scroller);
+  scroller.scrollTop = previousScroll;
+}
+
+function renderWeaponStats(target, tableKey) {
+  const table = node('table', 'weapon-stats');
+  const head = table.createTHead().insertRow();
+  for (const label of ['Оружие', 'Кол-во', 'Урон/с за шт.', 'Нанесено']) {
+    const th = node('th', null, label);
+    th.scope = 'col';
+    head.append(th);
   }
+  const body = table.createTBody();
+  const weapons = new Map(target.weapons.map(weapon => [weapon.id, weapon]));
+  for (const [school, groups] of Object.entries(statistics.weaponOrder)) {
+    const section = node('th', 'school', schoolText[school] + ' · +' + statNumber(target.schools[school]) + '%');
+    section.colSpan = 4;
+    body.insertRow().append(section);
+    for (const [range, ids] of groups) {
+      const distance = node('th', 'weapon-range', 'Дальность ' + range);
+      distance.colSpan = 4;
+      body.insertRow().append(distance);
+      for (const id of ids) {
+        const weapon = weapons.get(id);
+        const row = body.insertRow();
+        if (!weapon) row.className = 'unowned';
+        const label = node('th', null, skillName(weapon ?? weaponsForStats.get(id)));
+        label.scope = 'row';
+        row.append(label, node('td', null, weapon?.copies ?? 0), node('td', null, weapon ? roundNumber(weapon.dps) : '—'),
+          node('td', null, weapon ? roundNumber(weapon.damage) : '—'));
+      }
+    }
+  }
+  const scroller = node('div', 'weapon-stats-scroll');
+  scroller.dataset.values = tableKey;
+  scroller.append(table);
+  return scroller;
 }
 
 function showProfile() {
@@ -571,6 +695,7 @@ function cycleSpeed() {
 function showOnline() {
   if (!online) online = createOnlineClient({
     dialog, node, nameValue,
+    playSound: cue => void audio.play(cue),
     start(next) {
       local = null;
       processFrame(next, true);
@@ -593,6 +718,8 @@ ui.resume.addEventListener('click', () => showLobby(false));
 byId('profile').addEventListener('click', showProfile);
 byId('challenges').addEventListener('click', showChallenges);
 byId('stats').addEventListener('click', showStats);
+ui['income-detail'].addEventListener('click', () => setIncomePopover('income'));
+ui['bounty-detail'].addEventListener('click', () => setIncomePopover('bounty'));
 byId('zoom-out').addEventListener('click', () => graphics.zoom(-0.1));
 byId('zoom-in').addEventListener('click', () => graphics.zoom(0.1));
 ui.arena.addEventListener('wheel', event => {
