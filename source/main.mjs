@@ -14,7 +14,7 @@ const ui = Object.fromEntries([
   'prep', 'prep-text', 'go', 'minimap', 'health-bar', 'health', 'shield-bar', 'shield', 'armor', 'regen', 'gold', 'income',
   'kills', 'shop', 'reroll', 'treasure', 'market', 'arsenal', 'clear', 'clears', 'pause', 'speed', 'lobby', 'resume',
   'tooltip', 'dialog', 'dialog-title', 'dialog-content', 'name', 'sound', 'weapon-damage', 'tower-damage', 'total-damage', 'repair',
-  'arena-schedule', 'next-wave', 'next-skills', 'shop-hint',
+  'arena-schedule', 'next-wave', 'next-skills', 'skills-progress', 'shop-hint',
   'sound-files',
 ].map(id => [id, byId(id)]));
 ui.repair.title = 'Восстанавливает до ' + (repairFraction * 100) + '% здоровья. Перезарядка ' + repairInterval + ' с';
@@ -39,9 +39,9 @@ function node(tag, classes, text) {
 
 function readProfile() {
   try {
-    return JSON.parse(localStorage.getItem('ts-web-profile')) ?? { name: 'Защитник', records: [], sound: false };
+    return JSON.parse(localStorage.getItem('ts-web-profile')) ?? { name: 'Защитник', records: [], sound: true };
   } catch {
-    return { name: 'Защитник', records: [], sound: false };
+    return { name: 'Защитник', records: [], sound: true };
   }
 }
 
@@ -96,22 +96,18 @@ const minimap = ui.minimap.getContext('2d');
 const fixedStep = combatStep;
 
 function renderSoundToggle() {
-  ui.sound.setAttribute('aria-pressed', String(audio.hasFiles && profile.sound));
-  ui.sound.textContent = audio.hasFiles ? (profile.sound ? 'Звук вкл.' : 'Звук выкл.') : 'Подключить звук';
-  ui.sound.title = audio.hasFiles ? 'Переключить звук' : 'Подключить оригинальные звуковые файлы Warcraft III с этого компьютера';
+  ui.sound.setAttribute('aria-pressed', String(profile.sound));
+  ui.sound.textContent = profile.sound ? 'Звук вкл.' : 'Звук выкл.';
+  ui.sound.title = 'Переключить звук';
 }
 
 async function enableAudio(confirm = false) {
-  if (!profile.sound || !audio.hasFiles) return;
+  if (!profile.sound) return;
   await audio.enable();
   if (confirm) audio.play('click');
 }
 
 ui.sound.addEventListener('click', () => {
-  if (!audio.hasFiles) {
-    ui['sound-files'].click();
-    return;
-  }
   profile.sound = !profile.sound;
   persist();
   renderSoundToggle();
@@ -365,13 +361,14 @@ function renderUI() {
   if (schedule) {
     const suffix = paused ? ' · пауза' : '';
     ui['next-wave'].textContent = 'Волна ' + schedule.wave + ' через ' + timerText(Math.ceil(schedule.waveIn)) + suffix;
-    ui['next-skills'].textContent = !player.alive || frame.wave >= 31 && schedule.shopCloses ? 'Лавка закрыта'
-      : schedule.shopCloses ? 'Лавка закроется через ' + timerText(Math.ceil(schedule.skillsIn))
-        : 'Новый набор через ' + timerText(Math.ceil(schedule.skillsIn)) + ' · волна ' + schedule.skillsWave;
   } else {
     ui['next-wave'].textContent = 'Волны завершены';
-    ui['next-skills'].textContent = 'Новый набор · лавка закрыта';
   }
+  const shopClosed = !schedule || !player.alive || (schedule.shopCloses && frame.wave >= 31);
+  ui['next-skills'].textContent = shopClosed ? 'Лавка закрыта'
+    : schedule.shopCloses ? 'До закрытия лавки' : 'Новый набор навыков';
+  ui['skills-progress'].hidden = shopClosed;
+  ui['skills-progress'].value = shopClosed ? 0 : schedule.skillsProgress;
   fillBar(ui['health-bar'], ui.health, player.health, player.maxHealth);
   fillBar(ui['shield-bar'], ui.shield, player.shield, player.maxShield);
   ui.armor.textContent = '♜ ' + statNumber(player.armor);

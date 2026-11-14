@@ -482,7 +482,7 @@ export function createMatch(map, players, options = {}) {
         wave: preparation > 0 ? 1 : wave + 1,
         waveIn: preparation > 0 ? preparation : Math.max(0, roundAt - time),
         skillsWave: wave + 1,
-        skillsIn: Math.max(0, roundAt - time),
+        skillsProgress: Math.max(0, Math.min(1, 1 - (roundAt - time) / rules.roundSeconds)),
         shopCloses: arenas.length > 1 && wave >= 30,
       },
       player: tower ? {

@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#171913">
     <meta name="description" content="Фэнтези-арена Tower Survivors. Покупайте оружие и держите оборону.">
     <title>Tower Survivors · Башня Последних</title>
-    <script type="module" crossorigin src="./assets/index-D8-9niG3.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-D8gwyObI.css">
+    <script type="module" crossorigin src="./assets/index-SfY1uftF.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DP_BHbpR.css">
   </head>
   <body>
     <main id="app">
@@ -35,7 +35,10 @@
           <small id="arena-detail">Селение · оборона</small>
           <div id="arena-schedule" class="arena-schedule" aria-label="Расписание боя" hidden>
             <span id="next-wave">Следующая волна</span>
-            <span id="next-skills">Новый набор навыков</span>
+            <div class="skills-cycle">
+              <span id="next-skills">Новый набор навыков</span>
+              <progress id="skills-progress" aria-labelledby="next-skills" max="1" value="0"></progress>
+            </div>
           </div>
         </aside>
         <aside id="standings" class="standings" aria-label="Участники"></aside>

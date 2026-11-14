@@ -37,6 +37,39 @@ const effects = {
   storm: { gain: 0.29, voices: 2 },
 };
 
+const builtInCues = {
+  click: [0.07, 720, 460, 0.12],
+  questnew: [0.24, 390, 650, 0.25],
+  reward: [0.26, 490, 820, 0.24],
+  shot: [0.13, 190, 70, 0.35],
+  impact: [0.11, 105, 45, 0.42],
+  beam: [0.18, 280, 100, 0.36],
+  wave: [0.25, 140, 52, 0.55],
+  burst: [0.23, 110, 36, 0.62],
+  doom: [0.55, 135, 62, 0.38],
+  victory: [0.46, 390, 780, 0.25],
+  defeat: [0.49, 280, 100, 0.27],
+};
+const equivalentCue = {
+  tesla: 'beam', chain: 'beam', pillar: 'burst', storm: 'burst', firebreather: 'wave',
+  '#SHSL': 'shot', '#SHSI': 'burst', '#AOHW': 'beam', '#MTRL': 'shot', '#MTRI': 'burst',
+};
+
+function makeCue(context, name) {
+  const [duration, high, low, texture] = builtInCues[name];
+  const length = Math.round(context.sampleRate * duration);
+  const buffer = context.createBuffer(1, length, context.sampleRate);
+  const samples = buffer.getChannelData(0);
+  let phase = 0;
+  for (let index = 0; index < length; index++) {
+    const progress = index / length;
+    phase += 2 * Math.PI * (high + (low - high) * progress) / context.sampleRate;
+    const envelope = Math.min(1, index / 80) * (1 - progress) ** 3;
+    samples[index] = 0.46 * envelope * (Math.sin(phase) * (1 - texture) + (Math.random() * 2 - 1) * texture);
+  }
+  return buffer;
+}
+
 function storedSounds(mode, files) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open('tower-survivors-warcraft-audio', 1);
@@ -55,6 +88,7 @@ function storedSounds(mode, files) {
 
 export function createBattleAudio() {
   const buffers = new Map();
+  const fallbackBuffers = new Map();
   const activeSources = new Set();
   const activeVoices = new Map();
   let originals = {};
@@ -138,14 +172,24 @@ export function createBattleAudio() {
     if (!enabled || context?.state !== 'running') return;
     if (name.startsWith('#')) {
       const variants = (tracks[name.slice(1)] ?? []).map(file => filenames.get(file)).filter(file => originals[file]);
-      if (variants.length) void play(variants[Math.floor(Math.random() * variants.length)], delay, true);
-      return;
+      if (variants.length) {
+        void play(variants[Math.floor(Math.random() * variants.length)], delay, true);
+        return;
+      }
     }
     const data = originals[name];
-    if (!data) return;
+    const cue = equivalentCue[name] ?? name;
     const scheduled = context.currentTime + delay;
-    if (!buffers.has(name)) buffers.set(name, context.decodeAudioData(data.slice(0)).catch(() => null));
-    const buffer = await buffers.get(name);
+    let buffer;
+    if (data) {
+      if (!buffers.has(name)) buffers.set(name, context.decodeAudioData(data.slice(0)).catch(() => null));
+      buffer = await buffers.get(name);
+    }
+    if (!buffer && builtInCues[cue]) {
+      name = cue;
+      if (!fallbackBuffers.has(cue)) fallbackBuffers.set(cue, makeCue(context, cue));
+      buffer = fallbackBuffers.get(cue);
+    }
     if (!buffer || !enabled || context.state !== 'running') return;
     const start = Math.max(scheduled, context.currentTime);
     const effect = effects[name] ?? (modelSound ? { gain: 0.23, voices: 3 } : null);
@@ -170,6 +214,10 @@ export function createBattleAudio() {
   }
 
   function event(effect, ownArena) {
+    if (ownArena && !Object.keys(originals).length && ['shot', 'beam', 'wave', 'burst', 'impact'].includes(effect.kind)) {
+      play(effect.kind, 0, true);
+      return;
+    }
     switch (effect.kind) {
       case 'round': if (ownArena) play(effect.incomeBonus ? 'reward' : 'questnew'); break;
       case 'shot': if (effect.slot === 38) play('#SHSL'); break;

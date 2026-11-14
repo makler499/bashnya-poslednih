@@ -247,3 +247,13 @@ dialog::backdrop { background: #10110aaf; }
   .lobby-emblem { font-size: 25px; }
   .lobby-card h1 { font-size: 42px; }
 }
+
+.skills-cycle { position: relative; isolation: isolate; overflow: hidden; }
+.skills-cycle progress {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1;
+  appearance: none; border: 0; background: #251e13;
+}
+.skills-cycle progress::-webkit-progress-bar { background: #251e13; }
+.skills-cycle progress::-webkit-progress-value { background: #765522; }
+.skills-cycle progress::-moz-progress-bar { background: #765522; }
+.skills-cycle #next-skills { display: block; background: transparent; }
